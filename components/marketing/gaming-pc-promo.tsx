@@ -24,8 +24,8 @@ const PROMOS: Promo[] = [
 
 export function GamingPcPromo() {
   return (
-    <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
-      <RevealGroup className="grid gap-6 sm:grid-cols-2">
+    <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+      <RevealGroup className="grid gap-5 sm:grid-cols-2">
         {PROMOS.map((promo) => (
           <RevealItem key={promo.title}>
             <Link
@@ -41,11 +41,11 @@ export function GamingPcPromo() {
               />
               <div className="absolute inset-0 bg-linear-to-t from-black/75 via-black/10 to-transparent" />
 
-              <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
-                <h3 className="text-2xl font-bold text-white sm:text-3xl">
+              <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
+                <h3 className="text-xl font-bold text-white sm:text-2xl">
                   {promo.title}
                 </h3>
-                <span className="mt-4 inline-flex items-center rounded bg-white px-5 py-2.5 text-sm font-semibold text-foreground transition-colors group-hover:bg-white/90">
+                <span className="mt-3 inline-flex items-center rounded bg-white px-4 py-2 text-sm font-semibold text-foreground transition-colors group-hover:bg-white/90">
                   Shop Now
                 </span>
               </div>

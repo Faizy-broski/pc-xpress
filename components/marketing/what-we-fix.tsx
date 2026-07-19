@@ -55,7 +55,7 @@ const TRUST_POINTS = [
 
 export function WhatWeFix() {
   return (
-    <section className="relative overflow-hidden py-20 sm:pt-14 sm:pb-16">
+    <section className="relative overflow-hidden py-14 sm:py-16">
       <div
         aria-hidden
         className="pointer-events-none absolute bottom-0 left-0 h-72 w-72 sm:-bottom-16 sm:-left-14 sm:h-96 sm:w-96 lg:h-112 lg:w-md"
@@ -75,6 +75,7 @@ export function WhatWeFix() {
           src="/what-we-fix-bg-right.png"
           alt=""
           fill
+          loading="eager"
           className="object-contain object-top-right"
         />
       </div>
@@ -90,7 +91,7 @@ export function WhatWeFix() {
           </Badge>
 
           <Reveal delay={0.1}>
-            <h2 className="mt-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            <h2 className="mt-3 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
               Every device, <span className="text-primary">handled</span>
               <br />
               like our own.
@@ -98,24 +99,24 @@ export function WhatWeFix() {
           </Reveal>
 
           <Reveal delay={0.2}>
-            <p className="mt-4 text-muted-foreground">
+            <p className="mt-3 text-muted-foreground">
               From cracked screens to dead motherboards — six specialist repair
               lines, one meticulous studio.
             </p>
           </Reveal>
         </Reveal>
 
-        <RevealGroup className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <RevealGroup className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {SERVICES.map((service) => (
             <RevealItem
               key={service.title}
-              className="rounded border border-white/10 bg-secondary p-8 text-center"
+              className="rounded border border-white/10 bg-secondary p-6 text-center"
             >
-              <span className="mx-auto flex size-16 items-center justify-center rounded-full bg-accent">
+              <span className="mx-auto flex size-14 items-center justify-center rounded-full bg-accent">
                 {/* eslint-disable-next-line @next/next/no-img-element -- next/image blocks local .svg sources by default */}
-                <img src={service.icon} alt="" className="size-7" />
+                <img src={service.icon} alt="" className="size-6" />
               </span>
-              <h3 className="mt-5 text-lg font-semibold text-secondary-foreground">
+              <h3 className="mt-4 text-base font-semibold text-secondary-foreground">
                 {service.title}
               </h3>
               <p className="mt-2 text-sm text-secondary-foreground/65">
@@ -127,7 +128,7 @@ export function WhatWeFix() {
 
         <Reveal
           delay={0.1}
-          className="mt-14 flex flex-wrap items-center justify-center gap-x-10 gap-y-4"
+          className="mt-10 flex flex-wrap items-center justify-center gap-x-10 gap-y-4"
         >
           {TRUST_POINTS.map((point) => (
             <span

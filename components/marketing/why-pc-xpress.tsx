@@ -35,7 +35,7 @@ const STATS: Stat[] = [
 
 export function WhyPcXpress() {
   return (
-    <section className="relative mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
+    <section className="relative mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
                   <div className="absolute -left-14 top-40 hidden w-2/5 -translate-y-1/2 sm:block">
               <Image
                 src="/white-pc.png"
@@ -45,7 +45,7 @@ export function WhyPcXpress() {
                 className="w-full opacity-90"
               />
             </div>
-      <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+      <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-12">
         <Reveal>
           <Badge variant="soft">
             <span className="size-1.5 rounded-full bg-primary" />
@@ -53,7 +53,7 @@ export function WhyPcXpress() {
           </Badge>
 
           <Reveal delay={0.1}>
-            <h2 className="mt-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            <h2 className="mt-3 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
               Precision. Speed.
               <br />
               <span className="text-primary">Zero</span> guesswork.
@@ -61,23 +61,23 @@ export function WhyPcXpress() {
           </Reveal>
 
           <Reveal delay={0.2}>
-            <p className="mt-4 max-w-md text-muted-foreground">
+            <p className="mt-3 max-w-md text-muted-foreground">
               We built PC Xpress around a simple idea: professional
               diagnostics, transparent pricing, and a studio experience that
               feels closer to a boutique than a repair shop.
             </p>
           </Reveal>
 
-          <RevealGroup className="mt-8 grid grid-cols-2 gap-4">
+          <RevealGroup className="mt-6 grid grid-cols-2 gap-3">
             {STATS.map((stat) => (
               <RevealItem
                 key={stat.title}
-                className="rounded border border-border bg-card p-5"
+                className="rounded border border-border bg-card p-4"
               >
-                <span className="flex size-9 items-center justify-center rounded-full bg-accent">
-                  <stat.icon className="size-4.5 text-primary" />
+                <span className="flex size-8 items-center justify-center rounded-full bg-accent">
+                  <stat.icon className="size-4 text-primary" />
                 </span>
-                <h3 className="mt-4 font-semibold text-foreground">
+                <h3 className="mt-3 font-semibold text-foreground">
                   {stat.title}
                 </h3>
                 <p className="mt-1 text-sm text-muted-foreground">
@@ -91,7 +91,7 @@ export function WhyPcXpress() {
         <Reveal delay={0.15} className="relative">
           <div className="relative aspect-square w-full max-w-md mx-auto lg:max-w-none">
 
-            <div className="relative aspect-4/5 w-full overflow-hidden rounded shadow-card">
+            <div className="relative aspect-5/5 w-full overflow-hidden rounded shadow-card">
               <Image
                 src="/pc-xpress-shop.png"
                 alt="PC Xpress repair shop storefront"

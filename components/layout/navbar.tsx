@@ -12,6 +12,8 @@ import { Button } from "@/components/ui/button";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
+  // { label: "Prebuilt PCs", href: "/prebuilt-pcs" },
+  // { label: "Build a PC", href: "/build-a-pc" },
   { label: "About", href: "/about" },
   { label: "Services", href: "/services" },
   { label: "Contact Us", href: "/contact" },
@@ -51,13 +53,13 @@ export function Navbar() {
         "fixed z-40 mx-auto overflow-hidden bg-gradient-brand transition-[top,left,right,max-width,border-radius,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-[top,left,right,max-width,border-radius,box-shadow]",
         scrolled
           ? "inset-x-0 top-0 max-w-7xl rounded-none shadow-lg shadow-black/20"
-          : "inset-x-4 top-4 max-w-6xl rounded sm:inset-x-6 sm:top-6 lg:inset-x-8 my-9"
+          : "inset-x-0 top-0 rounded-none md:inset-x-6 md:top-6 md:my-9 md:max-w-6xl md:rounded lg:inset-x-8"
       )}
     >
       <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <Logo className="md:hidden" />
 
-        <div className="hidden flex-1 items-center gap-8 md:flex">
+        <div className="hidden flex-1 items-center gap-3 lg:gap-6 md:flex">
           {NAV_LINKS.map((link) => {
             const active = pathname === link.href;
             return (
@@ -90,7 +92,7 @@ export function Navbar() {
           <Button
             className="rounded bg-none bg-white p-6 text-primary shadow-none hover:bg-white/90"
             nativeButton={false}
-            render={<Link href="/contact" />}
+            render={<Link href="/repair-a-device" />}
           >
             <span className="gradient-text-brand">Book Your Repair</span>
             <ArrowRight />
@@ -138,7 +140,7 @@ export function Navbar() {
               <Button
                 className="mt-2 w-full rounded bg-none bg-white text-primary shadow-none hover:bg-white/90"
                 nativeButton={false}
-                render={<Link href="/contact" onClick={() => setOpen(false)} />}
+                render={<Link href="/repair-a-device" onClick={() => setOpen(false)} />}
               >
                 <span className="gradient-text-brand">Book Your Repair</span>
                 <ArrowRight />

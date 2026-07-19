@@ -20,7 +20,7 @@ const fieldClass =
 
 export function VisitShop() {
   return (
-    <section className="relative overflow-hidden py-16 sm:py-20">
+    <section className="relative overflow-hidden py-12 sm:py-16">
       <div
         aria-hidden
         className="pointer-events-none absolute left-0 top-1/2 hidden h-186 w-186 -translate-y-1/2 sm:block"
@@ -41,19 +41,19 @@ export function VisitShop() {
           </Badge>
 
           <Reveal delay={0.1}>
-            <h2 className="mt-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            <h2 className="mt-3 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
               Visit <span className="text-primary">the</span> shop
             </h2>
           </Reveal>
         </Reveal>
 
-        <RevealGroup className="mt-12 grid gap-6 lg:grid-cols-2">
-          <RevealItem className="rounded border border-border bg-card p-8 shadow-card">
+        <RevealGroup className="mt-8 grid gap-5 lg:grid-cols-2">
+          <RevealItem className="rounded border border-border bg-card p-6 shadow-card">
             <h3 className="text-lg font-semibold text-foreground">
               Send us a message
             </h3>
 
-            <form className="mt-6 flex flex-col gap-4">
+            <form className="mt-4 flex flex-col gap-3">
               <input
                 type="text"
                 name="name"
@@ -89,8 +89,8 @@ export function VisitShop() {
             </form>
           </RevealItem>
 
-          <RevealItem className="flex flex-col gap-6">
-            <div className="h-56 overflow-hidden rounded border border-border sm:h-64">
+          <RevealItem className="flex flex-col gap-5">
+            <div className="h-44 overflow-hidden rounded border border-border sm:h-52">
               <iframe
                 src={MAP_SRC}
                 title="PC Xpress on Google Maps"
@@ -110,7 +110,7 @@ export function VisitShop() {
               />
               <div className="absolute inset-0 bg-black/75" />
 
-              <div className="relative flex h-full flex-col gap-3 p-6">
+              <div className="relative flex h-full flex-col gap-3 p-5">
                 <h3 className="text-lg font-semibold text-white">
                   PC Xpress Studio
                 </h3>

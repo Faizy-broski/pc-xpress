@@ -29,7 +29,7 @@ export function CtaButtonGroup({
     <div className={cn("flex flex-wrap items-center gap-4", className)}>
       <Button
         size={size}
-        className="rounded text-xl p-8"
+        className="rounded text-lg p-8"
         nativeButton={false}
         render={<Link href={primary.href} />}
       >
@@ -43,7 +43,7 @@ export function CtaButtonGroup({
           nativeButton={false}
           render={<Link href={secondary.href} />}
           className={cn(
-            "rounded text-xl p-8 w-60",
+            "rounded text-lg p-8 w-50",
             onDark &&
               "border-white/20 bg-transparent backdrop-blur-xl text-white hover:bg-white/10 hover:text-white"
           )}

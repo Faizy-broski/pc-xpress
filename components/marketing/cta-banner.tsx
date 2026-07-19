@@ -11,7 +11,7 @@ const WHATSAPP_HREF = `https://wa.me/${PHONE.replace(/\D/g, "")}`;
 
 export function CtaBanner() {
   return (
-    <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-10 lg:px-8">
+    <section className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-10 lg:px-8">
       <Reveal>
         <div className="relative isolate overflow-hidden rounded">
           <Image
@@ -22,7 +22,7 @@ export function CtaBanner() {
             className="object-cover"
           />
 
-          <div className="relative flex flex-col gap-8 px-6 py-12 sm:px-10 sm:py-16 lg:flex-row lg:items-center lg:justify-between">
+          <div className="relative flex flex-col gap-6 px-6 py-10 sm:px-8 sm:py-12 lg:flex-row lg:items-center lg:justify-between">
             <div className="max-w-lg">
               <Badge
                 variant="soft"
@@ -32,11 +32,11 @@ export function CtaBanner() {
                 Free diagnostics · No obligation
               </Badge>
 
-              <h2 className="mt-4 text-3xl font-bold tracking-tight text-white sm:text-4xl">
+              <h2 className="mt-3 text-2xl font-bold tracking-tight text-white sm:text-3xl">
                 Ready to bring your device back to life?
               </h2>
 
-              <p className="mt-4 text-white/70">
+              <p className="mt-3 text-white/70">
                 Drop by the studio, book a same-day slot, or send us a
                 message. We&apos;ll take it from there — quickly,
                 transparently, and with the care your device deserves.
@@ -46,9 +46,9 @@ export function CtaBanner() {
             <div className="flex flex-col gap-3 sm:flex-row lg:flex-col lg:items-stretch">
               <Button
                 size="lg"
-                className="rounded p-6"
+                className="rounded p-4"
                 nativeButton={false}
-                render={<Link href="/contact" />}
+                render={<Link href="/repair-a-device" />}
               >
                 Book a repair
                 <ArrowUpRight />
@@ -56,7 +56,7 @@ export function CtaBanner() {
               <Button
                 size="lg"
                 variant="outline"
-                className="rounded border-white/15 bg-white/5 backdrop-blur-xl p-6 text-white hover:bg-white/10 hover:text-white"
+                className="rounded border-white/15 bg-white/5 backdrop-blur-xl p-4 text-white hover:bg-white/10 hover:text-white"
                 nativeButton={false}
                 render={<Link href={WHATSAPP_HREF} />}
               >

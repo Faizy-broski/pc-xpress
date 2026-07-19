@@ -33,7 +33,7 @@ const TESTIMONIALS: Testimonial[] = [
 
 export function Testimonials() {
   return (
-    <section className="relative overflow-hidden py-20 sm:py-24">
+    <section className="relative overflow-hidden py-14 sm:py-16">
       <div
         aria-hidden
         className="pointer-events-none absolute -right-24 top-1/2 hidden h-184 w-155 -translate-y-1/2 sm:block lg:-right-10"
@@ -54,7 +54,7 @@ export function Testimonials() {
           </Badge>
 
           <Reveal delay={0.1}>
-            <h2 className="mt-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            <h2 className="mt-3 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
               Trusted by 20,000+
               <br />
               <span className="gradient-text-brand">device</span> owners.
@@ -62,11 +62,11 @@ export function Testimonials() {
           </Reveal>
         </Reveal>
 
-        <RevealGroup className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <RevealGroup className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {TESTIMONIALS.map((testimonial) => (
             <RevealItem
               key={testimonial.name}
-              className="rounded border border-border bg-card p-6 shadow-card"
+              className="rounded border border-border bg-card p-5 shadow-card"
             >
               <span className="flex items-center gap-0.5">
                 {Array.from({ length: 5 }).map((_, i) => (
@@ -77,11 +77,11 @@ export function Testimonials() {
                 ))}
               </span>
 
-              <p className="mt-4 text-sm text-muted-foreground">
+              <p className="mt-3 text-sm text-muted-foreground">
                 &ldquo;{testimonial.quote}&rdquo;
               </p>
 
-              <div className="mt-6 flex items-center gap-3 border-t border-border pt-4">
+              <div className="mt-5 flex items-center gap-3 border-t border-border pt-3">
                 <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-accent text-sm font-semibold text-accent-foreground">
                   {testimonial.name
                     .split(" ")

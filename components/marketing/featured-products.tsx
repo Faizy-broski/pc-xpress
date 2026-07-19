@@ -77,26 +77,26 @@ export function FeaturedProducts({
   );
 
   return (
-    <section className={cn("py-16 sm:py-20 max-w-6xl mx-auto px-4", className)}>
+    <section className={cn("py-12 sm:py-16 max-w-6xl mx-auto px-4", className)}>
       <div
         onMouseEnter={stopAutoplay}
         onMouseLeave={startAutoplay}
       >
         {/* Colored promo panel — only tall enough for the heading + top half of the cards */}
-        <div className="relative overflow-hidden rounded bg-gradient-brand px-6 pt-12 pb-40 sm:px-10 sm:pt-16 sm:pb-52 lg:pb-76">
+        <div className="relative overflow-hidden rounded bg-gradient-brand px-6 pt-10 pb-32 sm:px-10 sm:pt-12 sm:pb-40 lg:pb-60">
           <div className="pointer-events-none absolute inset-0 bg-gradient-hero opacity-60" />
 
           <div className="relative mx-auto max-w-5xl">
             <TextReveal
               as="h2"
               text={heading}
-              className="text-center text-3xl font-bold tracking-tight text-white sm:text-4xl"
+              className="text-center text-2xl font-bold tracking-tight text-white sm:text-3xl"
             />
           </div>
         </div>
 
         {/* Cards pulled up so their top half overlaps the panel and the bottom half sits on the page bg */}
-        <div className="relative mx-auto -mt-36 max-w-5xl px-6 sm:-mt-44 sm:px-10 lg:-mt-68">
+        <div className="relative mx-auto -mt-28 max-w-5xl px-6 sm:-mt-34 sm:px-10 lg:-mt-52">
           <div className="overflow-hidden" ref={emblaRef}>
             <div className="flex">
               {products.map((product, index) => (

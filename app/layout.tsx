@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Sans } from "next/font/google";
-import { Header } from "@/components/layout/header";
-import { Navbar } from "@/components/layout/navbar";
-import { Footer } from "@/components/layout/footer";
+import { IBM_Plex_Sans, Geist } from "next/font/google";
 import "./globals.css";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const ibmPlexSans = IBM_Plex_Sans({
   variable: "--font-ibm-plex-sans",
@@ -24,15 +24,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${ibmPlexSans.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">
-        <Header />
-        <Navbar />
-        <main className="flex-1">
-          {children}
-          </main>
-        <Footer />
-      </body>
+    <html lang="en" className={cn("h-full", "antialiased", ibmPlexSans.variable, "font-sans", geist.variable)}>
+      <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );
 }

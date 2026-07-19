@@ -22,7 +22,7 @@ export function Header() {
         initial={false}
         animate={{ height: hideTopbar ? 0 : TOPBAR_HEIGHT, opacity: hideTopbar ? 0 : 1 }}
         transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-        className="overflow-hidden"
+        className="overflow-hidden hidden md:block"
       >
         <Topbar />
       </motion.div>

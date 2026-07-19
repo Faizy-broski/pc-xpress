@@ -6,6 +6,7 @@ const SERVICE_LINKS = [
   { label: "Laptop Repair", href: "/services/laptop-repair" },
   { label: "PC Repair", href: "/services/pc-repair" },
   { label: "Console Repair", href: "/services/console-repair" },
+  { label: "Prebuilt PCs", href: "/prebuilt-pcs" },
   { label: "Custom PC Builds", href: "/build-a-pc" },
   { label: "Data Recovery", href: "/services/data-recovery" },
 ];
@@ -35,7 +36,7 @@ export function Footer() {
   return (
     <footer className="relative overflow-hidden">
       <div className="absolute inset-0">
-        <Image src="/footer.png" alt="" fill className="object-cover" />
+        <Image src="/footer.png" alt="" fill loading="eager" className="object-cover" />
         <div className="absolute inset-0" />
       </div>
 

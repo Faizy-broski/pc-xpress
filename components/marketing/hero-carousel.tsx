@@ -26,7 +26,7 @@ export interface HeroSlide {
   secondary?: HeroCta;
 }
 
-const AUTOPLAY_DELAY = 4000;
+const AUTOPLAY_DELAY = 5000;
 
 export function HeroCarousel({
   slides,
@@ -93,9 +93,8 @@ export function HeroCarousel({
                 sizes="100vw"
                 className="object-cover"
               />
-              <div className="absolute inset-0" />
 
-              <div className="relative mx-auto flex h-full max-w-6xl flex-col justify-center px-4 py-24 sm:px-6 sm:py-32 lg:px-8">
+              <div className="relative mx-auto flex h-full max-w-6xl flex-col justify-center px-4 pt-20 sm:px-6 md:pt-40 md:pb-20 lg:px-8">
                 <Reveal>
                   <Badge variant="soft" className="bg-white/10 text-white">
                     <Sparkles />
@@ -107,18 +106,18 @@ export function HeroCarousel({
                   as="h1"
                   text={slide.heading}
                   delay={0.1}
-                  className="mt-6 max-w-3xl text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-8xl"
+                  className="mt-4 max-w-sm text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl"
                 />
 
                 <Reveal delay={0.25}>
-                  <p className="mt-6 max-w-xl text-base text-white/70 sm:text-xl">
+                  <p className="mt-4 max-w-lg text-sm text-white/70 sm:text-base">
                     {slide.description}
                   </p>
                 </Reveal>
 
                 <Reveal delay={0.35}>
                   <CtaButtonGroup
-                    className="mt-10"
+                    className="mt-6"
                     onDark
                     primary={slide.primary}
                     secondary={slide.secondary}
@@ -146,11 +145,12 @@ export function HeroCarousel({
               />
             ))}
           </div>
-          <span className="text-sm font-medium tabular-nums text-white/80">
+          <span className="text-4xl font-medium tabular-nums text-white/80">
             {String(selectedIndex + 1).padStart(2, "0")}
-            <span className="text-white/40">
+            <span className="text-white/40 text-sm">
               {" "}
-              / {String(slides.length).padStart(2, "0")}
+             <span className="text-2xl">/</span>
+              {String(slides.length).padStart(2, "0")}
             </span>
           </span>
         </div>
