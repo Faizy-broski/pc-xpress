@@ -28,8 +28,8 @@ export function CategoryGrid({ categories, selections, onSelect }: CategoryGridP
               whileHover={{ y: -2 }}
               whileTap={{ scale: 0.97 }}
               className={cn(
-                "relative w-full rounded-xl border bg-white/3 p-3 text-left transition-colors hover:border-primary/60",
-                selected ? "border-primary" : "border-white/10"
+                "relative w-full rounded-xl border bg-card p-3 text-left transition-colors hover:border-primary/60",
+                selected ? "border-primary" : "border-border"
               )}
             >
               {selected && (
@@ -41,9 +41,9 @@ export function CategoryGrid({ categories, selections, onSelect }: CategoryGridP
                   <Check className="size-2.5" />
                 </motion.span>
               )}
-              <Icon className={cn("size-4.5", selected ? "text-primary" : "text-white/50")} />
-              <p className="mt-2 text-sm font-semibold text-white">{category.label}</p>
-              <p className={cn("mt-0.5 truncate text-xs", selected ? "text-primary" : "text-white/40")}>
+              <Icon className={cn("size-4.5", selected ? "text-primary" : "text-muted-foreground")} />
+              <p className="mt-2 text-sm font-semibold text-foreground">{category.label}</p>
+              <p className={cn("mt-0.5 truncate text-xs", selected ? "text-primary" : "text-muted-foreground")}>
                 {selected ? selected.name : "Empty"}
               </p>
             </motion.button>

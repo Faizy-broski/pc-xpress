@@ -43,15 +43,15 @@ export function BuildSummary({ categories, selections, onRemove }: BuildSummaryP
 
   return (
     <div className="lg:sticky lg:top-24">
-      <div className="rounded-2xl border border-white/10 bg-white/3 p-4 shadow-card">
+      <div className="rounded-2xl border border-border bg-card p-4 shadow-card">
         <div className="flex items-center justify-between">
-          <h2 className="font-mono text-sm font-semibold text-white">Your Build Summary</h2>
-          <span className="text-xs text-white/40">
+          <h2 className="font-mono text-sm font-semibold text-foreground">Your Build Summary</h2>
+          <span className="text-xs text-muted-foreground">
             {selectedList.length}/{categories.length}
           </span>
         </div>
 
-        <div className="mt-2.5 h-1.5 overflow-hidden rounded-full bg-white/10">
+        <div className="mt-2.5 h-1.5 overflow-hidden rounded-full bg-muted">
           <motion.div
             className="h-full rounded-full bg-primary"
             initial={false}
@@ -62,7 +62,7 @@ export function BuildSummary({ categories, selections, onRemove }: BuildSummaryP
 
         <div className="mt-3 space-y-2">
           {selectedList.length === 0 && (
-            <p className="text-sm text-white/40">No components selected yet.</p>
+            <p className="text-sm text-muted-foreground">No components selected yet.</p>
           )}
 
           <AnimatePresence initial={false}>
@@ -76,12 +76,12 @@ export function BuildSummary({ categories, selections, onRemove }: BuildSummaryP
                 transition={{ duration: 0.25, ease: EASE }}
                 className="overflow-hidden"
               >
-                <div className="flex items-start justify-between gap-2 rounded-lg border border-white/10 bg-white/3 p-3">
+                <div className="flex items-start justify-between gap-2 rounded-lg border border-border bg-card p-3">
                   <div className="min-w-0">
-                    <p className="text-[11px] uppercase tracking-wide text-white/40">
+                    <p className="text-[11px] uppercase tracking-wide text-muted-foreground">
                       {category.label}
                     </p>
-                    <p className="truncate text-sm font-medium text-white">{part.name}</p>
+                    <p className="truncate text-sm font-medium text-foreground">{part.name}</p>
                     <p className="mt-0.5 text-sm font-semibold text-primary">
                       {formatPartPrice(part.price)}
                     </p>
@@ -90,7 +90,7 @@ export function BuildSummary({ categories, selections, onRemove }: BuildSummaryP
                     type="button"
                     onClick={() => onRemove(category.id)}
                     aria-label={`Remove ${part.name}`}
-                    className="text-white/40 hover:text-white"
+                    className="text-muted-foreground hover:text-foreground"
                   >
                     <X className="size-4" />
                   </button>
@@ -120,16 +120,16 @@ export function BuildSummary({ categories, selections, onRemove }: BuildSummaryP
           )}
         </AnimatePresence>
 
-        <div className="mt-4 space-y-1.5 border-t border-white/10 pt-3 text-sm">
-          <div className="flex justify-between text-white/50">
+        <div className="mt-4 space-y-1.5 border-t border-border pt-3 text-sm">
+          <div className="flex justify-between text-muted-foreground">
             <span>Parts subtotal</span>
             <span>{formatGBP(subtotal)}</span>
           </div>
-          <div className="flex justify-between text-white/50">
+          <div className="flex justify-between text-muted-foreground">
             <span>Build &amp; testing fee</span>
             <span>{hasAny ? formatGBP(ASSEMBLY_FEE) : formatGBP(0)}</span>
           </div>
-          <div className="flex justify-between border-t border-white/10 pt-1.5 text-base font-semibold text-white">
+          <div className="flex justify-between border-t border-border pt-1.5 text-base font-semibold text-foreground">
             <span>Total</span>
             <motion.span
               key={total}
@@ -151,21 +151,21 @@ export function BuildSummary({ categories, selections, onRemove }: BuildSummaryP
         >
           {selectedList.length < categories.length ? "Select all parts to continue" : "Submit Build"}
         </Button>
-        <p className="mt-2 text-center text-xs text-white/40">
+        <p className="mt-2 text-center text-xs text-muted-foreground">
           Ready to build? Submit and we&apos;ll confirm pricing &amp; availability.
         </p>
       </div>
 
       <div
         className={cn(
-          "mt-3 rounded-2xl border border-white/10 bg-white/3 p-4 shadow-card"
+          "mt-3 rounded-2xl border border-border bg-card p-4 shadow-card"
         )}
       >
         <div className="flex items-center gap-2 text-primary">
           <Lightbulb className="size-4" />
           <h3 className="font-mono text-sm font-semibold">Build Tips</h3>
         </div>
-        <ul className="mt-2.5 space-y-1.5 text-sm text-white/50">
+        <ul className="mt-2.5 space-y-1.5 text-sm text-muted-foreground">
           {BUILD_TIPS.map((tip) => (
             <li key={tip} className="flex gap-2">
               <span className="text-primary">•</span>

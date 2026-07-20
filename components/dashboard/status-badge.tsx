@@ -7,6 +7,7 @@ const TONES = {
     "bg-amber-500/10 text-amber-600 dark:bg-amber-500/15 dark:text-amber-400",
   success:
     "bg-emerald-500/10 text-emerald-600 dark:bg-emerald-500/15 dark:text-emerald-400",
+  danger: "bg-red-500/10 text-red-600 dark:bg-red-500/15 dark:text-red-400",
   neutral: "bg-muted text-muted-foreground",
 } as const
 

@@ -28,12 +28,12 @@ function Fan({ selected, className }: { selected: boolean; className?: string })
       }
       className={cn(
         "relative shrink-0 rounded-full border-2",
-        selected ? "border-primary shadow-glow" : "border-white/25",
+        selected ? "border-primary shadow-glow" : "border-border",
         className
       )}
     >
-      <span className="absolute inset-[6px] rounded-full border border-white/15" />
-      <span className="absolute inset-[6px] rotate-45 rounded-full border border-white/10" />
+      <span className="absolute inset-[6px] rounded-full border border-border" />
+      <span className="absolute inset-[6px] rotate-45 rounded-full border border-border" />
     </motion.span>
   );
 }
@@ -77,14 +77,14 @@ function Region({
       style={style}
       className={cn(
         "group absolute flex rounded-lg border p-3 transition-colors",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-[oklch(0.09_0.008_30)]",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-muted",
         layer === "background" ? "z-0" : "z-10",
         labelPosition === "center" && "flex-col items-center justify-center gap-2",
         labelPosition === "bottom" && "flex-col items-center justify-between",
         isTopLeft && "flex-col items-start justify-start",
         selected
           ? "border-primary bg-primary/10 shadow-glow"
-          : "border-white/15 bg-white/2 hover:border-primary/40 hover:bg-primary/5",
+          : "border-border bg-card hover:border-primary/40 hover:bg-primary/5",
         className
       )}
     >
@@ -108,7 +108,7 @@ function Region({
         <span
           className={cn(
             "text-[0.6rem] font-semibold uppercase tracking-wider whitespace-nowrap",
-            selected ? "text-primary" : "text-white/35"
+            selected ? "text-primary" : "text-muted-foreground"
           )}
         >
           {category.label}
@@ -131,8 +131,8 @@ export function Diagram({ categories, selections, onSelect }: DiagramProps) {
   const doneCount = Object.keys(selections).length;
 
   return (
-    <div className="rounded-2xl border border-white/10 bg-[oklch(0.09_0.008_30)] p-3 shadow-card">
-      <div className="flex items-center justify-between px-1 pb-2.5 font-mono text-[0.65rem] tracking-[0.2em] text-white/35">
+    <div className="rounded-2xl border border-border bg-card p-3 shadow-card">
+      <div className="flex items-center justify-between px-1 pb-2.5 font-mono text-[0.65rem] tracking-[0.2em] text-muted-foreground">
         <span>PC INTERNAL LAYOUT — SIDE VIEW</span>
         <span className="text-primary" aria-live="polite">
           {doneCount}/8 MAPPED
@@ -142,12 +142,12 @@ export function Diagram({ categories, selections, onSelect }: DiagramProps) {
       <div
         role="group"
         aria-label="Interactive PC build diagram — select a part in each highlighted region"
-        className="relative aspect-16/13 overflow-hidden rounded-lg border border-white/10"
+        className="relative aspect-16/13 overflow-hidden rounded-lg border border-border"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px)",
+            "linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px)",
           backgroundSize: "26px 26px",
-          backgroundColor: "oklch(0.07 0.008 30)",
+          backgroundColor: "var(--muted)",
         }}
       >
         {/* motherboard tray — sits behind the cooler/cpu/ram cluster */}
@@ -162,8 +162,8 @@ export function Diagram({ categories, selections, onSelect }: DiagramProps) {
         >
           <span
             className={cn(
-              "flex items-center gap-1.5 rounded bg-black/50 px-2 py-1 text-[0.6rem] font-semibold uppercase tracking-wider",
-              selections.motherboard ? "text-primary" : "text-white/35"
+              "flex items-center gap-1.5 rounded border border-border bg-background/90 px-2 py-1 text-[0.6rem] font-semibold uppercase tracking-wider",
+              selections.motherboard ? "text-primary" : "text-muted-foreground"
             )}
           >
             <motherboard.icon className="size-3" />
@@ -192,11 +192,11 @@ export function Diagram({ categories, selections, onSelect }: DiagramProps) {
           onSelect={onSelect}
           style={{ top: "32%", left: "9%", width: "22%", height: "32%" }}
         >
-          <div className="relative flex size-12 items-center justify-center rounded-full border-2 border-white/20 sm:size-16">
+          <div className="relative flex size-12 items-center justify-center rounded-full border-2 border-border sm:size-16">
             <cpu.icon
               className={cn(
                 "size-6",
-                selections.cpu ? "text-primary" : "text-white/40"
+                selections.cpu ? "text-primary" : "text-muted-foreground"
               )}
             />
           </div>
@@ -217,7 +217,7 @@ export function Diagram({ categories, selections, onSelect }: DiagramProps) {
                   "w-2 rounded-sm border sm:w-2.5",
                   selections.ram
                     ? "border-primary bg-primary/20"
-                    : "border-white/20 bg-white/5"
+                    : "border-border bg-background"
                 )}
               />
             ))}
@@ -241,7 +241,7 @@ export function Diagram({ categories, selections, onSelect }: DiagramProps) {
             <span
               className={cn(
                 "font-mono text-[0.6rem] font-bold tracking-widest",
-                selections.gpu ? "text-primary" : "text-white/25"
+                selections.gpu ? "text-primary" : "text-muted-foreground"
               )}
             >
               GEFORCE RTX
@@ -257,7 +257,7 @@ export function Diagram({ categories, selections, onSelect }: DiagramProps) {
           style={{ top: "84%", left: "4%", width: "29%", height: "14%" }}
         >
           <Zap
-            className={cn("size-5", selections.psu ? "text-primary" : "text-white/40")}
+            className={cn("size-5", selections.psu ? "text-primary" : "text-muted-foreground")}
           />
         </Region>
 
@@ -276,7 +276,7 @@ export function Diagram({ categories, selections, onSelect }: DiagramProps) {
                   "flex size-4 items-center justify-center rounded-sm border sm:size-5",
                   selections.storage
                     ? "border-primary/60 text-primary"
-                    : "border-white/20 text-white/30"
+                    : "border-border text-muted-foreground"
                 )}
               >
                 <HardDrive className="size-2.5" />

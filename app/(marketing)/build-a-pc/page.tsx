@@ -67,12 +67,12 @@ export default function BuildAPc() {
         </div>
       </section>
 
-      <section className="dark bg-background py-8 text-foreground sm:py-10">
+      <section className="bg-background py-8 text-foreground sm:py-10">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-5 lg:grid-cols-3 lg:items-start">
             <div className="lg:col-span-2">
               <Reveal>
-                <div className="rounded-2xl border border-white/10 bg-white/2 p-4 shadow-card">
+                <div className="rounded-2xl border border-border bg-card p-4 shadow-card">
                   <Diagram
                     categories={CATEGORIES}
                     selections={selections}

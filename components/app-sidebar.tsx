@@ -1,14 +1,15 @@
 "use client"
 
 import * as React from "react"
+import Image from "next/image"
 import Link from "next/link"
 import {
   LayoutDashboardIcon,
-  MonitorCogIcon,
   WrenchIcon,
+  MonitorIcon,
+  UsersIcon,
+  BoxesIcon,
   PackageIcon,
-  Settings2Icon,
-  ZapIcon,
 } from "lucide-react"
 
 import { NavMain, type NavItem } from "@/components/nav-main"
@@ -26,10 +27,11 @@ import {
 
 const NAV_ITEMS: NavItem[] = [
   { title: "Overview", url: "/dashboard", icon: LayoutDashboardIcon },
-  { title: "My Builds", url: "/dashboard/builds", icon: MonitorCogIcon },
-  { title: "Repairs", url: "/dashboard/repairs", icon: WrenchIcon },
+  { title: "Repair Jobs", url: "/dashboard/repairs", icon: WrenchIcon },
+  { title: "Pre-built PCs", url: "/dashboard/pre-built-pcs", icon: MonitorIcon },
+  { title: "Customers", url: "/dashboard/customers", icon: UsersIcon },
+  { title: "Inventory", url: "/dashboard/inventory", icon: BoxesIcon },
   { title: "Orders", url: "/dashboard/orders", icon: PackageIcon },
-  { title: "Settings", url: "/dashboard/settings", icon: Settings2Icon },
 ]
 
 const USER = {
@@ -46,16 +48,26 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarMenuButton
               size="lg"
               className="hover:bg-transparent active:bg-transparent"
-              render={<Link href="/" />}
+              render={<Link href="/dashboard" />}
             >
-              <span className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                <ZapIcon className="size-4" />
+              <span className="hidden aspect-square size-8 shrink-0 items-center justify-center overflow-hidden rounded group-data-[collapsible=icon]:flex">
+                <Image
+                  src="/favicon.ico"
+                  alt=""
+                  width={32}
+                  height={32}
+                  unoptimized
+                  className="size-7 object-contain"
+                />
               </span>
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">PC Xpress</span>
-                <span className="truncate text-xs text-sidebar-foreground/70">
-                  Customer Portal
-                </span>
+              <div className="flex flex-1 items-center group-data-[collapsible=icon]:hidden">
+                <Image
+                  src="/pc-xpress.png"
+                  alt="PC Xpress"
+                  width={404}
+                  height={110}
+                  className="h-9 w-auto"
+                />
               </div>
             </SidebarMenuButton>
           </SidebarMenuItem>

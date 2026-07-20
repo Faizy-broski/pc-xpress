@@ -29,12 +29,12 @@ export function RepairDevicePicker() {
         </Reveal>
       </Reveal>
 
-      <RevealGroup className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+      <RevealGroup className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
         {DEVICE_TYPES.map((device) => (
           <RevealItem key={device.id}>
             <Link
               href={`/repair-a-device?device=${device.id}`}
-              className="group flex h-full flex-col items-center gap-2.5 rounded-xl border border-border bg-card p-4 text-center shadow-card transition-colors hover:border-primary/50"
+              className="group flex h-full flex-col items-center gap-2.5 rounded border border-border bg-card p-4 text-center shadow-card transition-colors hover:border-primary/50"
             >
               <span className="flex size-12 items-center justify-center rounded-full bg-accent text-accent-foreground transition-transform group-hover:scale-110">
                 <device.icon className="size-5" />

@@ -61,7 +61,7 @@ export default async function RepairADevicePage({ searchParams }: PageParams) {
         </div>
       </section>
 
-      <section className="dark bg-background py-8 text-foreground sm:py-10">
+      <section className="bg-background py-8 text-foreground sm:py-10">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <RepairWizard initialDevice={initialDevice} />
         </div>

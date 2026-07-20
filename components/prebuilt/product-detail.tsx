@@ -77,6 +77,7 @@ export function ProductDetail({ product }: { product: PrebuiltProduct }) {
             </div>
 
             <div>
+              <p className="text-xs font-medium text-muted-foreground">{product.os}</p>
               <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
                 {product.name}
               </h1>

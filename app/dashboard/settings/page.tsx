@@ -10,22 +10,22 @@ import { Reveal } from "@/components/motion/reveal"
 
 const NOTIFICATION_PREFS = [
   {
-    id: "repair-updates",
-    label: "Repair status updates",
-    description: "Get notified when a repair moves to the next step.",
+    id: "job-updates",
+    label: "Repair job updates",
+    description: "Get notified when a job moves to the next status.",
     defaultChecked: true,
   },
   {
     id: "order-updates",
-    label: "Order & shipping updates",
-    description: "Get notified about order confirmations and dispatch.",
+    label: "New PC orders",
+    description: "Get notified when a customer places a custom build order.",
     defaultChecked: true,
   },
   {
-    id: "offers",
-    label: "Offers & promotions",
-    description: "Occasional deals on parts and custom builds.",
-    defaultChecked: false,
+    id: "stock-alerts",
+    label: "Low stock alerts",
+    description: "Get notified when a part drops below reorder level.",
+    defaultChecked: true,
   },
 ]
 
@@ -37,7 +37,7 @@ export default function DashboardSettingsPage() {
       <Reveal>
         <div>
           <h1 className="text-xl font-bold tracking-tight text-foreground">
-            Account Settings
+            Shop Settings
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
             Manage your profile and notification preferences.
