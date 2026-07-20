@@ -110,7 +110,7 @@ export function WhatWeFix() {
           {SERVICES.map((service) => (
             <RevealItem
               key={service.title}
-              className="rounded border border-white/10 bg-secondary p-6 text-center"
+              className="rounded border-2 border-border hover:border-primary bg-secondary p-6 text-center"
             >
               <span className="mx-auto flex size-14 items-center justify-center rounded-full bg-accent">
                 {/* eslint-disable-next-line @next/next/no-img-element -- next/image blocks local .svg sources by default */}

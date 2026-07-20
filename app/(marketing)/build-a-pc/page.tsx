@@ -33,7 +33,7 @@ export default function BuildAPc() {
 
   return (
     <div>
-      <section className="relative overflow-hidden py-14 md:pt-40 md:pb-20">
+      <section className="relative overflow-hidden pt-34 pb-20 md:pt-40 md:pb-20">
         <Image
           src="/hero.png"
           alt=""

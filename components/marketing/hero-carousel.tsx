@@ -94,7 +94,7 @@ export function HeroCarousel({
                 className="object-cover"
               />
 
-              <div className="relative mx-auto flex h-full max-w-6xl flex-col justify-center px-4 pt-20 sm:px-6 md:pt-40 md:pb-20 lg:px-8">
+              <div className="relative mx-auto flex h-full max-w-6xl flex-col justify-center px-4 pt-16 pb-28 sm:px-6 sm:pt-20 sm:pb-32 md:pt-40 md:pb-20 lg:px-8">
                 <Reveal>
                   <Badge variant="soft" className="bg-white/10 text-white">
                     <Sparkles />
@@ -106,7 +106,7 @@ export function HeroCarousel({
                   as="h1"
                   text={slide.heading}
                   delay={0.1}
-                  className="mt-4 max-w-sm text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl"
+                  className="mt-4 max-w-xs text-2xl font-bold tracking-tight text-white sm:max-w-sm sm:text-4xl lg:text-5xl"
                 />
 
                 <Reveal delay={0.25}>
@@ -130,7 +130,7 @@ export function HeroCarousel({
       </div>
 
       {slides.length > 1 && (
-        <div className="absolute bottom-8 left-4 flex items-center gap-4 sm:bottom-10 sm:left-auto sm:right-8 lg:right-12">
+        <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between gap-4 sm:bottom-10 sm:left-auto sm:right-8 sm:justify-start lg:right-12">
           <div className="flex items-center gap-1.5">
             {slides.map((slide, index) => (
               <button
@@ -145,11 +145,11 @@ export function HeroCarousel({
               />
             ))}
           </div>
-          <span className="text-4xl font-medium tabular-nums text-white/80">
+          <span className="text-xl font-medium tabular-nums text-white/80 sm:text-2xl md:text-4xl">
             {String(selectedIndex + 1).padStart(2, "0")}
-            <span className="text-white/40 text-sm">
+            <span className="text-white/40 text-xs sm:text-sm">
               {" "}
-             <span className="text-2xl">/</span>
+             <span className="text-base sm:text-2xl">/</span>
               {String(slides.length).padStart(2, "0")}
             </span>
           </span>

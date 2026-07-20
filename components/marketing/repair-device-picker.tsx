@@ -51,7 +51,7 @@ export function RepairDevicePicker() {
           size="lg"
           nativeButton={false}
           render={<Link href="/repair-a-device" />}
-          className="rounded-lg bg-gradient-button p-5 shadow-glow"
+          className="rounded bg-gradient-button p-5 shadow-glow"
         >
           Start Your Repair
           <ArrowRight />

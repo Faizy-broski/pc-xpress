@@ -36,7 +36,10 @@ const FEATURED_PCS = PREBUILT_PCS.slice(0, 4).map(toProductCardData);
 export default function Home() {
   return (
     <>
-      <HeroCarousel slides={HERO_SLIDES} className="h-[60vh] md:min-h-screen sm:h-[80vh]" />
+      <HeroCarousel
+        slides={HERO_SLIDES}
+        className="h-[85dvh] min-h-[560px] sm:h-[80vh] md:min-h-screen"
+      />
 
       <FeaturedProducts heading="Featured Custom PC" products={FEATURED_PCS} />
 
