@@ -52,7 +52,7 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
-  const { theme, setTheme } = useTheme()
+  // const { theme, setTheme } = useTheme()
   const initials = initialsFor(user.name)
 
   return (
@@ -102,7 +102,7 @@ export function NavUser({
               </DropdownMenuLabel>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuRadioGroup
+            {/* <DropdownMenuRadioGroup
               value={theme}
               onValueChange={(value) => setTheme(value as Theme)}
             >
@@ -119,7 +119,7 @@ export function NavUser({
                 <MonitorIcon />
                 System
               </DropdownMenuRadioItem>
-            </DropdownMenuRadioGroup>
+            </DropdownMenuRadioGroup> */}
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem render={<Link href="/dashboard/settings" />}>
