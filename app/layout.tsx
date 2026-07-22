@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { IBM_Plex_Sans, Geist } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import { ThemeProvider, THEME_INIT_SCRIPT } from "@/components/theme-provider";
+// import { ThemeProvider, THEME_INIT_SCRIPT } from "@/components/theme-provider";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -31,9 +31,9 @@ export default function RootLayout({
       className={cn("h-full", "antialiased", ibmPlexSans.variable, "font-sans", geist.variable)}
     >
       <head>
-        <script
+        {/* <script
           dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }}
-        />
+        /> */}
       </head>
       <body className="min-h-full flex flex-col">
         {/* <ThemeProvider></ThemeProvider> */}

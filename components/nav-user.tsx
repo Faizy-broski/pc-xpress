@@ -23,7 +23,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-import { useTheme, type Theme } from "@/components/theme-provider"
+// import { useTheme, type Theme } from "@/components/theme-provider"
 import {
   ChevronsUpDownIcon,
   Settings2Icon,
