@@ -7,25 +7,26 @@ import { cn } from "@/lib/utils"
 import { Input } from "@/components/ui/input"
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal"
 import { StatusBadge } from "@/components/dashboard/status-badge"
-import { REPAIR_JOBS } from "@/components/dashboard/data"
+import { useRepairJobs } from "@/components/dashboard/store"
 import { formatGBP } from "@/components/build-a-pc/data"
 
 const FILTERS = ["All", "Pending", "In Progress", "Completed", "On Hold"] as const
 
 export default function DashboardRepairsPage() {
+  const repairJobs = useRepairJobs()
   const [filter, setFilter] = useState<(typeof FILTERS)[number]>("All")
   const [search, setSearch] = useState("")
 
   const filteredJobs = useMemo(() => {
     const query = search.trim().toLowerCase()
-    return REPAIR_JOBS.filter(
+    return repairJobs.filter(
       (job) =>
         (filter === "All" || job.status === filter) &&
         (query === "" ||
           job.customer.toLowerCase().includes(query) ||
           job.device.toLowerCase().includes(query))
     )
-  }, [filter, search])
+  }, [repairJobs, filter, search])
 
   return (
     <div className="flex flex-col gap-6">
@@ -41,7 +42,7 @@ export default function DashboardRepairsPage() {
       </Reveal>
 
       <Reveal delay={0.05}>
-        <div className="overflow-hidden rounded-xl border border-border bg-card shadow-card">
+        <div className="overflow-hidden rounded-xl border border-border bg-gradient-card shadow-card">
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border p-4">
             <div className="flex flex-wrap gap-1.5">
               {FILTERS.map((f) => (
@@ -80,7 +81,7 @@ export default function DashboardRepairsPage() {
             <span className="text-right">Price</span>
           </div>
 
-          <RevealGroup className="divide-y divide-border">
+          <RevealGroup key={filteredJobs.map((j) => j.id).join(",")} className="divide-y divide-border">
             {filteredJobs.map((job) => (
               <RevealItem
                 key={job.id}

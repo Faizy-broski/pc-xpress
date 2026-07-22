@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 
 import { cn } from "@/lib/utils";
 import { RevealGroup, RevealItem } from "@/components/motion/reveal";
+import { CatalogIcon } from "@/components/icons/icon-registry";
 import type { Category, CategoryId, PartOption } from "@/components/build-a-pc/data";
 
 interface CategoryGridProps {
@@ -17,7 +18,6 @@ export function CategoryGrid({ categories, selections, onSelect }: CategoryGridP
   return (
     <RevealGroup className="grid grid-cols-2 gap-2.5 sm:grid-cols-4" stagger={0.06}>
       {categories.map((category) => {
-        const Icon = category.icon;
         const selected = selections[category.id];
 
         return (
@@ -41,7 +41,7 @@ export function CategoryGrid({ categories, selections, onSelect }: CategoryGridP
                   <Check className="size-2.5" />
                 </motion.span>
               )}
-              <Icon className={cn("size-4.5", selected ? "text-primary" : "text-muted-foreground")} />
+              <CatalogIcon name={category.icon} className={cn("size-4.5", selected ? "text-primary" : "text-muted-foreground")} />
               <p className="mt-2 text-sm font-semibold text-foreground">{category.label}</p>
               <p className={cn("mt-0.5 truncate text-xs", selected ? "text-primary" : "text-muted-foreground")}>
                 {selected ? selected.name : "Empty"}

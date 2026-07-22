@@ -6,6 +6,7 @@ import { ArrowLeft, Check, Clock } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { formatGBP } from "@/components/build-a-pc/data";
+import { CatalogIcon } from "@/components/icons/icon-registry";
 import { RepairSummary } from "@/components/repair/repair-summary";
 import {
   BRANDS,
@@ -117,7 +118,7 @@ export function RepairWizard({ initialDevice }: RepairWizardProps) {
                           deviceId === dt.id ? "border-primary bg-primary/10" : "border-border bg-card"
                         )}
                       >
-                        <dt.icon className={cn("size-5", deviceId === dt.id ? "text-primary" : "text-muted-foreground")} />
+                        <CatalogIcon name={dt.icon} className={cn("size-5", deviceId === dt.id ? "text-primary" : "text-muted-foreground")} />
                         <p className="mt-2.5 text-sm font-semibold text-foreground">{dt.label}</p>
                         <p className="mt-0.5 text-xs text-muted-foreground">{dt.description}</p>
                       </motion.button>

@@ -1,10 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import { AlertTriangle, Lightbulb, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { BookingModal } from "@/components/booking/booking-modal";
 import {
   ASSEMBLY_FEE,
   BUILD_TIPS,
@@ -40,6 +42,17 @@ export function BuildSummary({ categories, selections, onRemove }: BuildSummaryP
   const hasAny = selectedList.length > 0;
   const total = hasAny ? subtotal + ASSEMBLY_FEE : 0;
   const progress = selectedList.length / categories.length;
+
+  const [bookingOpen, setBookingOpen] = useState(false);
+  const canSubmit = selectedList.length === categories.length && !socketMismatch;
+
+  const bookingSummary = [
+    ...selectedList.map(({ category, part }) => ({
+      label: category.label,
+      value: `${part.name} (${formatPartPrice(part.price)})`,
+    })),
+    { label: "Build & testing fee", value: formatGBP(ASSEMBLY_FEE) },
+  ];
 
   return (
     <div className="lg:sticky lg:top-24">
@@ -143,18 +156,23 @@ export function BuildSummary({ categories, selections, onRemove }: BuildSummaryP
           </div>
         </div>
 
-        <Button
-          className="mt-3 w-full"
-          disabled={selectedList.length < categories.length || socketMismatch}
-          nativeButton={false}
-          render={<a href="/contact" />}
-        >
+        <Button className="mt-3 w-full" disabled={!canSubmit} onClick={() => setBookingOpen(true)}>
           {selectedList.length < categories.length ? "Select all parts to continue" : "Submit Build"}
         </Button>
         <p className="mt-2 text-center text-xs text-muted-foreground">
           Ready to build? Submit and we&apos;ll confirm pricing &amp; availability.
         </p>
       </div>
+
+      <BookingModal
+        open={bookingOpen}
+        onClose={() => setBookingOpen(false)}
+        kind="build"
+        title="Confirm Your Custom PC Build"
+        description="Add your contact details and we'll confirm pricing & availability by email."
+        summary={bookingSummary}
+        totalText={formatGBP(total)}
+      />
 
       <div
         className={cn(

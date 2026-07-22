@@ -47,7 +47,7 @@ export default function DashboardSettingsPage() {
 
       <Reveal delay={0.05}>
         <form
-          className="rounded-xl border border-border bg-card p-5 shadow-card sm:p-6"
+          className="rounded-xl border border-border bg-gradient-card p-5 shadow-card sm:p-6"
           onSubmit={(e) => {
             e.preventDefault()
             setSaved(true)

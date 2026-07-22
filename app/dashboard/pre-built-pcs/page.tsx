@@ -11,20 +11,12 @@ import { Button } from "@/components/ui/button"
 import { Reveal } from "@/components/motion/reveal"
 import { StatusBadge } from "@/components/dashboard/status-badge"
 import { AddPrebuiltModal } from "@/components/dashboard/add-prebuilt-modal"
-import {
-  PREBUILT_PCS,
-  formatExVat,
-  formatGBP,
-  type PrebuiltProduct,
-} from "@/components/prebuilt/data"
+import { usePrebuiltCatalog } from "@/components/dashboard/store"
+import { formatExVat, formatGBP } from "@/components/prebuilt/data"
 
 export default function DashboardPrebuiltPcsPage() {
-  const [products, setProducts] = useState<PrebuiltProduct[]>(PREBUILT_PCS)
+  const { products, addPrebuiltProduct } = usePrebuiltCatalog()
   const [modalOpen, setModalOpen] = useState(false)
-
-  function handleAdd(product: PrebuiltProduct) {
-    setProducts((prev) => [product, ...prev])
-  }
 
   return (
     <div className="flex flex-col gap-6">
@@ -53,7 +45,7 @@ export default function DashboardPrebuiltPcsPage() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
-            className="flex flex-col overflow-hidden rounded-xl border border-border bg-card shadow-card"
+            className="flex flex-col overflow-hidden rounded-xl border border-border bg-gradient-card shadow-card"
           >
             <div className="relative aspect-video w-full shrink-0 bg-muted">
               {product.images[0] ? (
@@ -160,7 +152,7 @@ export default function DashboardPrebuiltPcsPage() {
       <AddPrebuiltModal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
-        onAdd={handleAdd}
+        onAdd={addPrebuiltProduct}
       />
     </div>
   )

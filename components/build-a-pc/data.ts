@@ -1,26 +1,8 @@
-import {
-  Cpu,
-  Gamepad2,
-  CircuitBoard,
-  Layers,
-  HardDrive,
-  Zap,
-  Box,
-  Fan,
-  type LucideIcon,
-} from "lucide-react";
+import type { IconName } from "@/components/icons/icon-registry";
 
-export type CategoryId =
-  | "cpu"
-  | "gpu"
-  | "motherboard"
-  | "ram"
-  | "storage"
-  | "psu"
-  | "case"
-  | "cooler";
+export type CategoryId = string;
 
-export type Socket = "AM5" | "LGA1700";
+export type Socket = string;
 
 export interface PartOption {
   id: string;
@@ -28,14 +10,14 @@ export interface PartOption {
   price: number;
   specs: string[];
   inStock: boolean;
-  badge?: "Best Value" | "Recommended" | "Enthusiast";
+  badge?: string;
   socket?: Socket;
 }
 
 export interface Category {
   id: CategoryId;
   label: string;
-  icon: LucideIcon;
+  icon: IconName;
   description: string;
   options: PartOption[];
 }
@@ -44,7 +26,7 @@ export const CATEGORIES: Category[] = [
   {
     id: "cpu",
     label: "CPU",
-    icon: Cpu,
+    icon: "cpu",
     description: "The brain of your PC.",
     options: [
       {
@@ -87,7 +69,7 @@ export const CATEGORIES: Category[] = [
   {
     id: "motherboard",
     label: "Motherboard",
-    icon: CircuitBoard,
+    icon: "circuit-board",
     description: "Connects every component — must match your CPU socket.",
     options: [
       {
@@ -130,7 +112,7 @@ export const CATEGORIES: Category[] = [
   {
     id: "gpu",
     label: "GPU",
-    icon: Gamepad2,
+    icon: "gamepad-2",
     description: "Drives your frame rate and visual fidelity.",
     options: [
       {
@@ -169,7 +151,7 @@ export const CATEGORIES: Category[] = [
   {
     id: "ram",
     label: "RAM",
-    icon: Layers,
+    icon: "layers",
     description: "More memory keeps games and heavy apps running smoothly.",
     options: [
       {
@@ -201,7 +183,7 @@ export const CATEGORIES: Category[] = [
   {
     id: "storage",
     label: "Storage",
-    icon: HardDrive,
+    icon: "hard-drive",
     description: "NVMe SSDs for near-instant boot and load times.",
     options: [
       {
@@ -233,7 +215,7 @@ export const CATEGORIES: Category[] = [
   {
     id: "psu",
     label: "Power Supply",
-    icon: Zap,
+    icon: "zap",
     description: "Clean, reliable power sized to your components.",
     options: [
       {
@@ -265,7 +247,7 @@ export const CATEGORIES: Category[] = [
   {
     id: "case",
     label: "Case",
-    icon: Box,
+    icon: "box",
     description: "Airflow, aesthetics, and room to grow.",
     options: [
       {
@@ -296,7 +278,7 @@ export const CATEGORIES: Category[] = [
   {
     id: "cooler",
     label: "CPU Cooler",
-    icon: Fan,
+    icon: "fan",
     description: "Keeps thermals in check so your CPU can boost higher.",
     options: [
       {

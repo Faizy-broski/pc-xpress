@@ -25,13 +25,13 @@ export function StatCard({
       whileHover={{ y: -3 }}
       transition={{ duration: 0.25, ease: EASE }}
       className={cn(
-        "rounded-xl border border-border bg-card p-4 shadow-card",
+        "rounded-xl border border-border bg-gradient-card p-4 shadow-card",
         className
       )}
     >
       <div className="flex items-center justify-between">
         <span className="text-sm text-muted-foreground">{label}</span>
-        <span className="flex size-8 items-center justify-center rounded-full bg-accent">
+        <span className="flex size-8 items-center justify-center rounded-full bg-accent text-accent-foreground shadow-glow">
           {icon}
         </span>
       </div>

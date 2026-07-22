@@ -27,7 +27,7 @@ export default function DashboardInventoryPage() {
       </Reveal>
 
       <Reveal delay={0.05}>
-        <div className="overflow-hidden rounded-xl border border-border bg-card shadow-card">
+        <div className="overflow-hidden rounded-xl border border-border bg-gradient-card shadow-card">
           <div className="hidden grid-cols-[1.4fr_1fr_1fr_0.6fr_0.7fr_auto] gap-4 border-b border-border px-5 py-3 text-xs font-medium text-muted-foreground sm:grid">
             <span>Part</span>
             <span>Category</span>

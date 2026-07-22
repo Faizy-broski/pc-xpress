@@ -4,6 +4,7 @@ import { ArrowRight, Sparkles } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
+import { CatalogIcon } from "@/components/icons/icon-registry";
 import { DEVICE_TYPES } from "@/components/repair/data";
 
 export function RepairDevicePicker() {
@@ -37,7 +38,7 @@ export function RepairDevicePicker() {
               className="group flex h-full flex-col items-center gap-2.5 rounded border border-border bg-card p-4 text-center shadow-card transition-colors hover:border-primary/50"
             >
               <span className="flex size-12 items-center justify-center rounded-full bg-accent text-accent-foreground transition-transform group-hover:scale-110">
-                <device.icon className="size-5" />
+                <CatalogIcon name={device.icon} className="size-5" />
               </span>
               <span className="text-sm font-semibold text-foreground">{device.label}</span>
               <span className="text-xs text-muted-foreground">{device.description}</span>

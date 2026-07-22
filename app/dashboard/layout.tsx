@@ -1,6 +1,7 @@
 import { SearchIcon } from "lucide-react"
 
 import { AppSidebar } from "@/components/app-sidebar"
+import { DashboardStoreProvider } from "@/components/dashboard/store"
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import {
@@ -33,7 +34,7 @@ export default function DashboardLayout({
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-8 p-4 sm:p-6 lg:p-8">
-          {children}
+          <DashboardStoreProvider>{children}</DashboardStoreProvider>
         </div>
       </SidebarInset>
     </SidebarProvider>

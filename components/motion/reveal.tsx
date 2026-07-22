@@ -11,6 +11,13 @@ interface RevealProps {
   y?: number;
   className?: string;
   once?: boolean;
+  /**
+   * Scroll-into-view reveal is wrong for content whose height varies with data
+   * (tables, filtered lists): a tall container may never satisfy the 30%
+   * viewport-visible threshold, leaving it stuck at opacity 0. Pass false to
+   * animate on mount instead — used by dashboard tables/lists.
+   */
+  viewTrigger?: boolean;
 }
 
 export function Reveal({
@@ -19,12 +26,16 @@ export function Reveal({
   y = 24,
   className,
   once = true,
+  viewTrigger = true,
 }: RevealProps) {
+  const viewProps = viewTrigger
+    ? { whileInView: { opacity: 1, y: 0 }, viewport: { once, amount: 0.3 } }
+    : { animate: { opacity: 1, y: 0 } };
+
   return (
     <motion.div
       initial={{ opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once, amount: 0.3 }}
+      {...viewProps}
       transition={{ duration: 0.6, delay, ease: EASE }}
       className={className}
     >
@@ -38,6 +49,8 @@ interface RevealGroupProps {
   className?: string;
   stagger?: number;
   once?: boolean;
+  /** See Reveal's viewTrigger — false animates on mount instead of on scroll-into-view. */
+  viewTrigger?: boolean;
 }
 
 const groupContainer = {
@@ -52,12 +65,16 @@ export function RevealGroup({
   className,
   stagger = 0.12,
   once = true,
+  viewTrigger = true,
 }: RevealGroupProps) {
+  const viewProps = viewTrigger
+    ? { whileInView: "visible", viewport: { once, amount: 0.3 } }
+    : { animate: "visible" };
+
   return (
     <motion.div
       initial="hidden"
-      whileInView="visible"
-      viewport={{ once, amount: 0.3 }}
+      {...viewProps}
       variants={groupContainer}
       custom={stagger}
       className={className}

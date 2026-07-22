@@ -67,7 +67,7 @@ export const INVENTORY: InventoryPart[] = [
   { id: "inv-8", name: 'iMac 27" Data Recovery Kit', category: "Data Recovery", sku: "DR-IM27-01", stock: 4, price: 40, statusLabel: "In Stock", tone: "success" },
 ]
 
-export interface PcOrder {
+export interface CustomBuildOrder {
   id: string
   customer: string
   build: string
@@ -77,13 +77,32 @@ export interface PcOrder {
   total: number
 }
 
-export const PC_ORDERS: PcOrder[] = [
+export const CUSTOM_BUILD_ORDERS: CustomBuildOrder[] = [
   { id: "#OD-2214", customer: "David Okafor", build: "U87 XT Next Day PC SV3111", date: "18 Jul 2026", status: "Delivered", tone: "success", total: 1399 },
   { id: "#OD-2215", customer: "Jack Sullivan", build: "U87 XT Next Day PC SV3111", date: "19 Jul 2026", status: "Processing", tone: "warning", total: 1399 },
   { id: "#OD-2216", customer: "Nina Popescu", build: "U87 XT Next Day PC SY3111", date: "15 Jul 2026", status: "Shipped", tone: "info", total: 1099 },
   { id: "#OD-2217", customer: "Ryan Osei", build: "U87 XT Next Day PC SY3111", date: "14 Jul 2026", status: "Delivered", tone: "success", total: 1099 },
   { id: "#OD-2218", customer: "Sophie Marsh", build: "U87 XT Next Day PC SV3111", date: "23 Jul 2026", status: "Processing", tone: "warning", total: 1399 },
   { id: "#OD-2219", customer: "Tom Baker", build: "U87 XT Next Day PC SY3111", date: "21 Jul 2026", status: "Shipped", tone: "info", total: 1099 },
+]
+
+export interface PrebuiltOrder {
+  id: string
+  customer: string
+  product: string
+  date: string
+  status: string
+  tone: StatusTone
+  total: number
+}
+
+export const PREBUILT_ORDERS: PrebuiltOrder[] = [
+  { id: "#PB-3301", customer: "Alicia Chen", product: "U87 XT Next Day PC", date: "20 Jul 2026", status: "Dispatched", tone: "info", total: 1399 },
+  { id: "#PB-3302", customer: "Marcus Levine", product: "Apex i7 RTX 4070", date: "19 Jul 2026", status: "Processing", tone: "warning", total: 1649 },
+  { id: "#PB-3303", customer: "Emma Clarke", product: "Forge R5 RTX 4060", date: "17 Jul 2026", status: "Delivered", tone: "success", total: 899 },
+  { id: "#PB-3304", customer: "David Okafor", product: "Vortex R9 RTX 4080 Super", date: "22 Jul 2026", status: "Awaiting Payment", tone: "danger", total: 2799 },
+  { id: "#PB-3305", customer: "Nina Popescu", product: "Nova i5 Home & Office", date: "21 Jul 2026", status: "Building", tone: "neutral", total: 549 },
+  { id: "#PB-3306", customer: "Ryan Osei", product: "U87 XT Next Day PC — Matte Black", date: "16 Jul 2026", status: "Delivered", tone: "success", total: 1399 },
 ]
 
 export interface RevenuePoint {

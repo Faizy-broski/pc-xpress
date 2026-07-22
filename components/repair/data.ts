@@ -1,20 +1,11 @@
-import {
-  Computer,
-  Gamepad2,
-  Laptop,
-  Smartphone,
-  Tablet,
-  // Watch,
-  type LucideIcon,
-} from "lucide-react";
+import type { IconName } from "@/components/icons/icon-registry";
 
-export type DeviceTypeId = "phone" | "tablet" | "laptop" | "desktop" | "console" 
-// | "watch";
+export type DeviceTypeId = string;
 
 export interface DeviceType {
   id: DeviceTypeId;
   label: string;
-  icon: LucideIcon;
+  icon: IconName;
   description: string;
 }
 
@@ -32,12 +23,11 @@ export interface Fault {
 }
 
 export const DEVICE_TYPES: DeviceType[] = [
-  { id: "phone", label: "Phone", icon: Smartphone, description: "iPhone, Samsung, Google & more" },
-  { id: "tablet", label: "Tablet", icon: Tablet, description: "iPad, Galaxy Tab, Surface & more" },
-  { id: "laptop", label: "Laptop", icon: Laptop, description: "MacBook & Windows laptops" },
-  { id: "desktop", label: "Desktop PC", icon: Computer, description: "Custom builds & prebuilt towers" },
-  { id: "console", label: "Console", icon: Gamepad2, description: "PlayStation, Xbox & Switch" },
-  // { id: "watch", label: "Smartwatch", icon: Watch, description: "Apple Watch & Galaxy Watch" },
+  { id: "phone", label: "Phone", icon: "smartphone", description: "iPhone, Samsung, Google & more" },
+  { id: "tablet", label: "Tablet", icon: "tablet", description: "iPad, Galaxy Tab, Surface & more" },
+  { id: "laptop", label: "Laptop", icon: "laptop", description: "MacBook & Windows laptops" },
+  { id: "desktop", label: "Desktop PC", icon: "computer", description: "Custom builds & prebuilt towers" },
+  { id: "console", label: "Console", icon: "gamepad-2", description: "PlayStation, Xbox & Switch" },
 ];
 
 export const BRANDS: Record<DeviceTypeId, Brand[]> = {
@@ -71,11 +61,6 @@ export const BRANDS: Record<DeviceTypeId, Brand[]> = {
     { id: "nintendo", label: "Nintendo" },
     { id: "other", label: "Other" },
   ],
-  // watch: [
-  //   { id: "apple", label: "Apple Watch" },
-  //   { id: "samsung", label: "Galaxy Watch" },
-  //   { id: "other", label: "Other" },
-  // ],
 };
 
 export const FAULTS: Record<DeviceTypeId, Fault[]> = {
@@ -118,10 +103,4 @@ export const FAULTS: Record<DeviceTypeId, Fault[]> = {
     { id: "controller-drift", label: "Controller Drift", description: "Stick drift & button repair", priceFrom: 29, etaLabel: "Same day" },
     { id: "power-issue", label: "Won't Turn On", description: "Power supply & board diagnostics", priceFrom: 49, etaLabel: "1-2 days" },
   ],
-  // watch: [
-  //   { id: "screen", label: "Cracked Screen", description: "Display & glass replacement", priceFrom: 69, etaLabel: "Same day" },
-  //   { id: "battery", label: "Battery Replacement", description: "Restore full-day battery life", priceFrom: 49, etaLabel: "Same day" },
-  //   { id: "water-damage", label: "Water Damage", description: "Liquid damage diagnostics & repair", priceFrom: 55, etaLabel: "1-2 days" },
-  //   { id: "software", label: "Software Issue", description: "Frozen, unresponsive or won't pair", priceFrom: 29, etaLabel: "Same day" },
-  // ],
 };

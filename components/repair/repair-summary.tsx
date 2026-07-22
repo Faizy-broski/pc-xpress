@@ -1,10 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import { ArrowRight, Clock, Pencil, PhoneCall } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { Button } from "@/components/ui/button";
 import { formatGBP } from "@/components/build-a-pc/data";
+import { BookingModal } from "@/components/booking/booking-modal";
 import type { Brand, DeviceType, Fault } from "@/components/repair/data";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -34,11 +36,17 @@ export function RepairSummary({
   const doneCount = steps.filter((s) => s.value).length;
   const ready = Boolean(device && brand && fault);
 
-  const contactHref = `/contact${
+  const [bookingOpen, setBookingOpen] = useState(false);
+
+  const bookingSummary =
     device && brand && fault
-      ? `?device=${device.id}&brand=${brand.id}&issue=${fault.id}`
-      : ""
-  }`;
+      ? [
+          { label: "Device", value: device.label },
+          { label: "Brand", value: brand.label },
+          { label: "Issue", value: fault.label },
+          { label: "Turnaround", value: fault.etaLabel },
+        ]
+      : [];
 
   return (
     <div className="lg:sticky lg:top-24">
@@ -111,12 +119,7 @@ export function RepairSummary({
           </div>
         )}
 
-        <Button
-          className="mt-4 w-full"
-          disabled={!ready}
-          nativeButton={false}
-          render={<a href={contactHref} />}
-        >
+        <Button className="mt-4 w-full" disabled={!ready} onClick={() => setBookingOpen(true)}>
           {ready ? "Book This Repair" : "Complete all steps to continue"}
           {ready && <ArrowRight />}
         </Button>
@@ -124,6 +127,16 @@ export function RepairSummary({
           Free diagnostics — final pricing confirmed before any work begins.
         </p>
       </div>
+
+      <BookingModal
+        open={bookingOpen}
+        onClose={() => setBookingOpen(false)}
+        kind="repair"
+        title="Confirm Your Repair Booking"
+        description="Add your contact details and we'll confirm your booking by email."
+        summary={bookingSummary}
+        totalText={fault ? `From ${formatGBP(fault.priceFrom)}` : undefined}
+      />
 
       <div className="mt-3 rounded-2xl border border-border bg-card p-4 shadow-card">
         <div className="flex items-center gap-2 text-primary">

@@ -23,7 +23,7 @@ export default function DashboardCustomersPage() {
         {CUSTOMERS.map((customer) => (
           <RevealItem
             key={customer.id}
-            className="rounded-xl border border-border bg-card p-5 shadow-card"
+            className="rounded-xl border border-border bg-gradient-card p-5 shadow-card"
           >
             <div className="flex items-center gap-3">
               <Avatar size="lg">
