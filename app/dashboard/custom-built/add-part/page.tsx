@@ -9,8 +9,12 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal"
 import { CatalogIcon } from "@/components/icons/icon-registry"
+import { RowActions } from "@/components/dashboard/row-actions"
+import { BulkActionsBar } from "@/components/dashboard/bulk-actions-bar"
+import { RecordModal, type RecordField } from "@/components/dashboard/record-modal"
+import { ConfirmDeleteDialog } from "@/components/dashboard/confirm-delete-dialog"
 import { usePartCatalog } from "@/components/dashboard/store"
-import { type CategoryId, formatPartPrice } from "@/components/build-a-pc/data"
+import { type CategoryId, type PartOption, formatPartPrice } from "@/components/build-a-pc/data"
 
 const fieldClass =
   "h-9 w-full min-w-0 rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30"
@@ -25,8 +29,25 @@ function slugify(input: string) {
     .replace(/(^-|-$)/g, "")
 }
 
+function partFields(part: PartOption): RecordField[] {
+  return [
+    { key: "name", label: "Part name", value: part.name },
+    { key: "specs", label: "Specs (comma separated)", value: part.specs.join(", "), wide: true },
+    { key: "price", label: "Price (£, 0 = included)", value: String(part.price), type: "number" },
+    { key: "badge", label: "Badge (optional)", value: part.badge ?? "" },
+    { key: "socket", label: "Socket (optional)", value: part.socket ?? "" },
+    {
+      key: "inStock",
+      label: "In stock",
+      value: part.inStock ? "Yes" : "No",
+      type: "select",
+      options: ["Yes", "No"],
+    },
+  ]
+}
+
 export default function CustomBuiltCatalogPage() {
-  const { categories, addPart } = usePartCatalog()
+  const { categories, addPart, updatePart, removePart } = usePartCatalog()
   const [categoryId, setCategoryId] = useState<CategoryId>(categories[0].id)
 
   const [name, setName] = useState("")
@@ -35,13 +56,41 @@ export default function CustomBuiltCatalogPage() {
   const [inStock, setInStock] = useState(true)
   const [badge, setBadge] = useState("")
   const [socket, setSocket] = useState("")
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
+  const [editingPart, setEditingPart] = useState<PartOption | null>(null)
+  const [deleteTarget, setDeleteTarget] = useState<PartOption | null>(null)
+  const [bulkConfirmOpen, setBulkConfirmOpen] = useState(false)
 
   const selectedCategory = categories.find((c) => c.id === categoryId)
 
   const priceValue = Number(price)
   const isValid = name.trim().length > 0 && price.trim().length > 0 && priceValue >= 0
 
-  function handleSubmit(event: React.FormEvent) {
+  function selectCategory(id: CategoryId) {
+    setCategoryId(id)
+    setSelectedIds(new Set())
+  }
+
+  function toggleSelected(id: string) {
+    setSelectedIds((prev) => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      return next
+    })
+  }
+
+  function toggleSelectAll() {
+    if (!selectedCategory) return
+    setSelectedIds((prev) =>
+      prev.size === selectedCategory.options.length ? new Set() : new Set(selectedCategory.options.map((o) => o.id))
+    )
+  }
+
+  async function handleSubmit(event: React.FormEvent) {
     event.preventDefault()
     if (!isValid || !selectedCategory) return
 
@@ -50,27 +99,56 @@ export default function CustomBuiltCatalogPage() {
       .map((s) => s.trim())
       .filter(Boolean)
 
-    addPart(selectedCategory.id, {
-      id: `${slugify(name)}-${Date.now().toString(36)}`,
-      name: name.trim(),
-      price: priceValue,
-      specs,
-      inStock,
-      badge: badge.trim() || undefined,
-      socket: socket.trim() || undefined,
-    })
+    setSubmitting(true)
+    setError(null)
+    try {
+      await addPart(selectedCategory.id, {
+        id: `${slugify(name)}-${Date.now().toString(36)}`,
+        name: name.trim(),
+        price: priceValue,
+        specs,
+        inStock,
+        badge: badge.trim() || undefined,
+        socket: socket.trim() || undefined,
+      })
 
-    setName("")
-    setPrice("")
-    setSpecsText("")
-    setInStock(true)
-    setBadge("")
-    setSocket("")
+      setName("")
+      setPrice("")
+      setSpecsText("")
+      setInStock(true)
+      setBadge("")
+      setSocket("")
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not add the part.")
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  function handleSaveEdit(values: Record<string, string>) {
+    if (!editingPart || !selectedCategory) return Promise.resolve()
+    return updatePart(selectedCategory.id, editingPart.id, {
+      name: values.name,
+      specs: values.specs
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean),
+      price: Number(values.price) || 0,
+      badge: values.badge.trim() || undefined,
+      socket: values.socket.trim() || undefined,
+      inStock: values.inStock === "Yes",
+    })
+  }
+
+  async function handleBulkDelete() {
+    if (!selectedCategory) return
+    await Promise.all([...selectedIds].map((id) => removePart(selectedCategory.id, id)))
+    setSelectedIds(new Set())
   }
 
   return (
     <div className="flex flex-col gap-6">
-      <Reveal>
+      <Reveal viewTrigger={false}>
         <div>
           <h1 className="text-xl font-bold tracking-tight text-foreground">
             Custom Built Catalog
@@ -82,20 +160,20 @@ export default function CustomBuiltCatalogPage() {
       </Reveal>
 
       {categories.length === 0 ? (
-        <Reveal delay={0.05}>
+        <Reveal viewTrigger={false} delay={0.05}>
           <div className="rounded-xl border border-dashed border-border bg-card px-5 py-10 text-center">
             <p className="text-sm text-muted-foreground">No categories available yet.</p>
           </div>
         </Reveal>
       ) : (
         <>
-          <Reveal delay={0.05}>
+          <Reveal viewTrigger={false} delay={0.05}>
             <div className="flex flex-wrap gap-1.5">
               {categories.map((category) => (
                 <button
                   key={category.id}
                   type="button"
-                  onClick={() => setCategoryId(category.id)}
+                  onClick={() => selectCategory(category.id)}
                   className={cn(
                     "flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors",
                     categoryId === category.id
@@ -112,30 +190,57 @@ export default function CustomBuiltCatalogPage() {
 
           {selectedCategory && (
             <div className="grid gap-6 lg:grid-cols-2 lg:items-start">
-              <Reveal delay={0.1}>
+              <Reveal viewTrigger={false} delay={0.1}>
                 <div className="overflow-hidden rounded-xl border border-border bg-gradient-card shadow-card">
-                  <div className="border-b border-border px-5 py-4">
+                  <div className="flex items-center justify-between gap-3 border-b border-border px-5 py-4">
                     <h2 className="font-semibold text-foreground">
                       Current options — {selectedCategory.label}
                     </h2>
+                    {selectedCategory.options.length > 0 && (
+                      <label className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
+                        <input
+                          type="checkbox"
+                          checked={selectedIds.size === selectedCategory.options.length}
+                          onChange={toggleSelectAll}
+                          className="size-4 rounded border-input accent-primary"
+                        />
+                        Select all
+                      </label>
+                    )}
                   </div>
-                  <RevealGroup
-                    key={selectedCategory.options.map((o) => o.id).join(",")}
-                    className="divide-y divide-border"
-                  >
+                  <BulkActionsBar
+                    count={selectedIds.size}
+                    onClear={() => setSelectedIds(new Set())}
+                    onDelete={() => setBulkConfirmOpen(true)}
+                  />
+                  <RevealGroup viewTrigger={false} className="divide-y divide-border">
                     {selectedCategory.options.map((option) => (
                       <RevealItem key={option.id} className="flex items-center justify-between gap-3 px-5 py-3.5">
-                        <div className="min-w-0">
-                          <p className="font-medium text-foreground">{option.name}</p>
-                          <div className="mt-1 flex flex-wrap items-center gap-1.5">
-                            {option.badge && <Badge variant="soft">{option.badge}</Badge>}
-                            {option.socket && <Badge variant="soft">{option.socket}</Badge>}
-                            {!option.inStock && <Badge variant="soft">Out of stock</Badge>}
+                        <div className="flex min-w-0 items-center gap-3">
+                          <input
+                            type="checkbox"
+                            checked={selectedIds.has(option.id)}
+                            onChange={() => toggleSelected(option.id)}
+                            className="size-4 shrink-0 rounded border-input accent-primary"
+                          />
+                          <div className="min-w-0">
+                            <p className="font-medium text-foreground">{option.name}</p>
+                            <div className="mt-1 flex flex-wrap items-center gap-1.5">
+                              {option.badge && <Badge variant="soft">{option.badge}</Badge>}
+                              {option.socket && <Badge variant="soft">{option.socket}</Badge>}
+                              {!option.inStock && <Badge variant="soft">Out of stock</Badge>}
+                            </div>
                           </div>
                         </div>
-                        <span className="shrink-0 font-semibold text-foreground">
-                          {formatPartPrice(option.price)}
-                        </span>
+                        <div className="flex shrink-0 items-center gap-3">
+                          <span className="font-semibold text-foreground">
+                            {formatPartPrice(option.price)}
+                          </span>
+                          <RowActions
+                            onEdit={() => setEditingPart(option)}
+                            onDelete={() => setDeleteTarget(option)}
+                          />
+                        </div>
                       </RevealItem>
                     ))}
                     {selectedCategory.options.length === 0 && (
@@ -147,7 +252,7 @@ export default function CustomBuiltCatalogPage() {
                 </div>
               </Reveal>
 
-              <Reveal delay={0.15}>
+              <Reveal viewTrigger={false} delay={0.15}>
                 <form
                   onSubmit={handleSubmit}
                   className="flex flex-col gap-3.5 rounded-xl border border-border bg-gradient-card p-5 shadow-card"
@@ -200,9 +305,11 @@ export default function CustomBuiltCatalogPage() {
                     </div>
                   </div>
 
-                  <Button type="submit" size="lg" disabled={!isValid} className="mt-1">
+                  {error && <p className="text-sm text-destructive">{error}</p>}
+
+                  <Button type="submit" size="lg" disabled={!isValid || submitting} className="mt-1">
                     <PlusIcon />
-                    Add Part
+                    {submitting ? "Adding…" : "Add Part"}
                   </Button>
                 </form>
               </Reveal>
@@ -210,6 +317,32 @@ export default function CustomBuiltCatalogPage() {
           )}
         </>
       )}
+
+      <RecordModal
+        open={editingPart !== null}
+        mode="edit"
+        title="Edit part"
+        subtitle={editingPart?.name}
+        fields={editingPart ? partFields(editingPart) : []}
+        onClose={() => setEditingPart(null)}
+        onSave={handleSaveEdit}
+      />
+
+      <ConfirmDeleteDialog
+        open={deleteTarget !== null}
+        title="Delete part?"
+        description={`This will permanently remove "${deleteTarget?.name}" from the catalog. This can't be undone.`}
+        onConfirm={() => (selectedCategory && deleteTarget ? removePart(selectedCategory.id, deleteTarget.id) : undefined)}
+        onClose={() => setDeleteTarget(null)}
+      />
+
+      <ConfirmDeleteDialog
+        open={bulkConfirmOpen}
+        title="Delete selected parts?"
+        description={`This will permanently remove ${selectedIds.size} part${selectedIds.size === 1 ? "" : "s"} from the catalog. This can't be undone.`}
+        onConfirm={handleBulkDelete}
+        onClose={() => setBulkConfirmOpen(false)}
+      />
     </div>
   )
 }

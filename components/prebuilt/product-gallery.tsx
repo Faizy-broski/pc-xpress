@@ -35,12 +35,12 @@ export function ProductGallery({ images, name }: ProductGalleryProps) {
                 fill
                 priority
                 sizes="(min-width: 1024px) 45vw, 100vw"
-                className="object-contain p-8"
+                className="object-contain"
               />
             </motion.div>
           </AnimatePresence>
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-accent to-muted">
+          <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-accent to-muted">
             <span className="flex size-28 items-center justify-center rounded-3xl bg-accent text-accent-foreground shadow-glow">
               <Cpu className="size-14" />
             </span>

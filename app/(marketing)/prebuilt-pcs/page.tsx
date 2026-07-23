@@ -7,7 +7,7 @@ import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
 import { TextReveal } from "@/components/motion/text-reveal";
 import { PrebuiltCatalog } from "@/components/prebuilt/prebuilt-catalog";
 import { CtaBanner } from "@/components/marketing/cta-banner";
-import { PREBUILT_PCS } from "@/components/prebuilt/data";
+import { listPrebuiltProducts } from "@/lib/data/prebuilt";
 
 export const metadata: Metadata = {
   title: "Prebuilt PCs | PC Xpress",
@@ -22,7 +22,11 @@ const TRUST_STRIP = [
   { icon: MonitorCheck, label: "Every build benchmarked before it ships" },
 ];
 
-export default function PrebuiltPcsPage() {
+export const dynamic = "force-dynamic";
+
+export default async function PrebuiltPcsPage() {
+  const products = await listPrebuiltProducts();
+
   return (
     <div>
       <section className="relative overflow-hidden py-14 md:pt-40 md:pb-20">
@@ -72,7 +76,7 @@ export default function PrebuiltPcsPage() {
       </section>
 
       <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
-        <PrebuiltCatalog products={PREBUILT_PCS} />
+        <PrebuiltCatalog products={products} />
       </section>
 
       <CtaBanner />

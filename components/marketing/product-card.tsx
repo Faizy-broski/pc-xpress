@@ -1,16 +1,21 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { ArrowRight, Cpu, Star } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowRight, Check, Cpu, ShoppingCart } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { useCart } from "@/components/cart/cart-provider";
+import { StarRating } from "@/components/marketing/star-rating";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 export interface ProductCardData {
+  slug: string;
   href: string;
   imageSrc?: string;
   imageAlt: string;
@@ -23,9 +28,12 @@ export interface ProductCardData {
   priceExVat: string;
   wasPrice?: string;
   dispatchDate: string;
+  rawPrice: number;
+  inStock: boolean;
 }
 
 export function ProductCard({
+  slug,
   href,
   imageSrc,
   imageAlt,
@@ -38,8 +46,18 @@ export function ProductCard({
   priceExVat,
   wasPrice,
   dispatchDate,
+  rawPrice,
+  inStock,
   className,
 }: ProductCardData & { className?: string }) {
+  const { addItem } = useCart();
+  const [added, setAdded] = useState(false);
+
+  function handleAddToCart() {
+    addItem({ slug, name: title, image: imageSrc, price: rawPrice });
+    setAdded(true);
+    window.setTimeout(() => setAdded(false), 1800);
+  }
   return (
     <motion.div
       whileHover="hover"
@@ -72,7 +90,7 @@ export function ProductCard({
               alt={imageAlt}
               fill
               sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-              className="object-contain p-6"
+              className="object-contain"
             />
           </motion.div>
         ) : (
@@ -114,21 +132,9 @@ export function ProductCard({
         </ul>
 
         <div className="flex items-center gap-1.5">
-          <span className="flex items-center gap-0.5 rounded bg-emerald-600 px-1.5 py-0.5">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <Star
-                key={i}
-                className={cn(
-                  "size-2.5",
-                  i < rating
-                    ? "fill-white text-white"
-                    : "fill-white/30 text-white/30"
-                )}
-              />
-            ))}
-          </span>
+          <StarRating value={rating} />
           <Link
-            href="#reviews"
+            href={`${href}#reviews`}
             className="text-xs text-muted-foreground underline-offset-2 hover:text-primary hover:underline"
           >
             {reviewCount} Reviews
@@ -148,6 +154,39 @@ export function ProductCard({
               <ArrowRight className="size-3.5 transition-transform duration-300 group-hover/shop:translate-x-1" />
             </Link>
           </motion.div>
+
+          <Button
+            variant="outline"
+            size="icon"
+            aria-label="Add to cart"
+            disabled={!inStock}
+            onClick={handleAddToCart}
+            className="rounded"
+          >
+            <AnimatePresence mode="wait" initial={false}>
+              {added ? (
+                <motion.span
+                  key="added"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.15 }}
+                >
+                  <Check className="size-4" />
+                </motion.span>
+              ) : (
+                <motion.span
+                  key="add"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.15 }}
+                >
+                  <ShoppingCart className="size-4" />
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </Button>
 
           <div className="flex flex-col leading-tight">
             <span className="flex items-baseline gap-1.5">

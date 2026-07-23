@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowRight,
@@ -11,7 +11,6 @@ import {
   RotateCcw,
   ShieldCheck,
   ShoppingCart,
-  Star,
   Truck,
   Wrench,
 } from "lucide-react";
@@ -22,6 +21,10 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Reveal } from "@/components/motion/reveal";
 import { ProductGallery } from "@/components/prebuilt/product-gallery";
+import { useCart } from "@/components/cart/cart-provider";
+import { StarRating } from "@/components/marketing/star-rating";
+import { ReviewSection } from "@/components/marketing/review-section";
+import type { Review } from "@/lib/data/reviews";
 import {
   formatExVat,
   formatGBP,
@@ -45,16 +48,40 @@ function computeSaving(was: number, now: number) {
   return diff > 0 ? formatGBP(diff) : null;
 }
 
-export function ProductDetail({ product }: { product: PrebuiltProduct }) {
+export function ProductDetail({ product, reviews }: { product: PrebuiltProduct; reviews: Review[] }) {
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const [tab, setTab] = useState<Tab>("Overview");
+  const { addItem } = useCart();
+  const router = useRouter();
 
   const saving = product.wasPrice ? computeSaving(product.wasPrice, product.price) : null;
 
   function handleAddToCart() {
+    addItem(
+      {
+        slug: product.slug,
+        name: product.name,
+        image: product.images[0],
+        price: product.price,
+      },
+      quantity
+    );
     setAdded(true);
     window.setTimeout(() => setAdded(false), 2200);
+  }
+
+  function handleBuyNow() {
+    addItem(
+      {
+        slug: product.slug,
+        name: product.name,
+        image: product.images[0],
+        price: product.price,
+      },
+      quantity
+    );
+    router.push("/checkout");
   }
 
   return (
@@ -85,17 +112,7 @@ export function ProductDetail({ product }: { product: PrebuiltProduct }) {
             </div>
 
             <div className="flex items-center gap-2">
-              <span className="flex items-center gap-0.5 rounded bg-emerald-600 px-1.5 py-0.5">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star
-                    key={i}
-                    className={cn(
-                      "size-3",
-                      i < product.rating ? "fill-white text-white" : "fill-white/30 text-white/30"
-                    )}
-                  />
-                ))}
-              </span>
+              <StarRating value={product.rating} size="md" />
               <a
                 href="#reviews"
                 className="text-sm text-muted-foreground underline-offset-2 hover:text-primary hover:underline"
@@ -202,8 +219,7 @@ export function ProductDetail({ product }: { product: PrebuiltProduct }) {
                 <Button
                   size="lg"
                   disabled={!product.inStock}
-                  nativeButton={false}
-                  render={<Link href="/contact" />}
+                  onClick={handleBuyNow}
                   className="flex-1 rounded-lg bg-gradient-button p-5 shadow-glow"
                 >
                   Buy Now
@@ -304,6 +320,15 @@ export function ProductDetail({ product }: { product: PrebuiltProduct }) {
             </ul>
           )}
         </div>
+      </Reveal>
+
+      <Reveal delay={0.2} className="mt-12" id="reviews">
+        <ReviewSection
+          category="Pre-built PC"
+          reference={product.slug}
+          referenceLabel={product.name}
+          reviews={reviews}
+        />
       </Reveal>
     </div>
   );

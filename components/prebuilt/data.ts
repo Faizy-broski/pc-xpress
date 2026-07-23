@@ -233,6 +233,7 @@ export function getPrebuiltProduct(slug: string) {
 
 export function toProductCardData(product: PrebuiltProduct): ProductCardData {
   return {
+    slug: product.slug,
     href: `/prebuilt-pcs/${product.slug}`,
     imageSrc: product.images[0],
     imageAlt: product.name,
@@ -245,5 +246,7 @@ export function toProductCardData(product: PrebuiltProduct): ProductCardData {
     priceExVat: formatExVat(product.price),
     wasPrice: product.wasPrice ? formatGBP(product.wasPrice) : undefined,
     dispatchDate: product.dispatchDate,
+    rawPrice: product.price,
+    inStock: product.inStock,
   };
 }

@@ -8,31 +8,29 @@ import { cn } from "@/lib/utils";
 import { formatGBP } from "@/components/build-a-pc/data";
 import { CatalogIcon } from "@/components/icons/icon-registry";
 import { RepairSummary } from "@/components/repair/repair-summary";
-import {
-  BRANDS,
-  DEVICE_TYPES,
-  FAULTS,
-  type DeviceTypeId,
-} from "@/components/repair/data";
+import type { Brand, DeviceType, DeviceTypeId, Fault } from "@/components/repair/data";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 const STEP_LABELS = ["Device", "Brand", "Issue"] as const;
 
 interface RepairWizardProps {
   initialDevice?: DeviceTypeId;
+  deviceTypes: DeviceType[];
+  brands: Record<DeviceTypeId, Brand[]>;
+  faults: Record<DeviceTypeId, Fault[]>;
 }
 
-export function RepairWizard({ initialDevice }: RepairWizardProps) {
+export function RepairWizard({ initialDevice, deviceTypes, brands, faults }: RepairWizardProps) {
   const [deviceId, setDeviceId] = useState<DeviceTypeId | null>(initialDevice ?? null);
   const [brandId, setBrandId] = useState<string | null>(null);
   const [faultId, setFaultId] = useState<string | null>(null);
   const [step, setStep] = useState<1 | 2 | 3>(initialDevice ? 2 : 1);
 
-  const device = DEVICE_TYPES.find((d) => d.id === deviceId) ?? null;
-  const brands = deviceId ? BRANDS[deviceId] : [];
-  const brand = brands.find((b) => b.id === brandId) ?? null;
-  const faults = deviceId ? FAULTS[deviceId] : [];
-  const fault = faults.find((f) => f.id === faultId) ?? null;
+  const device = deviceTypes.find((d) => d.id === deviceId) ?? null;
+  const deviceBrands = deviceId ? (brands[deviceId] ?? []) : [];
+  const brand = deviceBrands.find((b) => b.id === brandId) ?? null;
+  const deviceFaults = deviceId ? (faults[deviceId] ?? []) : [];
+  const fault = deviceFaults.find((f) => f.id === faultId) ?? null;
 
   function selectDevice(id: DeviceTypeId) {
     setDeviceId(id);
@@ -106,7 +104,7 @@ export function RepairWizard({ initialDevice }: RepairWizardProps) {
                   <p className="mt-1 text-sm text-muted-foreground">Choose the type of device you&apos;d like repaired.</p>
 
                   <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
-                    {DEVICE_TYPES.map((dt) => (
+                    {deviceTypes.map((dt) => (
                       <motion.button
                         key={dt.id}
                         type="button"
@@ -148,7 +146,7 @@ export function RepairWizard({ initialDevice }: RepairWizardProps) {
                   <p className="mt-1 text-sm text-muted-foreground">This helps us quote the right parts.</p>
 
                   <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
-                    {brands.map((b) => (
+                    {deviceBrands.map((b) => (
                       <motion.button
                         key={b.id}
                         type="button"
@@ -190,7 +188,7 @@ export function RepairWizard({ initialDevice }: RepairWizardProps) {
                   <p className="mt-1 text-sm text-muted-foreground">Select the problem that best matches your device.</p>
 
                   <div className="mt-5 space-y-2.5">
-                    {faults.map((f) => {
+                    {deviceFaults.map((f) => {
                       const selected = faultId === f.id;
                       return (
                         <motion.button

@@ -5,10 +5,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
-import { ArrowRight, Menu, Search, X } from "lucide-react";
+import { ArrowRight, Menu, Search, ShoppingCart, X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { useCart } from "@/components/cart/cart-provider";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -21,6 +22,28 @@ const NAV_LINKS = [
 ];
 
 const EASE = [0.22, 1, 0.36, 1] as const;
+
+function CartButton({ className }: { className?: string }) {
+  const { itemCount } = useCart();
+
+  return (
+    <Link
+      href="/cart"
+      aria-label={`View cart${itemCount > 0 ? ` (${itemCount} item${itemCount === 1 ? "" : "s"})` : ""}`}
+      className={cn(
+        "relative inline-flex size-9 items-center justify-center rounded-md text-white transition-colors hover:bg-white/10",
+        className
+      )}
+    >
+      <ShoppingCart className="size-4.5" />
+      {itemCount > 0 && (
+        <span className="absolute -top-1 -right-1 flex size-4.5 min-w-4.5 items-center justify-center rounded-full bg-white px-1 text-[10px] font-bold text-primary shadow-glow">
+          {itemCount > 9 ? "9+" : itemCount}
+        </span>
+      )}
+    </Link>
+  );
+}
 
 function Logo({ className }: { className?: string }) {
   return (
@@ -89,6 +112,8 @@ export function Navbar() {
             <Search />
           </Button>
 
+          <CartButton />
+
           <Button
             className="rounded bg-none bg-white p-6 text-primary shadow-none hover:bg-white/90"
             nativeButton={false}
@@ -99,15 +124,18 @@ export function Navbar() {
           </Button>
         </div>
 
-        <Button
-          variant="ghost"
-          size="icon"
-          className="text-white hover:bg-white/10 hover:text-white md:hidden"
-          aria-label={open ? "Close menu" : "Open menu"}
-          onClick={() => setOpen((v) => !v)}
-        >
-          {open ? <X /> : <Menu />}
-        </Button>
+        <div className="flex items-center gap-1 md:hidden">
+          <CartButton />
+          <Button
+            variant="ghost"
+            size="icon"
+            className="text-white hover:bg-white/10 hover:text-white"
+            aria-label={open ? "Close menu" : "Open menu"}
+            onClick={() => setOpen((v) => !v)}
+          >
+            {open ? <X /> : <Menu />}
+          </Button>
+        </div>
       </nav>
 
       <AnimatePresence initial={false}>

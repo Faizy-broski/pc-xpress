@@ -86,6 +86,13 @@ export const CUSTOM_BUILD_ORDERS: CustomBuildOrder[] = [
   { id: "#OD-2219", customer: "Tom Baker", build: "U87 XT Next Day PC SY3111", date: "21 Jul 2026", status: "Shipped", tone: "info", total: 1099 },
 ]
 
+export interface PrebuiltOrderItem {
+  slug: string
+  name: string
+  price: number
+  quantity: number
+}
+
 export interface PrebuiltOrder {
   id: string
   customer: string
@@ -94,6 +101,11 @@ export interface PrebuiltOrder {
   status: string
   tone: StatusTone
   total: number
+  /** Populated for real Stripe checkout orders; absent on older mock rows. */
+  email?: string
+  phone?: string
+  address?: string
+  items?: PrebuiltOrderItem[]
 }
 
 export const PREBUILT_ORDERS: PrebuiltOrder[] = [

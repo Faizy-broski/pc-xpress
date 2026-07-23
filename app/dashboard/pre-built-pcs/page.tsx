@@ -10,17 +10,44 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Reveal } from "@/components/motion/reveal"
 import { StatusBadge } from "@/components/dashboard/status-badge"
-import { AddPrebuiltModal } from "@/components/dashboard/add-prebuilt-modal"
+import { RowActions } from "@/components/dashboard/row-actions"
+import { BulkActionsBar } from "@/components/dashboard/bulk-actions-bar"
+import { ConfirmDeleteDialog } from "@/components/dashboard/confirm-delete-dialog"
+import { PrebuiltProductModal } from "@/components/dashboard/add-prebuilt-modal"
 import { usePrebuiltCatalog } from "@/components/dashboard/store"
-import { formatExVat, formatGBP } from "@/components/prebuilt/data"
+import { formatExVat, formatGBP, type PrebuiltProduct } from "@/components/prebuilt/data"
 
 export default function DashboardPrebuiltPcsPage() {
-  const { products, addPrebuiltProduct } = usePrebuiltCatalog()
+  const { products, addPrebuiltProduct, updatePrebuiltProduct, removePrebuiltProduct } = usePrebuiltCatalog()
   const [modalOpen, setModalOpen] = useState(false)
+  const [editingProduct, setEditingProduct] = useState<PrebuiltProduct | null>(null)
+  const [deleteTarget, setDeleteTarget] = useState<PrebuiltProduct | null>(null)
+  const [selectedSlugs, setSelectedSlugs] = useState<Set<string>>(new Set())
+  const [bulkConfirmOpen, setBulkConfirmOpen] = useState(false)
+
+  function toggleSelected(slug: string) {
+    setSelectedSlugs((prev) => {
+      const next = new Set(prev)
+      if (next.has(slug)) next.delete(slug)
+      else next.add(slug)
+      return next
+    })
+  }
+
+  function toggleSelectAll() {
+    setSelectedSlugs((prev) =>
+      prev.size === products.length ? new Set() : new Set(products.map((p) => p.slug))
+    )
+  }
+
+  async function handleBulkDelete() {
+    await Promise.all([...selectedSlugs].map((slug) => removePrebuiltProduct(slug)))
+    setSelectedSlugs(new Set())
+  }
 
   return (
     <div className="flex flex-col gap-6">
-      <Reveal>
+      <Reveal viewTrigger={false}>
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <h1 className="text-xl font-bold tracking-tight text-foreground">
@@ -30,12 +57,35 @@ export default function DashboardPrebuiltPcsPage() {
               Manage the pre-built systems customers can buy off the shelf.
             </p>
           </div>
-          <Button className="rounded" onClick={() => setModalOpen(true)}>
-            <PlusIcon />
-            Add Pre-built PC
-          </Button>
+          <div className="flex items-center gap-3">
+            {products.length > 0 && (
+              <label className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
+                <input
+                  type="checkbox"
+                  checked={selectedSlugs.size === products.length}
+                  onChange={toggleSelectAll}
+                  className="size-4 rounded border-input accent-primary"
+                />
+                Select all
+              </label>
+            )}
+            <Button className="rounded" onClick={() => setModalOpen(true)}>
+              <PlusIcon />
+              Add Pre-built PC
+            </Button>
+          </div>
         </div>
       </Reveal>
+
+      {selectedSlugs.size > 0 && (
+        <div className="overflow-hidden rounded-xl border border-border">
+          <BulkActionsBar
+            count={selectedSlugs.size}
+            onClear={() => setSelectedSlugs(new Set())}
+            onDelete={() => setBulkConfirmOpen(true)}
+          />
+        </div>
+      )}
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {products.map((product) => (
@@ -48,6 +98,14 @@ export default function DashboardPrebuiltPcsPage() {
             className="flex flex-col overflow-hidden rounded-xl border border-border bg-gradient-card shadow-card"
           >
             <div className="relative aspect-video w-full shrink-0 bg-muted">
+              <label className="absolute top-2 left-2 z-10 flex size-6 items-center justify-center rounded-md bg-background/90 shadow-sm">
+                <input
+                  type="checkbox"
+                  checked={selectedSlugs.has(product.slug)}
+                  onChange={() => toggleSelected(product.slug)}
+                  className="size-4 rounded border-input accent-primary"
+                />
+              </label>
               {product.images[0] ? (
                 <Image
                   src={product.images[0]}
@@ -113,7 +171,7 @@ export default function DashboardPrebuiltPcsPage() {
                 </div>
               )}
 
-              <div className="flex flex-col gap-1 border-t border-border pt-3.5">
+              <div className="flex flex-col gap-2 border-t border-border pt-3.5">
                 <div className="flex items-end justify-between gap-2">
                   <div className="flex flex-col leading-tight">
                     <span className="flex items-baseline gap-1.5">
@@ -134,6 +192,10 @@ export default function DashboardPrebuiltPcsPage() {
                     Dispatch {product.dispatchDate}
                   </span>
                 </div>
+                <RowActions
+                  onEdit={() => setEditingProduct(product)}
+                  onDelete={() => setDeleteTarget(product)}
+                />
               </div>
             </div>
           </motion.div>
@@ -149,10 +211,33 @@ export default function DashboardPrebuiltPcsPage() {
         </button>
       </div>
 
-      <AddPrebuiltModal
+      <PrebuiltProductModal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
-        onAdd={addPrebuiltProduct}
+        onSubmit={addPrebuiltProduct}
+      />
+
+      <PrebuiltProductModal
+        open={editingProduct !== null}
+        product={editingProduct}
+        onClose={() => setEditingProduct(null)}
+        onSubmit={(updated) => updatePrebuiltProduct(updated.slug, updated)}
+      />
+
+      <ConfirmDeleteDialog
+        open={deleteTarget !== null}
+        title="Delete pre-built PC?"
+        description={`This will permanently remove "${deleteTarget?.name}" from the store. This can't be undone.`}
+        onConfirm={() => (deleteTarget ? removePrebuiltProduct(deleteTarget.slug) : undefined)}
+        onClose={() => setDeleteTarget(null)}
+      />
+
+      <ConfirmDeleteDialog
+        open={bulkConfirmOpen}
+        title="Delete selected pre-built PCs?"
+        description={`This will permanently remove ${selectedSlugs.size} product${selectedSlugs.size === 1 ? "" : "s"} from the store. This can't be undone.`}
+        onConfirm={handleBulkDelete}
+        onClose={() => setBulkConfirmOpen(false)}
       />
     </div>
   )

@@ -5,9 +5,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
 import { CatalogIcon } from "@/components/icons/icon-registry";
-import { DEVICE_TYPES } from "@/components/repair/data";
+import type { DeviceType } from "@/components/repair/data";
 
-export function RepairDevicePicker() {
+export function RepairDevicePicker({ deviceTypes }: { deviceTypes: DeviceType[] }) {
   return (
     <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
       <Reveal className="mx-auto max-w-2xl text-center">
@@ -31,7 +31,7 @@ export function RepairDevicePicker() {
       </Reveal>
 
       <RevealGroup className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-        {DEVICE_TYPES.map((device) => (
+        {deviceTypes.map((device) => (
           <RevealItem key={device.id}>
             <Link
               href={`/repair-a-device?device=${device.id}`}

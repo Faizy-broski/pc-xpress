@@ -8,7 +8,7 @@ export default function DashboardInventoryPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <Reveal>
+      <Reveal viewTrigger={false}>
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <h1 className="text-xl font-bold tracking-tight text-foreground">
@@ -26,7 +26,7 @@ export default function DashboardInventoryPage() {
         </div>
       </Reveal>
 
-      <Reveal delay={0.05}>
+      <Reveal viewTrigger={false} delay={0.05}>
         <div className="overflow-hidden rounded-xl border border-border bg-gradient-card shadow-card">
           <div className="hidden grid-cols-[1.4fr_1fr_1fr_0.6fr_0.7fr_auto] gap-4 border-b border-border px-5 py-3 text-xs font-medium text-muted-foreground sm:grid">
             <span>Part</span>
@@ -36,7 +36,7 @@ export default function DashboardInventoryPage() {
             <span className="text-right">Unit price</span>
             <span>Status</span>
           </div>
-          <RevealGroup className="divide-y divide-border">
+          <RevealGroup viewTrigger={false} className="divide-y divide-border">
             {INVENTORY.map((part) => (
               <RevealItem
                 key={part.id}

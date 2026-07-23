@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { IBM_Plex_Sans, Geist } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-// import { ThemeProvider, THEME_INIT_SCRIPT } from "@/components/theme-provider";
+import { CustomCursor } from "@/components/motion/custom-cursor";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -38,6 +38,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         {/* <ThemeProvider></ThemeProvider> */}
         {children}
+        <CustomCursor />
       </body>
     </html>
   );

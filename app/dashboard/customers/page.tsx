@@ -8,7 +8,7 @@ import { formatGBP } from "@/components/build-a-pc/data"
 export default function DashboardCustomersPage() {
   return (
     <div className="flex flex-col gap-6">
-      <Reveal>
+      <Reveal viewTrigger={false}>
         <div>
           <h1 className="text-xl font-bold tracking-tight text-foreground">
             Customers
@@ -19,7 +19,7 @@ export default function DashboardCustomersPage() {
         </div>
       </Reveal>
 
-      <RevealGroup className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <RevealGroup viewTrigger={false} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {CUSTOMERS.map((customer) => (
           <RevealItem
             key={customer.id}

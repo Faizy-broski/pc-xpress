@@ -222,6 +222,90 @@
   animation: loading-bar 1.4s ease-in-out infinite;
 }
 
+/* Custom themed cursor — see components/motion/custom-cursor.tsx. The
+   component only sets [data-custom-cursor] on fine-pointer devices, so
+   touch/coarse-pointer devices never get `cursor: none` and are unaffected.
+   !important is required here: many components set their own explicit
+   cursor-pointer/cursor-default/cursor-resize utility classes (buttons,
+   dropdown menu items, the sidebar's resize handle), which as direct rules
+   on the element would otherwise beat a plain inherited `cursor: none`. */
+:root[data-custom-cursor="true"] * {
+  cursor: none !important;
+}
+
+.cursor-dot,
+.cursor-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 9999px;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  transition:
+    width 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    height 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    opacity 0.15s ease;
+}
+
+.cursor-dot {
+  width: 7px;
+  height: 7px;
+  background: var(--primary);
+}
+
+.cursor-dot[data-visible="true"] {
+  opacity: 0.95;
+}
+
+.cursor-dot[data-variant="interactive"],
+.cursor-dot[data-variant="text"] {
+  opacity: 0;
+}
+
+.cursor-ring {
+  width: 32px;
+  height: 32px;
+  border: 1.5px solid color-mix(in oklch, var(--primary), transparent 40%);
+  background: color-mix(in oklch, var(--primary), transparent 94%);
+}
+
+.cursor-ring[data-visible="true"] {
+  opacity: 1;
+}
+
+.cursor-ring[data-pressed="true"] {
+  transform: translate(-50%, -50%) scale(0.85);
+}
+
+.cursor-ring[data-variant="interactive"] {
+  width: 54px;
+  height: 54px;
+  border-color: color-mix(in oklch, var(--primary), transparent 10%);
+  background: color-mix(in oklch, var(--primary), transparent 80%);
+}
+
+.cursor-ring[data-variant="interactive"][data-pressed="true"] {
+  transform: translate(-50%, -50%) scale(0.92);
+}
+
+.cursor-ring[data-variant="text"] {
+  width: 2px;
+  height: 22px;
+  border-radius: 2px;
+  border-color: transparent;
+  background: var(--primary);
+}
+
+.cursor-ring[data-variant="disabled"] {
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border-color: color-mix(in oklch, var(--foreground), transparent 65%);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

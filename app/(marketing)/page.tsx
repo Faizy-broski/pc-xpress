@@ -7,7 +7,9 @@ import { VisitShop } from "@/components/marketing/visit-shop";
 import { WhatWeFix } from "@/components/marketing/what-we-fix";
 import { GamingPcPromo } from "@/components/marketing/gaming-pc-promo";
 import { RepairDevicePicker } from "@/components/marketing/repair-device-picker";
-import { PREBUILT_PCS, toProductCardData } from "@/components/prebuilt/data";
+import { toProductCardData } from "@/components/prebuilt/data";
+import { listPrebuiltProducts } from "@/lib/data/prebuilt";
+import { listDeviceTypes } from "@/lib/data/repair";
 
 const HERO_SLIDES: HeroSlide[] = [
   {
@@ -31,19 +33,25 @@ const HERO_SLIDES: HeroSlide[] = [
   },
 ];
 
-const FEATURED_PCS = PREBUILT_PCS.slice(0, 4).map(toProductCardData);
+export const dynamic = "force-dynamic";
 
-export default function Home() {
+export default async function Home() {
+  const [prebuiltProducts, deviceTypes] = await Promise.all([
+    listPrebuiltProducts(),
+    listDeviceTypes(),
+  ]);
+  const featuredPcs = prebuiltProducts.slice(0, 4).map(toProductCardData);
+
   return (
     <>
       <HeroCarousel
         slides={HERO_SLIDES}
-        className="h-[85dvh] min-h-[560px] sm:h-[80vh] md:min-h-screen"
+        className="h-[85dvh] min-h-140 sm:h-[80vh] md:min-h-screen"
       />
 
-      <FeaturedProducts heading="Featured Custom PC" products={FEATURED_PCS} />
+      <FeaturedProducts heading="Featured Custom PC" products={featuredPcs} />
 
-      <RepairDevicePicker />
+      <RepairDevicePicker deviceTypes={deviceTypes} />
 
       <WhatWeFix />
 

@@ -95,13 +95,13 @@ export default function DashboardOverviewPage() {
               delay={0.1}
               className="max-w-xl text-2xl font-bold tracking-tight text-white sm:text-3xl"
             />
-            <Reveal delay={0.25}>
+            <Reveal viewTrigger={false} delay={0.25}>
               <p className="max-w-lg text-sm text-white/70">
                 Track repairs, custom builds, and pre-built orders, and see how
                 the shop is performing — all from one place.
               </p>
             </Reveal>
-            <Reveal delay={0.35} className="flex flex-wrap gap-3 pt-2">
+            <Reveal viewTrigger={false} delay={0.35} className="flex flex-wrap gap-3 pt-2">
               <Button
                 className="rounded"
                 nativeButton={false}

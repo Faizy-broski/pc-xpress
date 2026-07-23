@@ -11,6 +11,7 @@ interface RevealProps {
   y?: number;
   className?: string;
   once?: boolean;
+  id?: string;
   /**
    * Scroll-into-view reveal is wrong for content whose height varies with data
    * (tables, filtered lists): a tall container may never satisfy the 30%
@@ -26,6 +27,7 @@ export function Reveal({
   y = 24,
   className,
   once = true,
+  id,
   viewTrigger = true,
 }: RevealProps) {
   const viewProps = viewTrigger
@@ -34,6 +36,7 @@ export function Reveal({
 
   return (
     <motion.div
+      id={id}
       initial={{ opacity: 0, y }}
       {...viewProps}
       transition={{ duration: 0.6, delay, ease: EASE }}

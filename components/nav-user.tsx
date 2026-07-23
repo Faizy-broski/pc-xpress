@@ -23,7 +23,8 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-// import { useTheme, type Theme } from "@/components/theme-provider"
+import { useTheme, type Theme } from "@/components/theme-provider"
+import { logout } from "@/app/actions/auth"
 import {
   ChevronsUpDownIcon,
   Settings2Icon,
@@ -52,7 +53,7 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
-  // const { theme, setTheme } = useTheme()
+  const { theme, setTheme } = useTheme()
   const initials = initialsFor(user.name)
 
   return (
@@ -102,7 +103,7 @@ export function NavUser({
               </DropdownMenuLabel>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            {/* <DropdownMenuRadioGroup
+            <DropdownMenuRadioGroup
               value={theme}
               onValueChange={(value) => setTheme(value as Theme)}
             >
@@ -119,7 +120,7 @@ export function NavUser({
                 <MonitorIcon />
                 System
               </DropdownMenuRadioItem>
-            </DropdownMenuRadioGroup> */}
+            </DropdownMenuRadioGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem render={<Link href="/dashboard/settings" />}>
@@ -132,7 +133,7 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem variant="destructive">
+            <DropdownMenuItem variant="destructive" onClick={() => logout()}>
               <LogOutIcon />
               Log out
             </DropdownMenuItem>

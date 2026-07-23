@@ -9,6 +9,7 @@ import {
   WrenchIcon,
   MonitorIcon,
   CpuIcon,
+  StarIcon,
 } from "lucide-react"
 
 import { NavMain, type NavItem } from "@/components/nav-main"
@@ -28,6 +29,7 @@ import {
 const NAV_ITEMS: NavItem[] = [
   { title: "Overview", url: "/dashboard", icon: LayoutDashboardIcon },
   { title: "All Bookings", url: "/dashboard/bookings", icon: ClipboardListIcon },
+  { title: "Reviews", url: "/dashboard/reviews", icon: StarIcon },
   {
     title: "Repairs",
     icon: WrenchIcon,
@@ -54,12 +56,14 @@ const NAV_ITEMS: NavItem[] = [
   },
 ]
 
-const USER = {
-  name: "Faizan Hashmi",
-  email: "faizanhashmi603@gmail.com",
+interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
+  user: {
+    name: string
+    email: string
+  }
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({ user, ...props }: AppSidebarProps) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader className="border-b border-sidebar-border/60">
@@ -98,7 +102,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarContent>
       <SidebarSeparator className="mx-0 w-full bg-sidebar-border/60" />
       <SidebarFooter>
-        <NavUser user={USER} />
+        <NavUser user={user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

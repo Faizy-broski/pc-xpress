@@ -1,124 +1,43 @@
-"use client"
+import { redirect } from "next/navigation"
 
-import { useState } from "react"
-import { BellIcon, MailIcon, PhoneIcon, UserIcon } from "lucide-react"
-
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Separator } from "@/components/ui/separator"
 import { Reveal } from "@/components/motion/reveal"
+import { ProfileSettingsForm } from "@/components/dashboard/profile-settings-form"
+import { AdminUsersPanel } from "@/components/dashboard/admin-users-panel"
+import { listAdminUsers } from "@/app/actions/admin-users"
+import { createSupabaseServerClient } from "@/lib/supabase/server"
 
-const NOTIFICATION_PREFS = [
-  {
-    id: "job-updates",
-    label: "Repair job updates",
-    description: "Get notified when a job moves to the next status.",
-    defaultChecked: true,
-  },
-  {
-    id: "order-updates",
-    label: "New PC orders",
-    description: "Get notified when a customer places a custom build order.",
-    defaultChecked: true,
-  },
-  {
-    id: "stock-alerts",
-    label: "Low stock alerts",
-    description: "Get notified when a part drops below reorder level.",
-    defaultChecked: true,
-  },
-]
+export const dynamic = "force-dynamic"
 
-export default function DashboardSettingsPage() {
-  const [saved, setSaved] = useState(false)
+export default async function DashboardSettingsPage() {
+  const supabase = await createSupabaseServerClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) redirect("/login")
+
+  const admins = await listAdminUsers()
+  const name = user.user_metadata?.full_name ?? user.email!.split("@")[0]
 
   return (
     <div className="flex flex-col gap-6">
-      <Reveal>
+      <Reveal viewTrigger={false}>
         <div>
           <h1 className="text-xl font-bold tracking-tight text-foreground">
             Shop Settings
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Manage your profile and notification preferences.
+            Manage your profile, notification preferences, and dashboard admins.
           </p>
         </div>
       </Reveal>
 
-      <Reveal delay={0.05}>
-        <form
-          className="rounded-xl border border-border bg-gradient-card p-5 shadow-card sm:p-6"
-          onSubmit={(e) => {
-            e.preventDefault()
-            setSaved(true)
-          }}
-        >
-          <h2 className="font-semibold text-foreground">Profile</h2>
-          <div className="mt-4 grid gap-4 sm:grid-cols-2">
-            <label className="flex flex-col gap-1.5 text-sm">
-              <span className="flex items-center gap-1.5 font-medium text-foreground">
-                <UserIcon className="size-3.5" />
-                Full name
-              </span>
-              <Input defaultValue="Faizan Hashmi" />
-            </label>
-            <label className="flex flex-col gap-1.5 text-sm">
-              <span className="flex items-center gap-1.5 font-medium text-foreground">
-                <MailIcon className="size-3.5" />
-                Email
-              </span>
-              <Input
-                type="email"
-                defaultValue="faizanhashmi603@gmail.com"
-              />
-            </label>
-            <label className="flex flex-col gap-1.5 text-sm sm:col-span-2">
-              <span className="flex items-center gap-1.5 font-medium text-foreground">
-                <PhoneIcon className="size-3.5" />
-                Phone
-              </span>
-              <Input type="tel" defaultValue="+44 7700 900123" />
-            </label>
-          </div>
+      <Reveal viewTrigger={false} delay={0.05}>
+        <ProfileSettingsForm name={name} email={user.email!} />
+      </Reveal>
 
-          <Separator className="my-6" />
-
-          <h2 className="flex items-center gap-1.5 font-semibold text-foreground">
-            <BellIcon className="size-4" />
-            Notifications
-          </h2>
-          <div className="mt-4 flex flex-col gap-4">
-            {NOTIFICATION_PREFS.map((pref) => (
-              <label
-                key={pref.id}
-                className="flex items-start gap-3 text-sm"
-              >
-                <input
-                  type="checkbox"
-                  defaultChecked={pref.defaultChecked}
-                  className="mt-0.5 size-4 shrink-0 rounded border-input accent-primary"
-                />
-                <span>
-                  <span className="block font-medium text-foreground">
-                    {pref.label}
-                  </span>
-                  <span className="text-muted-foreground">
-                    {pref.description}
-                  </span>
-                </span>
-              </label>
-            ))}
-          </div>
-
-          <div className="mt-6 flex items-center gap-3 border-t border-border pt-5">
-            <Button type="submit" className="rounded">
-              Save changes
-            </Button>
-            {saved && (
-              <span className="text-sm text-muted-foreground">Saved.</span>
-            )}
-          </div>
-        </form>
+      <Reveal viewTrigger={false} delay={0.1}>
+        <AdminUsersPanel initialUsers={admins} currentUserEmail={user.email!} />
       </Reveal>
     </div>
   )

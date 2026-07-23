@@ -6,7 +6,10 @@ import { Badge } from "@/components/ui/badge";
 import { Reveal } from "@/components/motion/reveal";
 import { TextReveal } from "@/components/motion/text-reveal";
 import { RepairWizard } from "@/components/repair/repair-wizard";
-import { DEVICE_TYPES, type DeviceTypeId } from "@/components/repair/data";
+import { ReviewSection } from "@/components/marketing/review-section";
+import { type DeviceTypeId } from "@/components/repair/data";
+import { listBrandsByDevice, listDeviceTypes, listFaultsByDevice } from "@/lib/data/repair";
+import { listPublishedReviews } from "@/lib/data/reviews";
 
 export const metadata: Metadata = {
   title: "Book a Repair | PC Xpress",
@@ -14,16 +17,25 @@ export const metadata: Metadata = {
     "Select your device and issue to get an instant price estimate and book a repair with PC Xpress.",
 };
 
+export const dynamic = "force-dynamic";
+
 interface PageParams {
   searchParams: Promise<{ device?: string }>;
 }
 
-function isDeviceTypeId(value: string | undefined): value is DeviceTypeId {
-  return DEVICE_TYPES.some((d) => d.id === value);
-}
-
 export default async function RepairADevicePage({ searchParams }: PageParams) {
   const { device } = await searchParams;
+  const [deviceTypes, brands, faults, reviews] = await Promise.all([
+    listDeviceTypes(),
+    listBrandsByDevice(),
+    listFaultsByDevice(),
+    listPublishedReviews("Repair"),
+  ]);
+
+  function isDeviceTypeId(value: string | undefined): value is DeviceTypeId {
+    return deviceTypes.some((d) => d.id === value);
+  }
+
   const initialDevice = isDeviceTypeId(device) ? device : undefined;
 
   return (
@@ -63,7 +75,20 @@ export default async function RepairADevicePage({ searchParams }: PageParams) {
 
       <section className="bg-background py-8 text-foreground sm:py-10">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <RepairWizard initialDevice={initialDevice} />
+          <RepairWizard
+            initialDevice={initialDevice}
+            deviceTypes={deviceTypes}
+            brands={brands}
+            faults={faults}
+          />
+        </div>
+      </section>
+
+      <section id="reviews" className="bg-background pb-16 text-foreground sm:pb-20">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <Reveal>
+            <ReviewSection category="Repair" reviews={reviews} />
+          </Reveal>
         </div>
       </section>
     </div>

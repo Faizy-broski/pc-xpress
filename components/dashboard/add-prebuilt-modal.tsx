@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { ImagePlusIcon, PlusIcon, X } from "lucide-react"
+import { ImagePlusIcon, Loader2Icon, PlusIcon, X } from "lucide-react"
 import { AnimatePresence, motion } from "framer-motion"
 
 import { cn } from "@/lib/utils"
@@ -28,16 +28,38 @@ function slugify(input: string) {
     .replace(/(^-|-$)/g, "")
 }
 
-interface AddPrebuiltModalProps {
-  open: boolean
-  onClose: () => void
-  onAdd: (product: PrebuiltProduct) => void
+async function uploadImage(file: File): Promise<string> {
+  const formData = new FormData()
+  formData.append("file", file)
+  const response = await fetch("/api/uploads", { method: "POST", body: formData })
+  const payload = await response.json()
+  if (!response.ok) throw new Error(payload.error ?? "Could not upload the photo.")
+  return payload.url as string
 }
 
-export function AddPrebuiltModal({ open, onClose, onAdd }: AddPrebuiltModalProps) {
+function deleteImage(url: string) {
+  // Best-effort cleanup — a failed delete just leaves an orphaned file in
+  // storage, which isn't worth blocking or erroring the UI over.
+  fetch(`/api/uploads?url=${encodeURIComponent(url)}`, { method: "DELETE" }).catch(() => {})
+}
+
+interface PrebuiltProductModalProps {
+  open: boolean
+  onClose: () => void
+  /** When provided, the modal edits this product instead of creating a new one. */
+  product?: PrebuiltProduct | null
+  onSubmit: (product: PrebuiltProduct) => Promise<void>
+}
+
+export function PrebuiltProductModal({ open, onClose, product, onSubmit }: PrebuiltProductModalProps) {
+  const isEditing = Boolean(product)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const [images, setImages] = useState<string[]>([])
+  const [uploading, setUploading] = useState(false)
+  const [uploadError, setUploadError] = useState<string | null>(null)
   const [name, setName] = useState("")
   const [sku, setSku] = useState("")
   const [category, setCategory] = useState<PrebuiltCategory>("Gaming")
@@ -57,17 +79,10 @@ export function AddPrebuiltModal({ open, onClose, onAdd }: AddPrebuiltModalProps
     "Pre-built PC, Power cable, Driver USB stick, Quick start guide"
   )
 
-  useEffect(() => {
-    if (!open) return
-    function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") onClose()
-    }
-    document.addEventListener("keydown", handleKeyDown)
-    return () => document.removeEventListener("keydown", handleKeyDown)
-  }, [open, onClose])
-
   function resetFields() {
     setImages([])
+    setUploading(false)
+    setUploadError(null)
     setName("")
     setSku("")
     setCategory("Gaming")
@@ -87,22 +102,71 @@ export function AddPrebuiltModal({ open, onClose, onAdd }: AddPrebuiltModalProps
     if (fileInputRef.current) fileInputRef.current.value = ""
   }
 
+  // Seed the form from the product being edited each time the modal opens.
+  useEffect(() => {
+    if (!open) return
+    if (!product) {
+      resetFields()
+      return
+    }
+    setImages(product.images)
+    setName(product.name)
+    setSku(product.sku)
+    setCategory(product.category)
+    setBadge((product.badge as (typeof BADGE_OPTIONS)[number]) ?? "None")
+    setTagline(product.tagline)
+    setDescription(product.description)
+    setOs(product.os)
+    setRating(String(product.rating))
+    setReviewCount(String(product.reviewCount))
+    setPrice(String(product.price))
+    setWasPrice(product.wasPrice ? String(product.wasPrice) : "")
+    setDispatchDate(product.dispatchDate)
+    setInStock(product.inStock)
+    setHighlightsText(product.highlights.join(", "))
+    setSpecs(product.specs.length > 0 ? product.specs : [{ label: "", value: "" }])
+    setWhatsIncludedText(product.whatsIncluded.join(", "))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, product?.slug])
+
+  useEffect(() => {
+    if (!open) return
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") onClose()
+    }
+    document.addEventListener("keydown", handleKeyDown)
+    return () => document.removeEventListener("keydown", handleKeyDown)
+  }, [open, onClose])
+
   function handleClose() {
-    images.forEach((url) => URL.revokeObjectURL(url))
+    // Only discard newly-uploaded photos if the product itself was never saved
+    // (i.e. this was a fresh "Add" that got cancelled) — editing an existing
+    // product should never delete its already-live photos on cancel.
+    if (!isEditing) images.forEach(deleteImage)
     resetFields()
     onClose()
   }
 
-  function handleFilesChange(event: React.ChangeEvent<HTMLInputElement>) {
+  async function handleFilesChange(event: React.ChangeEvent<HTMLInputElement>) {
     const files = Array.from(event.target.files ?? [])
-    if (files.length === 0) return
-    setImages((prev) => [...prev, ...files.map((file) => URL.createObjectURL(file))])
     event.target.value = ""
+    if (files.length === 0) return
+
+    setUploading(true)
+    setUploadError(null)
+    try {
+      const uploaded = await Promise.all(files.map(uploadImage))
+      setImages((prev) => [...prev, ...uploaded])
+    } catch (err) {
+      setUploadError(err instanceof Error ? err.message : "Could not upload the photo.")
+    } finally {
+      setUploading(false)
+    }
   }
 
   function removeImage(index: number) {
     setImages((prev) => {
-      URL.revokeObjectURL(prev[index])
+      deleteImage(prev[index])
       return prev.filter((_, i) => i !== index)
     })
   }
@@ -126,9 +190,12 @@ export function AddPrebuiltModal({ open, onClose, onAdd }: AddPrebuiltModalProps
     tagline.trim().length > 0 &&
     price.trim().length > 0 &&
     priceValue > 0 &&
-    images.length > 0
+    // A photo is required when creating a new product, but editing an
+    // existing one shouldn't be blocked just because it predates photo
+    // uploads (e.g. seeded catalog data with no images yet).
+    (isEditing || images.length > 0)
 
-  function handleSubmit(event: React.FormEvent) {
+  async function handleSubmit(event: React.FormEvent) {
     event.preventDefault()
     if (!isValid) return
 
@@ -145,30 +212,38 @@ export function AddPrebuiltModal({ open, onClose, onAdd }: AddPrebuiltModalProps
       .map((s) => s.trim())
       .filter(Boolean)
 
-    onAdd({
-      slug: `${slugify(name)}-${Date.now().toString(36)}`,
-      sku: sku.trim(),
-      name: name.trim(),
-      category,
-      badge: badge === "None" ? undefined : badge,
-      tagline: tagline.trim(),
-      description: description.trim(),
-      images,
-      os: os.trim() || "Windows 11 Home",
-      rating: Math.min(5, Math.max(1, Number(rating) || 5)),
-      reviewCount: Math.max(0, Number(reviewCount) || 0),
-      price: priceValue,
-      wasPrice: wasPrice.trim() && wasPriceValue > priceValue ? wasPriceValue : undefined,
-      dispatchDate: dispatchDate.trim() || "Contact us for lead time",
-      inStock,
-      highlights,
-      specs: cleanSpecs,
-      whatsIncluded,
-    })
+    setSubmitting(true)
+    setError(null)
+    try {
+      await onSubmit({
+        slug: product?.slug ?? `${slugify(name)}-${Date.now().toString(36)}`,
+        sku: sku.trim(),
+        name: name.trim(),
+        category,
+        badge: badge === "None" ? undefined : badge,
+        tagline: tagline.trim(),
+        description: description.trim(),
+        images,
+        os: os.trim() || "Windows 11 Home",
+        rating: Math.min(5, Math.max(1, Number(rating) || 5)),
+        reviewCount: Math.max(0, Number(reviewCount) || 0),
+        price: priceValue,
+        wasPrice: wasPrice.trim() && wasPriceValue > priceValue ? wasPriceValue : undefined,
+        dispatchDate: dispatchDate.trim() || "Contact us for lead time",
+        inStock,
+        highlights,
+        specs: cleanSpecs,
+        whatsIncluded,
+      })
 
-    // Ownership of the blob URLs transfers to the added product, so don't revoke them here.
-    resetFields()
-    onClose()
+      // Ownership of any new blob URLs transfers to the product, so don't revoke them here.
+      resetFields()
+      onClose()
+    } catch (err) {
+      setError(err instanceof Error ? err.message : `Could not ${isEditing ? "update" : "add"} the pre-built PC.`)
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -191,12 +266,14 @@ export function AddPrebuiltModal({ open, onClose, onAdd }: AddPrebuiltModalProps
             onClick={(event) => event.stopPropagation()}
             role="dialog"
             aria-modal="true"
-            aria-label="Add pre-built PC"
+            aria-label={isEditing ? "Edit pre-built PC" : "Add pre-built PC"}
             className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-border bg-card p-5 shadow-card"
           >
             <div className="flex items-start justify-between">
               <div>
-                <h3 className="text-lg font-bold text-foreground">Add Pre-built PC</h3>
+                <h3 className="text-lg font-bold text-foreground">
+                  {isEditing ? "Edit Pre-built PC" : "Add Pre-built PC"}
+                </h3>
                 <p className="text-sm text-muted-foreground">
                   Fill in every field the product page needs before it goes live.
                 </p>
@@ -229,10 +306,17 @@ export function AddPrebuiltModal({ open, onClose, onAdd }: AddPrebuiltModalProps
                       </button>
                     </div>
                   ))}
+                  {uploading && (
+                    <div className="flex size-20 shrink-0 flex-col items-center justify-center gap-1 rounded-lg border border-dashed border-border text-muted-foreground">
+                      <Loader2Icon className="size-4 animate-spin" />
+                      <span className="text-[0.65rem] font-medium">Uploading…</span>
+                    </div>
+                  )}
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
-                    className="flex size-20 shrink-0 flex-col items-center justify-center gap-1 rounded-lg border border-dashed border-border text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
+                    disabled={uploading}
+                    className="flex size-20 shrink-0 flex-col items-center justify-center gap-1 rounded-lg border border-dashed border-border text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary disabled:pointer-events-none disabled:opacity-50"
                   >
                     <ImagePlusIcon className="size-4" />
                     <span className="text-[0.65rem] font-medium">Add</span>
@@ -246,6 +330,7 @@ export function AddPrebuiltModal({ open, onClose, onAdd }: AddPrebuiltModalProps
                   onChange={handleFilesChange}
                   className="hidden"
                 />
+                {uploadError && <p className="mt-1.5 text-xs text-destructive">{uploadError}</p>}
               </div>
 
               <div className="grid grid-cols-2 gap-3">
@@ -450,6 +535,8 @@ export function AddPrebuiltModal({ open, onClose, onAdd }: AddPrebuiltModalProps
                 </div>
               </div>
 
+              {error && <p className="text-sm text-destructive">{error}</p>}
+
               <div className="mt-1 flex gap-3">
                 <Button
                   type="button"
@@ -460,8 +547,8 @@ export function AddPrebuiltModal({ open, onClose, onAdd }: AddPrebuiltModalProps
                 >
                   Cancel
                 </Button>
-                <Button type="submit" size="lg" disabled={!isValid} className="flex-1">
-                  Add Pre-built PC
+                <Button type="submit" size="lg" disabled={!isValid || submitting || uploading} className="flex-1">
+                  {submitting ? "Saving…" : isEditing ? "Save changes" : "Add Pre-built PC"}
                 </Button>
               </div>
             </form>
