@@ -10,6 +10,7 @@ import { RepairDevicePicker } from "@/components/marketing/repair-device-picker"
 import { toProductCardData } from "@/components/prebuilt/data";
 import { listPrebuiltProducts } from "@/lib/data/prebuilt";
 import { listDeviceTypes } from "@/lib/data/repair";
+import LogoOrbit from "@/components/marketing/orbit";
 
 const HERO_SLIDES: HeroSlide[] = [
   {
@@ -20,6 +21,16 @@ const HERO_SLIDES: HeroSlide[] = [
     description: "Fast diagnostics, expert repairs. Your PC running like new.",
     primary: { label: "Book Your Repair", href: "/repair-a-device" },
     secondary: { label: "Build a PC", href: "/build-a-pc" },
+  },
+  {
+    imageSrc: "/hero.png",
+    imageAlt: "Custom gaming PC build",
+    badge: "Bespoke Builds",
+    heading: "Custom Builds Made for You",
+    description:
+      "Tell us your budget and workload — we'll spec, build, and stress-test a PC to match.",
+    primary: { label: "Build a PC", href: "/build-a-pc" },
+    secondary: { label: "Book Your Repair", href: "/repair-a-device" },
   },
   {
     imageSrc: "/hero.png",
@@ -48,6 +59,8 @@ export default async function Home() {
         slides={HERO_SLIDES}
         className="h-[85dvh] min-h-140 sm:h-[80vh] md:min-h-screen"
       />
+
+      {/* <LogoOrbit /> */}
 
       <FeaturedProducts heading="Featured Custom PC" products={featuredPcs} />
 

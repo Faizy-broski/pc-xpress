@@ -2,7 +2,7 @@ import { Mail, MapPin, Phone } from "lucide-react";
 
 const PHONE = "+44 7307 093007";
 const EMAIL = "info@pcxpress.co.uk";
-const ADDRESS = "84 The Broadway, Wimbledon SW19";
+const ADDRESS = "94 the broadway wimbledon sw19 1rh";
 
 export function Topbar() {
   return (
