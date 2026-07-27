@@ -51,7 +51,7 @@ export function PrebuiltCatalog({ products }: { products: PrebuiltProduct[] }) {
               type="button"
               onClick={() => setCategory(c)}
               className={cn(
-                "rounded-full border px-4 py-1.5 text-sm font-medium transition-colors",
+                "rounded border px-4 py-1.5 text-sm font-medium transition-colors",
                 category === c
                   ? "border-transparent bg-gradient-button text-primary-foreground shadow-glow"
                   : "border-border text-muted-foreground hover:border-primary/50 hover:text-foreground"
@@ -64,7 +64,7 @@ export function PrebuiltCatalog({ products }: { products: PrebuiltProduct[] }) {
 
         <DropdownMenu>
           <DropdownMenuTrigger
-            render={<Button variant="outline" size="sm" className="rounded-lg" />}
+            render={<Button variant="outline" size="sm" className="rounded" />}
           >
             <ArrowUpDown className="size-3.5" />
             {SORTS[sort]}

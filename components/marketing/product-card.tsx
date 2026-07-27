@@ -112,26 +112,26 @@ export function ProductCard({
         />
       </motion.div>
 
-      <div className="flex flex-1 flex-col gap-2 p-4">
+      <div className="flex flex-1 flex-col gap-2 p-4 min-w-0">
         <span className="text-xs font-medium text-muted-foreground">{os}</span>
 
-        <h3 className="text-base font-semibold leading-snug text-foreground">
+        <h3 className="text-base font-semibold leading-snug text-foreground break-words">
           {title}
         </h3>
 
         <ul className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground">
           {specs.map((spec) => (
-            <li key={spec} className="flex items-start gap-1.5">
+            <li key={spec} className="flex items-start gap-1.5 min-w-0">
               <span
                 className="mt-1.5 size-1 shrink-0 rounded-full bg-primary/60"
                 aria-hidden
               />
-              <span>{spec}</span>
+              <span className="break-words">{spec}</span>
             </li>
           ))}
         </ul>
 
-        <div className="flex items-center gap-1.5">
+        <div className="flex flex-wrap items-center gap-1.5">
           <StarRating value={rating} />
           <Link
             href={`${href}#reviews`}
@@ -141,10 +141,11 @@ export function ProductCard({
           </Link>
         </div>
 
-        <div className="mt-auto flex items-center gap-3 pt-2">
+        <div className="mt-auto flex flex-wrap items-center gap-x-3 gap-y-2 pt-2">
           <motion.div
             variants={{ rest: { scale: 1 }, hover: { scale: 1.04 } }}
             transition={{ duration: 0.25, ease: EASE }}
+            className="shrink-0"
           >
             <Link
               href={href}
@@ -161,7 +162,7 @@ export function ProductCard({
             aria-label="Add to cart"
             disabled={!inStock}
             onClick={handleAddToCart}
-            className="rounded"
+            className="rounded shrink-0"
           >
             <AnimatePresence mode="wait" initial={false}>
               {added ? (
@@ -188,11 +189,13 @@ export function ProductCard({
             </AnimatePresence>
           </Button>
 
-          <div className="flex flex-col leading-tight">
-            <span className="flex items-baseline gap-1.5">
-              <span className="text-lg font-bold text-primary">{price}</span>
+          <div className="flex min-w-0 flex-1 flex-col leading-tight">
+            <span className="flex flex-wrap items-baseline gap-x-1.5 gap-y-0.5">
+              <span className="text-lg font-bold text-primary whitespace-nowrap">
+                {price}
+              </span>
               {wasPrice && (
-                <span className="text-xs text-muted-foreground line-through">
+                <span className="text-xs text-muted-foreground line-through whitespace-nowrap">
                   {wasPrice}
                 </span>
               )}
@@ -203,7 +206,7 @@ export function ProductCard({
           </div>
         </div>
 
-        <p className="text-[0.7rem] text-muted-foreground">
+        <p className="text-[0.7rem] text-muted-foreground break-words">
           Estimated dispatch date: {dispatchDate}
         </p>
       </div>

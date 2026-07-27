@@ -1,48 +1,65 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Image from "next/image"
-import { motion } from "framer-motion"
-import { Cpu, PlusIcon, Star } from "lucide-react"
+import { useState } from "react";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { Cpu, PlusIcon, Star } from "lucide-react";
 
-import { cn } from "@/lib/utils"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Reveal } from "@/components/motion/reveal"
-import { StatusBadge } from "@/components/dashboard/status-badge"
-import { RowActions } from "@/components/dashboard/row-actions"
-import { BulkActionsBar } from "@/components/dashboard/bulk-actions-bar"
-import { ConfirmDeleteDialog } from "@/components/dashboard/confirm-delete-dialog"
-import { PrebuiltProductModal } from "@/components/dashboard/add-prebuilt-modal"
-import { usePrebuiltCatalog } from "@/components/dashboard/store"
-import { formatExVat, formatGBP, type PrebuiltProduct } from "@/components/prebuilt/data"
+import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Reveal } from "@/components/motion/reveal";
+import { StatusBadge } from "@/components/dashboard/status-badge";
+import { RowActions } from "@/components/dashboard/row-actions";
+import { BulkActionsBar } from "@/components/dashboard/bulk-actions-bar";
+import { ConfirmDeleteDialog } from "@/components/dashboard/confirm-delete-dialog";
+import { PrebuiltProductModal } from "@/components/dashboard/add-prebuilt-modal";
+import { usePrebuiltCatalog } from "@/components/dashboard/store";
+import {
+  formatExVat,
+  formatGBP,
+  type PrebuiltProduct,
+} from "@/components/prebuilt/data";
 
 export default function DashboardPrebuiltPcsPage() {
-  const { products, addPrebuiltProduct, updatePrebuiltProduct, removePrebuiltProduct } = usePrebuiltCatalog()
-  const [modalOpen, setModalOpen] = useState(false)
-  const [editingProduct, setEditingProduct] = useState<PrebuiltProduct | null>(null)
-  const [deleteTarget, setDeleteTarget] = useState<PrebuiltProduct | null>(null)
-  const [selectedSlugs, setSelectedSlugs] = useState<Set<string>>(new Set())
-  const [bulkConfirmOpen, setBulkConfirmOpen] = useState(false)
+  const {
+    products,
+    addPrebuiltProduct,
+    updatePrebuiltProduct,
+    removePrebuiltProduct,
+  } = usePrebuiltCatalog();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editingProduct, setEditingProduct] = useState<PrebuiltProduct | null>(
+    null,
+  );
+  const [deleteTarget, setDeleteTarget] = useState<PrebuiltProduct | null>(
+    null,
+  );
+  const [selectedSlugs, setSelectedSlugs] = useState<Set<string>>(new Set());
+  const [bulkConfirmOpen, setBulkConfirmOpen] = useState(false);
 
   function toggleSelected(slug: string) {
     setSelectedSlugs((prev) => {
-      const next = new Set(prev)
-      if (next.has(slug)) next.delete(slug)
-      else next.add(slug)
-      return next
-    })
+      const next = new Set(prev);
+      if (next.has(slug)) next.delete(slug);
+      else next.add(slug);
+      return next;
+    });
   }
 
   function toggleSelectAll() {
     setSelectedSlugs((prev) =>
-      prev.size === products.length ? new Set() : new Set(products.map((p) => p.slug))
-    )
+      prev.size === products.length
+        ? new Set()
+        : new Set(products.map((p) => p.slug)),
+    );
   }
 
   async function handleBulkDelete() {
-    await Promise.all([...selectedSlugs].map((slug) => removePrebuiltProduct(slug)))
-    setSelectedSlugs(new Set())
+    await Promise.all(
+      [...selectedSlugs].map((slug) => removePrebuiltProduct(slug)),
+    );
+    setSelectedSlugs(new Set());
   }
 
   return (
@@ -127,21 +144,26 @@ export default function DashboardPrebuiltPcsPage() {
             <div className="flex flex-1 flex-col gap-3 p-5">
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
-                  <p className="text-[0.7rem] font-medium text-muted-foreground">{product.os}</p>
-                  <p className="truncate font-semibold text-foreground">{product.name}</p>
+                  <p className="text-[0.7rem] font-medium text-muted-foreground">
+                    {product.os}
+                  </p>
+                  <p className="truncate font-semibold text-foreground">
+                    {product.name}
+                  </p>
                   <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
                     <Badge variant="soft">{product.category}</Badge>
                     {product.badge && <Badge>{product.badge}</Badge>}
                   </div>
                 </div>
-                <StatusBadge tone={product.inStock ? "success" : "danger"} className="shrink-0">
+                <StatusBadge
+                  tone={product.inStock ? "success" : "danger"}
+                  className="shrink-0"
+                >
                   {product.inStock ? "In Stock" : "Out of Stock"}
                 </StatusBadge>
               </div>
 
-              <p className="text-xs text-muted-foreground">
-                SKU {product.sku}
-              </p>
+              <p className="text-xs text-muted-foreground">SKU {product.sku}</p>
 
               <div className="flex items-center gap-1.5">
                 <span className="flex items-center gap-0.5 rounded bg-emerald-600 px-1.5 py-0.5">
@@ -150,12 +172,16 @@ export default function DashboardPrebuiltPcsPage() {
                       key={i}
                       className={cn(
                         "size-2.5",
-                        i < product.rating ? "fill-white text-white" : "fill-white/30 text-white/30"
+                        i < product.rating
+                          ? "fill-white text-white"
+                          : "fill-white/30 text-white/30",
                       )}
                     />
                   ))}
                 </span>
-                <span className="text-xs text-muted-foreground">{product.reviewCount} reviews</span>
+                <span className="text-xs text-muted-foreground">
+                  {product.reviewCount} reviews
+                </span>
               </div>
 
               {product.specs.length > 0 && (
@@ -172,14 +198,14 @@ export default function DashboardPrebuiltPcsPage() {
               )}
 
               <div className="flex flex-col gap-2 border-t border-border pt-3.5">
-                <div className="flex items-end justify-between gap-2">
-                  <div className="flex flex-col leading-tight">
-                    <span className="flex items-baseline gap-1.5">
-                      <span className="text-lg font-bold text-primary">
+                <div className="flex flex-wrap items-end justify-between gap-x-2 gap-y-1">
+                  <div className="flex min-w-0 flex-col leading-tight">
+                    <span className="flex flex-wrap items-baseline gap-x-1.5 gap-y-0.5">
+                      <span className="text-lg font-bold text-primary whitespace-nowrap">
                         {formatGBP(product.price)}
                       </span>
                       {product.wasPrice && (
-                        <span className="text-xs text-muted-foreground line-through">
+                        <span className="text-xs text-muted-foreground line-through whitespace-nowrap">
                           {formatGBP(product.wasPrice)}
                         </span>
                       )}
@@ -188,7 +214,7 @@ export default function DashboardPrebuiltPcsPage() {
                       ({formatExVat(product.price)} ex. VAT)
                     </span>
                   </div>
-                  <span className="shrink-0 text-right text-[0.65rem] text-muted-foreground">
+                  <span className="text-right text-[0.65rem] text-muted-foreground break-words">
                     Dispatch {product.dispatchDate}
                   </span>
                 </div>
@@ -228,7 +254,9 @@ export default function DashboardPrebuiltPcsPage() {
         open={deleteTarget !== null}
         title="Delete pre-built PC?"
         description={`This will permanently remove "${deleteTarget?.name}" from the store. This can't be undone.`}
-        onConfirm={() => (deleteTarget ? removePrebuiltProduct(deleteTarget.slug) : undefined)}
+        onConfirm={() =>
+          deleteTarget ? removePrebuiltProduct(deleteTarget.slug) : undefined
+        }
         onClose={() => setDeleteTarget(null)}
       />
 
@@ -240,5 +268,5 @@ export default function DashboardPrebuiltPcsPage() {
         onClose={() => setBulkConfirmOpen(false)}
       />
     </div>
-  )
+  );
 }

@@ -100,10 +100,10 @@ export function RecordModal({
             role="dialog"
             aria-modal="true"
             aria-label={title}
-            className="w-full max-w-md rounded-2xl border border-border bg-card p-5 shadow-card"
+            className="flex max-h-[90vh] w-full max-w-md flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-card"
           >
-            <div className="flex items-start justify-between">
-              <div>
+            <div className="flex shrink-0 items-start justify-between p-5 pb-0">
+              <div className="min-w-0">
                 <h3 className="text-lg font-bold text-foreground">{title}</h3>
                 {subtitle && <p className="text-sm text-muted-foreground">{subtitle}</p>}
               </div>
@@ -111,71 +111,87 @@ export function RecordModal({
                 type="button"
                 onClick={onClose}
                 aria-label="Close"
-                className="rounded-md border border-primary p-1 text-primary hover:bg-primary/10"
+                className="ml-3 shrink-0 rounded-md border border-primary p-1 text-primary hover:bg-primary/10"
               >
                 <XIcon className="size-4" />
               </button>
             </div>
 
-            {mode === "view" ? (
-              <div className="mt-4 grid grid-cols-2 gap-4">
-                {fields.map((field) => (
-                  <div key={field.key} className={cn(field.wide && "col-span-2")}>
-                    <p className="text-[11px] font-semibold tracking-wide text-muted-foreground uppercase">
-                      {field.label}
-                    </p>
-                    <p className="mt-0.5 text-sm font-medium text-foreground">
-                      {field.value || "—"}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="mt-4 flex flex-col gap-3.5">
-                {fields.map((field) => (
-                  <div key={field.key} className={cn(field.wide && "col-span-2")}>
-                    <label className="mb-1 block text-xs font-medium text-muted-foreground">
-                      {field.label}
-                    </label>
-                    {field.editable === false ? (
-                      <p className="text-sm font-medium text-foreground">{field.value}</p>
-                    ) : field.type === "select" ? (
-                      <select
-                        value={draft[field.key] ?? ""}
-                        onChange={(event) =>
-                          setDraft((prev) => ({ ...prev, [field.key]: event.target.value }))
-                        }
-                        className={selectClass}
-                      >
-                        {field.options?.map((option) => (
-                          <option key={option} value={option}>
-                            {option}
-                          </option>
-                        ))}
-                      </select>
-                    ) : (
-                      <Input
-                        type={field.type === "number" ? "number" : "text"}
-                        value={draft[field.key] ?? ""}
-                        onChange={(event) =>
-                          setDraft((prev) => ({ ...prev, [field.key]: event.target.value }))
-                        }
-                      />
-                    )}
-                  </div>
-                ))}
-
-                {error && <p className="text-sm text-destructive">{error}</p>}
-
-                <div className="mt-2 flex gap-3">
-                  <Button type="button" variant="outline" size="lg" onClick={onClose} className="flex-1">
-                    Cancel
-                  </Button>
-                  <Button type="submit" size="lg" disabled={submitting} className="flex-1">
-                    {submitting ? "Saving…" : "Save changes"}
-                  </Button>
+            <div className="min-h-0 flex-1 overflow-y-auto p-5">
+              {mode === "view" ? (
+                <div className="grid grid-cols-2 gap-4">
+                  {fields.map((field) => (
+                    <div key={field.key} className={cn(field.wide && "col-span-2")}>
+                      <p className="text-[11px] font-semibold tracking-wide text-muted-foreground uppercase">
+                        {field.label}
+                      </p>
+                      <p className="mt-0.5 text-sm font-medium text-foreground break-words">
+                        {field.value || "—"}
+                      </p>
+                    </div>
+                  ))}
                 </div>
-              </form>
+              ) : (
+                <form
+                  id="record-modal-form"
+                  onSubmit={handleSubmit}
+                  className="flex flex-col gap-3.5"
+                >
+                  {fields.map((field) => (
+                    <div key={field.key} className={cn(field.wide && "col-span-2")}>
+                      <label className="mb-1 block text-xs font-medium text-muted-foreground">
+                        {field.label}
+                      </label>
+                      {field.editable === false ? (
+                        <p className="text-sm font-medium text-foreground break-words">
+                          {field.value}
+                        </p>
+                      ) : field.type === "select" ? (
+                        <select
+                          value={draft[field.key] ?? ""}
+                          onChange={(event) =>
+                            setDraft((prev) => ({ ...prev, [field.key]: event.target.value }))
+                          }
+                          className={selectClass}
+                        >
+                          {field.options?.map((option) => (
+                            <option key={option} value={option}>
+                              {option}
+                            </option>
+                          ))}
+                        </select>
+                      ) : (
+                        <Input
+                          type={field.type === "number" ? "number" : "text"}
+                          value={draft[field.key] ?? ""}
+                          onChange={(event) =>
+                            setDraft((prev) => ({ ...prev, [field.key]: event.target.value }))
+                          }
+                        />
+                      )}
+                    </div>
+                  ))}
+
+                  {error && <p className="text-sm text-destructive">{error}</p>}
+                </form>
+              )}
+            </div>
+
+            {mode === "edit" && (
+              <div className="flex shrink-0 gap-3 border-t border-border p-5 pt-3.5">
+                <Button type="button" variant="outline" size="lg" onClick={onClose} className="flex-1">
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  form="record-modal-form"
+                  size="lg"
+                  disabled={submitting}
+                  className="flex-1"
+                >
+                  {submitting ? "Saving…" : "Save changes"}
+                </Button>
+              </div>
             )}
           </motion.div>
         </motion.div>
