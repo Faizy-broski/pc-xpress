@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 
-const WHATSAPP_NUMBER = "441234567890";
+const WHATSAPP_NUMBER = "447307093007";
 const WHATSAPP_MESSAGE = "Hi PCXpress, I'd like to ask about a repair/build.";
 const WHATSAPP_HREF = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
 

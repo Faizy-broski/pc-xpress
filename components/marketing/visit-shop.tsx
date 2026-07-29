@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
 
 const PHONE = "+44 7307 093007";
-const ADDRESS = "84 The Broadway, Wimbledon SW19";
+const ADDRESS = "94 The Broadway, Wimbledon SW19 1RH";
 const HOURS = "Mon – Sat: 9am – 6:30pm · Sun: Closed";
 const WHATSAPP_HREF = `https://wa.me/${PHONE.replace(/\D/g, "")}`;
 const MAP_SRC = `https://www.google.com/maps?q=${encodeURIComponent(

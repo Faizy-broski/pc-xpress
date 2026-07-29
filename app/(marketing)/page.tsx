@@ -1,4 +1,5 @@
 import { HeroCarousel, type HeroSlide } from "@/components/marketing/hero-carousel";
+import { BrandMarquee } from "@/components/marketing/brand-marquee";
 import { FeaturedProducts } from "@/components/marketing/featured-products";
 import { WhyPcXpress } from "@/components/marketing/why-pc-xpress";
 import { Testimonials } from "@/components/marketing/testimonials";
@@ -58,6 +59,8 @@ export default async function Home() {
         slides={HERO_SLIDES}
         className="h-[85dvh] min-h-140 sm:h-[80vh] md:min-h-screen"
       />
+
+      <BrandMarquee />
 
       <FeaturedProducts heading="Featured Custom PC" products={featuredPcs} />
 

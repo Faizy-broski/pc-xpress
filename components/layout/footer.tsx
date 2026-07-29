@@ -3,19 +3,19 @@ import Link from "next/link";
 import { Mail, MapPin, Phone } from "lucide-react";
 
 const SERVICE_LINKS = [
-  { label: "Laptop Repair", href: "/services/laptop-repair" },
-  { label: "PC Repair", href: "/services/pc-repair" },
-  { label: "Console Repair", href: "/services/console-repair" },
+  { label: "Laptop Repair", href: "/repair-a-device" },
+  { label: "PC Repair", href: "/repair-a-device" },
+  { label: "Console Repair", href: "/repair-a-device" },
   { label: "Prebuilt PCs", href: "/prebuilt-pcs" },
   { label: "Custom PC Builds", href: "/build-a-pc" },
-  { label: "Data Recovery", href: "/services/data-recovery" },
+  { label: "Data Recovery", href: "/repair-a-device" },
 ];
 
 const COMPANY_LINKS = [
+  { label: "Home", href: "/" },
   { label: "About Us", href: "/about" },
-  { label: "Our Team", href: "/about/team" },
-  { label: "Careers", href: "/careers" },
-  { label: "Blog", href: "/blog" },
+  { label: "Services", href: "/services" },
+  // { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
 ];
 
@@ -110,25 +110,25 @@ export function Footer() {
             <ul className="mt-4 space-y-3">
               <li>
                 <a
-                  href="tel:08001234567"
+                  href="tel:+447307093007"
                   className="flex items-center gap-2.5 text-sm text-white/60 transition-colors hover:text-white"
                 >
                   <Phone className="size-4 shrink-0 text-white" />
-                  0800 123 4567
+                  +44 7307 093007
                 </a>
               </li>
               <li>
                 <a
-                  href="mailto:hello@pcxpress.co.uk"
+                  href="mailto:info@pcxpress.co.uk"
                   className="flex items-center gap-2.5 text-sm text-white/60 transition-colors hover:text-white"
                 >
                   <Mail className="size-4 shrink-0 text-white" />
-                  hello@pcxpress.co.uk
+                  info@pcxpress.co.uk
                 </a>
               </li>
               <li className="flex items-start gap-2.5 text-sm text-white/60">
                 <MapPin className="mt-0.5 size-4 shrink-0 text-white" />
-                123 Tech Street, London, UK
+                94 The Broadway, Wimbledon SW19 1RH
               </li>
             </ul>
           </div>

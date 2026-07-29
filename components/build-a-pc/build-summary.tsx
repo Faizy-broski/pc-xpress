@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { AlertTriangle, Lightbulb, X } from "lucide-react";
+import { Lightbulb, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { cn } from "@/lib/utils";
@@ -32,19 +32,13 @@ export function BuildSummary({ categories, selections, onRemove }: BuildSummaryP
       (entry): entry is { category: Category; part: PartOption } => Boolean(entry.part)
     );
 
-  const cpu = selections.cpu;
-  const motherboard = selections.motherboard;
-  const socketMismatch = Boolean(
-    cpu?.socket && motherboard?.socket && cpu.socket !== motherboard.socket
-  );
-
   const subtotal = selectedList.reduce((sum, { part }) => sum + part.price, 0);
   const hasAny = selectedList.length > 0;
   const total = hasAny ? subtotal + ASSEMBLY_FEE : 0;
   const progress = selectedList.length / categories.length;
 
   const [bookingOpen, setBookingOpen] = useState(false);
-  const canSubmit = selectedList.length === categories.length && !socketMismatch;
+  const canSubmit = selectedList.length === categories.length;
 
   const bookingSummary = [
     ...selectedList.map(({ category, part }) => ({
@@ -112,26 +106,6 @@ export function BuildSummary({ categories, selections, onRemove }: BuildSummaryP
             ))}
           </AnimatePresence>
         </div>
-
-        <AnimatePresence>
-          {socketMismatch && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.25, ease: EASE }}
-              className="overflow-hidden"
-            >
-              <div className="mt-1 flex items-start gap-2 rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-xs text-destructive">
-                <AlertTriangle className="mt-0.5 size-3.5 shrink-0" />
-                <span>
-                  Socket mismatch: {cpu?.name} ({cpu?.socket}) won&apos;t fit the{" "}
-                  {motherboard?.name} ({motherboard?.socket}).
-                </span>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
 
         <div className="mt-4 space-y-1.5 border-t border-border pt-3 text-sm">
           <div className="flex justify-between text-muted-foreground">

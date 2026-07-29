@@ -80,7 +80,7 @@ export function BuildAPcClient({
           <div className="grid gap-5 lg:grid-cols-3 lg:items-start">
             <div className="lg:col-span-2">
               <Reveal>
-                <div className="rounded-2xl border border-border bg-card p-4 shadow-card">
+                <div className="rounded-2xl">
                   <Diagram
                     categories={categories}
                     selections={selections}
