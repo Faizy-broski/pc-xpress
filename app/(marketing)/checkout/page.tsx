@@ -3,7 +3,7 @@
 import { useState, type FormEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { AlertCircleIcon, ArrowRight, ChevronDownIcon, Cpu, Loader2Icon, LockIcon } from "lucide-react";
+import { AlertCircleIcon, ArrowRight, CheckCircle2, ChevronDownIcon, Cpu, Loader2Icon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,9 +13,10 @@ import { formatGBP } from "@/components/prebuilt/data";
 import { COUNTRIES } from "@/lib/countries";
 
 export default function CheckoutPage() {
-  const { items, subtotal } = useCart();
+  const { items, subtotal, clear } = useCart();
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -23,39 +24,74 @@ export default function CheckoutPage() {
     setError(null);
 
     const formData = new FormData(event.currentTarget);
-    const payload = {
-      items: items.map((item) => ({ slug: item.slug, quantity: item.quantity })),
-      customer: {
-        name: String(formData.get("name") ?? ""),
-        email: String(formData.get("email") ?? ""),
-        phone: String(formData.get("phone") ?? ""),
-      },
-      shipping: {
-        line1: String(formData.get("line1") ?? ""),
-        line2: String(formData.get("line2") ?? ""),
-        city: String(formData.get("city") ?? ""),
-        postcode: String(formData.get("postcode") ?? ""),
-        country: String(formData.get("country") ?? ""),
-      },
-    };
+    const name = String(formData.get("name") ?? "");
+    const email = String(formData.get("email") ?? "");
+    const phone = String(formData.get("phone") ?? "");
+    const address = [
+      String(formData.get("line1") ?? ""),
+      String(formData.get("line2") ?? ""),
+      String(formData.get("city") ?? ""),
+      String(formData.get("postcode") ?? ""),
+      String(formData.get("country") ?? ""),
+    ]
+      .filter(Boolean)
+      .join(", ");
+
+    const summary = [
+      ...items.map((item) => ({
+        label: item.name,
+        value: `Qty ${item.quantity} · ${formatGBP(item.price * item.quantity)}`,
+      })),
+      { label: "Shipping address", value: address },
+    ];
 
     try {
-      const response = await fetch("/api/checkout/create-session", {
+      const response = await fetch("/api/bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+          kind: "prebuilt",
+          name,
+          email,
+          phone,
+          summary,
+          totalText: formatGBP(subtotal),
+        }),
       });
-      const data = await response.json();
+      const data = await response.json().catch(() => null);
 
-      if (!response.ok || !data.url) {
-        throw new Error(data.error ?? "Could not start checkout.");
+      if (!response.ok) {
+        throw new Error(data?.error ?? "Could not send your order.");
       }
 
-      window.location.href = data.url;
+      setSuccess(true);
+      clear();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not start checkout.");
+      setError(err instanceof Error ? err.message : "Could not send your order.");
+    } finally {
       setSubmitting(false);
     }
+  }
+
+  if (success) {
+    return (
+      <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-4 pt-36 pb-26 text-center sm:px-6">
+        <CheckCircle2 className="size-12 text-primary" />
+        <h1 className="text-2xl font-bold tracking-tight text-foreground">Order received!</h1>
+        <p className="max-w-md text-muted-foreground">
+          We&apos;ve emailed our team your order details. We&apos;ll be in touch shortly to confirm and arrange payment.
+        </p>
+        <Button
+          size="lg"
+          nativeButton={false}
+          render={<Link href="/prebuilt-pcs" />}
+          className="mt-2 rounded-lg bg-gradient-button shadow-glow"
+        >
+          Continue shopping
+          <ArrowRight />
+        </Button>
+      </div>
+    );
   }
 
   if (items.length === 0) {
@@ -81,7 +117,7 @@ export default function CheckoutPage() {
       <Reveal viewTrigger={false}>
         <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">Checkout</h1>
         <p className="mt-1 text-muted-foreground">
-          Guest checkout — no account needed. You'll be redirected to Stripe to pay securely.
+          Guest checkout — no account needed. Submit your order and our team will email you to confirm and arrange payment.
         </p>
       </Reveal>
 
@@ -163,16 +199,16 @@ export default function CheckoutPage() {
               className="rounded-lg bg-gradient-button shadow-glow"
             >
               {submitting && <Loader2Icon className="animate-spin" />}
-              {submitting ? "Redirecting to Stripe…" : "Continue to payment"}
-              {!submitting && <LockIcon />}
+              {submitting ? "Sending order…" : "Place order"}
+              {!submitting && <ArrowRight />}
             </Button>
             <p className="text-center text-xs text-muted-foreground">
-              Payment is handled securely by Stripe — we never see your card details.
+              We&apos;ll email you to confirm your order and arrange payment.
             </p>
           </form>
         </Reveal>
 
-        <Reveal viewTrigger={false} delay={0.1} className="h-fit">
+        <Reveal viewTrigger={false} delay={0.1} className="h-fit lg:sticky lg:top-24">
           <div className="rounded-2xl border border-border bg-gradient-card p-5 shadow-card">
             <h2 className="font-semibold text-foreground">Order summary</h2>
             <div className="mt-4 flex flex-col gap-3">

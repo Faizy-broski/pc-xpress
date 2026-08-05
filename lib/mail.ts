@@ -6,7 +6,7 @@ export interface BookingSummaryLine {
 }
 
 export interface BookingEmailInput {
-  kind: "repair" | "build";
+  kind: "repair" | "build" | "prebuilt";
   name: string;
   email: string;
   phone: string;
@@ -79,10 +79,15 @@ export async function sendBookingEmail(input: BookingEmailInput) {
     throw new Error("No admin recipient configured (set BOOKING_ADMIN_EMAIL).");
   }
 
-  const isRepair = input.kind === "repair";
-  const heading = isRepair ? "New Repair Booking" : "New Custom PC Build Order";
-  const eyebrow = isRepair ? "Repair Request" : "Build Order";
-  const detailsHeading = isRepair ? "Repair Details" : "Build Details";
+  const heading =
+    input.kind === "repair"
+      ? "New Repair Booking"
+      : input.kind === "build"
+        ? "New Custom PC Build Order"
+        : "New Pre-built PC Order";
+  const eyebrow = input.kind === "repair" ? "Repair Request" : input.kind === "build" ? "Build Order" : "PC Order";
+  const detailsHeading =
+    input.kind === "repair" ? "Repair Details" : input.kind === "build" ? "Build Details" : "Order Details";
   const tel = input.phone.replace(/[^\d+]/g, "");
 
   const html = `<!doctype html>
@@ -220,7 +225,12 @@ export async function sendBookingEmail(input: BookingEmailInput) {
     from: process.env.SMTP_FROM ?? process.env.SMTP_USER,
     to: adminEmail,
     replyTo: input.email,
-    subject: input.kind === "repair" ? `New Repair Booking — ${input.name}` : `New Custom PC Build Order — ${input.name}`,
+    subject:
+      input.kind === "repair"
+        ? `New Repair Booking — ${input.name}`
+        : input.kind === "build"
+          ? `New Custom PC Build Order — ${input.name}`
+          : `New Pre-built PC Order — ${input.name}`,
     text,
     html,
   });

@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { sendBookingEmail, type BookingSummaryLine } from "@/lib/mail";
 
 interface BookingRequestBody {
-  kind: "repair" | "build";
+  kind: "repair" | "build" | "prebuilt";
   name: string;
   email: string;
   phone: string;
@@ -30,7 +30,7 @@ export async function POST(request: Request) {
   const summary = Array.isArray(body.summary) ? body.summary : [];
   const totalText = typeof body.totalText === "string" ? body.totalText.trim() : undefined;
 
-  if (kind !== "repair" && kind !== "build") {
+  if (kind !== "repair" && kind !== "build" && kind !== "prebuilt") {
     return NextResponse.json({ error: "Invalid booking type." }, { status: 400 });
   }
   if (!name || !phone || !EMAIL_RE.test(email)) {

@@ -22,7 +22,7 @@ export interface BookingSummaryLine {
 interface BookingModalProps {
   open: boolean;
   onClose: () => void;
-  kind: "repair" | "build";
+  kind: "repair" | "build" | "prebuilt";
   title: string;
   description: string;
   summary: BookingSummaryLine[];
