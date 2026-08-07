@@ -29,22 +29,36 @@ export function CustomCursor() {
 
   useEffect(() => {
     const isFinePointer = window.matchMedia("(pointer: fine)").matches
-    if (!isFinePointer) return
+    // `(update: slow)` flags hardware that can't reliably redraw every
+    // frame (low-power/low-end devices, some tablets). Trying to run a
+    // rAF trail there is exactly what shows up as "the cursor lags" —
+    // skip the effect entirely and let the native cursor handle it.
+    const isSlowUpdate = window.matchMedia("(update: slow)").matches
+    if (!isFinePointer || isSlowUpdate) return
 
     setEnabled(true)
     document.documentElement.setAttribute("data-custom-cursor", "true")
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    const ease = reduceMotion ? 1 : 0.2
+    // Time-constant, not frame-constant: half-life of ~55ms regardless of
+    // refresh rate, so the trail catches up at the same real-world speed
+    // on a 30fps device as on a 120fps one instead of visibly lagging
+    // further behind when frames are slower/sparser.
+    const HALF_LIFE_MS = 55
 
     let mouseX = 0
     let mouseY = 0
     let ringX = 0
     let ringY = 0
     let raf = 0
+    let lastTime = 0
     let lastVariant: CursorVariant = "default"
 
-    function tick() {
+    function tick(time: number) {
+      const dt = lastTime ? time - lastTime : 16
+      lastTime = time
+      const ease = reduceMotion ? 1 : 1 - Math.pow(2, -dt / HALF_LIFE_MS)
+
       ringX += (mouseX - ringX) * ease
       ringY += (mouseY - ringY) * ease
       if (dotWrapRef.current) {

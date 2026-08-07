@@ -103,14 +103,14 @@ export function Navbar() {
         <Logo className="hidden md:flex" />
 
         <div className="hidden flex-1 items-center justify-end gap-2 md:flex">
-          <Button
+          {/* <Button
             variant="ghost"
             size="icon"
             aria-label="Search"
             className="text-white hover:bg-white/10 hover:text-white"
           >
             <Search />
-          </Button>
+          </Button> */}
 
           <CartButton />
 

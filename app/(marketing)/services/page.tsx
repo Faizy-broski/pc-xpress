@@ -165,7 +165,9 @@ const PROCESS_STEPS = [
 function ServiceCardItem({ service }: { service: ServiceCard }) {
   const Icon = service.icon;
   return (
-    <RevealItem className="group flex h-full flex-col rounded border-2 border-border bg-secondary p-6 transition-colors hover:border-primary">
+    <RevealItem className="group relative isolate flex h-full flex-col overflow-hidden rounded border-2 border-border bg-secondary p-6 transition-colors hover:border-primary hover:shadow-glow">
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-hero opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+
       <span className="flex size-12 items-center justify-center rounded-full bg-accent">
         <Icon className="size-5 text-primary" />
       </span>

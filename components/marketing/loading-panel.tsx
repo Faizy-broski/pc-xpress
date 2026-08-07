@@ -2,7 +2,7 @@ import { Cpu } from "lucide-react";
 
 export function LoadingPanel() {
   return (
-    <div className="flex min-h-[65vh] flex-col items-center justify-center gap-5 px-4 py-16 text-center">
+    <div className="flex h-full min-h-[calc(100vh-7rem)] flex-col items-center justify-center gap-5 px-4 py-16 text-center">
       <div className="relative flex size-16 items-center justify-center">
         <span className="absolute inset-0 animate-ping rounded-2xl bg-primary/20" />
         <span className="relative flex size-16 items-center justify-center rounded-2xl bg-gradient-button text-primary-foreground shadow-glow">

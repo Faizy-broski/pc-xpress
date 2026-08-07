@@ -11,12 +11,12 @@ import {
   Sparkles,
 } from "lucide-react";
 
-import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
 import { TextReveal } from "@/components/motion/text-reveal";
 import { CtaBanner } from "@/components/marketing/cta-banner";
+import { ContactForm } from "@/components/marketing/contact-form";
 
 export const metadata: Metadata = {
   title: "Contact Us | PC Xpress",
@@ -25,13 +25,17 @@ export const metadata: Metadata = {
 };
 
 const PHONE = "+44 7307 093007";
-const EMAIL = "info@pcxpress.co.uk";
+const EMAIL = "repairs@pcxpress.co.uk";
 const ADDRESS = "94 The Broadway, Wimbledon SW19 1RH";
 const HOURS = "Mon – Sat: 9am – 6:30pm · Sun: Closed";
 const WHATSAPP_HREF = `https://wa.me/${PHONE.replace(/\D/g, "")}`;
-const MAP_SRC = `https://www.google.com/maps?q=${encodeURIComponent(
-  `PC Xpress, ${ADDRESS}`
-)}&output=embed`;
+const MAP_QUERY = encodeURIComponent(`PC Xpress, ${ADDRESS}`);
+const MAP_SRC = `https://www.google.com/maps?q=${MAP_QUERY}&output=embed`;
+const MAP_LINK = `https://www.google.com/maps/search/?api=1&query=${MAP_QUERY}`;
+// Plain `mailto:` links silently do nothing on machines with no desktop mail
+// client configured (common in browsers on Windows) — opening Gmail's web
+// compose view instead is an action that always actually does something.
+const GMAIL_COMPOSE_HREF = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(EMAIL)}`;
 
 const CONTACT_METHODS = [
   {
@@ -50,13 +54,13 @@ const CONTACT_METHODS = [
     icon: Mail,
     title: "Email us",
     value: EMAIL,
-    href: `mailto:${EMAIL}`,
+    href: GMAIL_COMPOSE_HREF,
   },
   {
     icon: MapPin,
     title: "Visit the studio",
     value: ADDRESS,
-    href: MAP_SRC,
+    href: MAP_LINK,
   },
 ];
 
@@ -82,9 +86,6 @@ const FAQS = [
       "Yes, all parts and workmanship are covered by a 12-month warranty.",
   },
 ];
-
-const fieldClass =
-  "w-full rounded border border-border bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50";
 
 export default function ContactPage() {
   return (
@@ -131,8 +132,10 @@ export default function ContactPage() {
                   href={method.href}
                   target={method.href.startsWith("http") ? "_blank" : undefined}
                   rel={method.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                  className="group flex h-full flex-col rounded border-2 border-border bg-secondary p-6 transition-colors hover:border-primary"
+                  className="group relative isolate flex h-full flex-col overflow-hidden rounded border-2 border-border bg-secondary p-6 transition-colors hover:border-primary hover:shadow-glow"
                 >
+                  <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-hero opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+
                   <span className="flex size-11 items-center justify-center rounded-full bg-accent">
                     <method.icon className="size-4.5 text-primary" />
                   </span>
@@ -142,7 +145,7 @@ export default function ContactPage() {
                   <p className="mt-1 text-sm text-secondary-foreground/65">
                     {method.value}
                   </p>
-                  <span className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-primary transition-colors group-hover:gap-1.5">
+                  <span className="mt-auto inline-flex items-center gap-1 text-xs font-semibold text-primary transition-colors group-hover:gap-1.5">
                     Get in touch
                     <ArrowRight className="size-3.5" />
                   </span>
@@ -161,52 +164,11 @@ export default function ContactPage() {
                 Send us a message
               </h2>
               <p className="mt-1 text-sm text-muted-foreground">
-                Tell us about your device and the issue — we'll get back to
+                Tell us about your device and the issue — we&apos;ll get back to
                 you with next steps.
               </p>
 
-              <form className="mt-6 flex flex-col gap-3">
-                <div className="grid gap-3 sm:grid-cols-2">
-                  <input
-                    type="text"
-                    name="name"
-                    placeholder="Full name"
-                    className={fieldClass}
-                    required
-                  />
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="Email address"
-                    className={fieldClass}
-                    required
-                  />
-                </div>
-                <input
-                  type="tel"
-                  name="phone"
-                  placeholder="Phone number (optional)"
-                  className={fieldClass}
-                />
-                <input
-                  type="text"
-                  name="issue"
-                  placeholder="Device & issue (e.g. iPhone 14 — cracked screen)"
-                  className={fieldClass}
-                />
-                <textarea
-                  name="message"
-                  rows={5}
-                  placeholder="Tell us more..."
-                  className={cn(fieldClass, "resize-none")}
-                  required
-                />
-
-                <Button type="submit" size="lg" className="mt-2 w-full rounded">
-                  Send Message
-                  <ArrowRight />
-                </Button>
-              </form>
+              <ContactForm />
             </RevealItem>
 
             <RevealItem className="flex flex-col gap-5">
