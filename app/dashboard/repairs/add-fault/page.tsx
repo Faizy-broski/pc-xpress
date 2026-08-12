@@ -7,13 +7,13 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal"
-import { CatalogIcon, ICON_NAMES, type IconName } from "@/components/icons/icon-registry"
+import { CatalogIcon } from "@/components/icons/icon-registry"
 import { RowActions } from "@/components/dashboard/row-actions"
 import { BulkActionsBar } from "@/components/dashboard/bulk-actions-bar"
 import { RecordModal, type RecordField } from "@/components/dashboard/record-modal"
 import { ConfirmDeleteDialog } from "@/components/dashboard/confirm-delete-dialog"
 import { useDeviceTypeCatalog, useFaultsCatalog } from "@/components/dashboard/store"
-import { type Brand, type DeviceType, type DeviceTypeId, type Fault } from "@/components/repair/data"
+import { type Brand, type DeviceTypeId, type Fault } from "@/components/repair/data"
 import { formatGBP } from "@/components/build-a-pc/data"
 
 const fieldClass =
@@ -21,7 +21,7 @@ const fieldClass =
 
 const labelClass = "mb-1 block text-xs font-medium text-muted-foreground"
 
-const TIERS = ["Device Types", "Brands", "Services"] as const
+const TIERS = ["Brands", "Services"] as const
 
 function slugify(input: string) {
   return input
@@ -79,37 +79,6 @@ function RowCheckbox({ checked, onChange }: { checked: boolean; onChange: () => 
   )
 }
 
-function IconPicker({ value, onChange }: { value: IconName; onChange: (name: IconName) => void }) {
-  return (
-    <div className="flex flex-wrap gap-1.5">
-      {ICON_NAMES.map((name) => (
-        <button
-          key={name}
-          type="button"
-          onClick={() => onChange(name)}
-          aria-label={name}
-          className={cn(
-            "flex size-9 items-center justify-center rounded-lg border transition-colors",
-            value === name
-              ? "border-primary bg-primary/10 text-primary"
-              : "border-border text-muted-foreground hover:text-foreground"
-          )}
-        >
-          <CatalogIcon name={name} className="size-4" />
-        </button>
-      ))}
-    </div>
-  )
-}
-
-function deviceTypeFields(device: DeviceType): RecordField[] {
-  return [
-    { key: "label", label: "Device type name", value: device.label },
-    { key: "description", label: "Description", value: device.description, wide: true },
-    { key: "icon", label: "Icon", value: device.icon, type: "select", options: [...ICON_NAMES] },
-  ]
-}
-
 function brandFields(brand: Brand): RecordField[] {
   return [{ key: "label", label: "Brand name", value: brand.label }]
 }
@@ -121,166 +90,6 @@ function faultFields(fault: Fault): RecordField[] {
     { key: "priceFrom", label: "Price from (£)", value: String(fault.priceFrom), type: "number" },
     { key: "etaLabel", label: "Turnaround / ETA", value: fault.etaLabel },
   ]
-}
-
-function DeviceTypeTierForm() {
-  const { deviceTypes, addDeviceType, updateDeviceType, removeDeviceType } = useDeviceTypeCatalog()
-
-  const [label, setLabel] = useState("")
-  const [description, setDescription] = useState("")
-  const [icon, setIcon] = useState<IconName>(ICON_NAMES[0])
-  const [submitting, setSubmitting] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-
-  const selection = useSelection()
-  const [editingDevice, setEditingDevice] = useState<DeviceType | null>(null)
-  const [deleteTarget, setDeleteTarget] = useState<DeviceType | null>(null)
-  const [bulkConfirmOpen, setBulkConfirmOpen] = useState(false)
-
-  const isValid = label.trim().length > 0 && description.trim().length > 0
-
-  async function handleSubmit(event: React.FormEvent) {
-    event.preventDefault()
-    if (!isValid) return
-
-    setSubmitting(true)
-    setError(null)
-    try {
-      await addDeviceType({
-        id: `${slugify(label)}-${Date.now().toString(36)}`,
-        label: label.trim(),
-        description: description.trim(),
-        icon,
-      })
-
-      setLabel("")
-      setDescription("")
-      setIcon(ICON_NAMES[0])
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not add the device type.")
-    } finally {
-      setSubmitting(false)
-    }
-  }
-
-  function handleSaveEdit(values: Record<string, string>) {
-    if (!editingDevice) return Promise.resolve()
-    return updateDeviceType(editingDevice.id, {
-      label: values.label,
-      description: values.description,
-      icon: values.icon as IconName,
-    })
-  }
-
-  async function handleBulkDelete() {
-    await Promise.all([...selection.selectedIds].map((id) => removeDeviceType(id)))
-    selection.clear()
-  }
-
-  return (
-    <div className="grid gap-6 lg:grid-cols-2 lg:items-start">
-      <Reveal viewTrigger={false} delay={0.1}>
-        <div className="overflow-hidden rounded-xl border border-border bg-gradient-card shadow-card">
-          <div className="flex items-center justify-between gap-3 border-b border-border px-5 py-4">
-            <h2 className="font-semibold text-foreground">Current device types</h2>
-            {deviceTypes.length > 0 && (
-              <SelectAllCheckbox
-                checked={selection.selectedIds.size === deviceTypes.length}
-                onChange={() => selection.toggleAll(deviceTypes.map((d) => d.id))}
-              />
-            )}
-          </div>
-          <BulkActionsBar
-            count={selection.selectedIds.size}
-            onClear={selection.clear}
-            onDelete={() => setBulkConfirmOpen(true)}
-          />
-          <RevealGroup viewTrigger={false} className="divide-y divide-border">
-            {deviceTypes.map((device) => (
-              <RevealItem key={device.id} className="flex items-center justify-between gap-3 px-5 py-3.5">
-                <div className="flex min-w-0 items-center gap-3">
-                  <RowCheckbox
-                    checked={selection.selectedIds.has(device.id)}
-                    onChange={() => selection.toggle(device.id)}
-                  />
-                  <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-muted text-foreground">
-                    <CatalogIcon name={device.icon} className="size-4" />
-                  </span>
-                  <div className="min-w-0">
-                    <p className="font-medium text-foreground">{device.label}</p>
-                    <p className="truncate text-xs text-muted-foreground">{device.description}</p>
-                  </div>
-                </div>
-                <RowActions
-                  onEdit={() => setEditingDevice(device)}
-                  onDelete={() => setDeleteTarget(device)}
-                />
-              </RevealItem>
-            ))}
-          </RevealGroup>
-        </div>
-      </Reveal>
-
-      <Reveal viewTrigger={false} delay={0.15}>
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col gap-3.5 rounded-xl border border-border bg-gradient-card p-5 shadow-card"
-        >
-          <div>
-            <label className={labelClass}>Device type name</label>
-            <Input value={label} onChange={(e) => setLabel(e.target.value)} placeholder="Smartwatch" required />
-          </div>
-          <div>
-            <label className={labelClass}>Description</label>
-            <textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              rows={2}
-              placeholder="Apple Watch, Galaxy Watch & more"
-              className={cn(fieldClass, "h-auto resize-none py-2")}
-            />
-          </div>
-          <div>
-            <label className={labelClass}>Icon</label>
-            <IconPicker value={icon} onChange={setIcon} />
-          </div>
-
-          {error && <p className="text-sm text-destructive">{error}</p>}
-
-          <Button type="submit" size="lg" disabled={!isValid || submitting} className="mt-1">
-            <PlusIcon />
-            {submitting ? "Adding…" : "Add Device Type"}
-          </Button>
-        </form>
-      </Reveal>
-
-      <RecordModal
-        open={editingDevice !== null}
-        mode="edit"
-        title="Edit device type"
-        subtitle={editingDevice?.label}
-        fields={editingDevice ? deviceTypeFields(editingDevice) : []}
-        onClose={() => setEditingDevice(null)}
-        onSave={handleSaveEdit}
-      />
-
-      <ConfirmDeleteDialog
-        open={deleteTarget !== null}
-        title="Delete device type?"
-        description={`This will remove "${deleteTarget?.label}" along with all its brands and services. This can't be undone.`}
-        onConfirm={() => (deleteTarget ? removeDeviceType(deleteTarget.id) : undefined)}
-        onClose={() => setDeleteTarget(null)}
-      />
-
-      <ConfirmDeleteDialog
-        open={bulkConfirmOpen}
-        title="Delete selected device types?"
-        description={`This will remove ${selection.selectedIds.size} device type${selection.selectedIds.size === 1 ? "" : "s"}, along with their brands and services. This can't be undone.`}
-        onConfirm={handleBulkDelete}
-        onClose={() => setBulkConfirmOpen(false)}
-      />
-    </div>
-  )
 }
 
 function BrandsTierForm() {
@@ -667,7 +476,7 @@ function ServicesTierForm() {
 }
 
 export default function RepairsCatalogPage() {
-  const [tier, setTier] = useState<(typeof TIERS)[number]>("Device Types")
+  const [tier, setTier] = useState<(typeof TIERS)[number]>("Brands")
 
   return (
     <div className="flex flex-col gap-6">
@@ -702,7 +511,6 @@ export default function RepairsCatalogPage() {
         </div>
       </Reveal>
 
-      {tier === "Device Types" && <DeviceTypeTierForm />}
       {tier === "Brands" && <BrandsTierForm />}
       {tier === "Services" && <ServicesTierForm />}
     </div>

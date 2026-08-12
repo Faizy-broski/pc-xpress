@@ -34,19 +34,19 @@ const TESTIMONIALS: Testimonial[] = [
 export function Testimonials() {
   return (
     <section className="relative overflow-hidden py-14 sm:py-16">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -right-24 top-1/2 hidden h-184 w-155 -translate-y-1/2 sm:block lg:-right-10"
-      >
-        <Image
-          src="/large-white-pc.png"
-          alt=""
-          fill
-          className="object-contain object-right"
-        />
-      </div>
-
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -right-24 top-1/2 hidden h-184 w-155 -translate-y-1/2 sm:block lg:-right-10"
+        >
+          <Image
+            src="/large-white-pc.png"
+            alt=""
+            fill
+            className="object-contain object-right"
+          />
+        </div>
+
         <Reveal className="mx-auto max-w-2xl text-center">
           <Badge variant="soft" className="mx-auto">
             <span className="size-1.5 rounded-full bg-primary" />

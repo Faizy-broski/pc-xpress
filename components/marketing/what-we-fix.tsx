@@ -56,33 +56,31 @@ const TRUST_POINTS = [
 export function WhatWeFix() {
   return (
     <section className="relative overflow-hidden py-14 sm:py-16">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute bottom-0 left-0 h-72 w-72 sm:-bottom-16 sm:-left-14 sm:h-96 sm:w-96 lg:h-112 lg:w-md"
-      >
-        <Image
-          src="/what-we-fix-bg-left.png"
-          alt=""
-          fill
-          className="object-contain object-bottom-left"
-        />
-      </div>
-      <div
-        aria-hidden
-        className="pointer-events-none absolute right-0 top-0 h-72 w-72 sm:right-4 sm:-top-6 sm:h-96 sm:w-96 lg:h-112 lg:w-md"
-      >
-        <Image
-          src="/what-we-fix-bg-right.png"
-          alt=""
-          fill
-          loading="eager"
-          className="object-contain object-top-right"
-        />
-      </div>
-
-     
-
       <div className="relative mx-auto max-w-6xl px-4">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute bottom-0 left-0 h-72 w-72 sm:-bottom-16 sm:-left-14 sm:h-96 sm:w-96 lg:h-112 lg:w-md"
+        >
+          <Image
+            src="/what-we-fix-bg-left.png"
+            alt=""
+            fill
+            className="object-contain object-bottom-left"
+          />
+        </div>
+        <div
+          aria-hidden
+          className="pointer-events-none absolute right-0 top-0 h-72 w-72 sm:right-4 sm:-top-6 sm:h-96 sm:w-96 lg:h-112 lg:w-md"
+        >
+          <Image
+            src="/what-we-fix-bg-right.png"
+            alt=""
+            fill
+            loading="eager"
+            className="object-contain object-top-right"
+          />
+        </div>
+
         <Reveal className="mx-auto max-w-2xl text-center">
           <Badge variant="soft" className="mx-auto">
             {/* eslint-disable-next-line @next/next/no-img-element -- next/image blocks local .svg sources by default */}

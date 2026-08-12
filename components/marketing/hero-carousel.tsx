@@ -94,7 +94,7 @@ export function HeroCarousel({
                 className="object-cover"
               />
 
-              <div className="relative mx-auto flex h-full max-w-6xl flex-col justify-center px-4 pt-16 pb-28 sm:px-6 sm:pt-20 sm:pb-32 md:pt-40 md:pb-20 lg:px-8">
+              <div className="relative mx-auto flex h-full max-w-6xl flex-col justify-center px-4 pt-16 pb-4 sm:px-6 sm:pt-20 sm:pb-32 md:pt-40 md:pb-20 lg:px-8">
                 <Reveal>
                   <Badge variant="soft" className="bg-white/10 text-white">
                     <Sparkles />
@@ -106,7 +106,7 @@ export function HeroCarousel({
                   as="h1"
                   text={slide.heading}
                   delay={0.1}
-                  className="mt-4 max-w-xs text-2xl font-bold tracking-tight text-white sm:max-w-sm sm:text-4xl lg:text-5xl"
+                  className="mt-4 max-w-xs text-2xl font-bold tracking-tight text-white sm:max-w-sm sm:text-4xl lg:max-w-xl lg:text-5xl"
                 />
 
                 <Reveal delay={0.25}>

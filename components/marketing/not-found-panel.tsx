@@ -14,7 +14,7 @@ const QUICK_LINKS = [
 
 export function NotFoundPanel() {
   return (
-    <div className="mx-auto flex min-h-[65vh] max-w-xl flex-col items-center justify-center px-4 py-16 text-center sm:px-6 lg:px-8">
+    <div className="mx-auto flex h-screen max-w-xl flex-col items-center justify-center px-4 py-16 text-center sm:px-6 lg:px-8">
       <Reveal>
         <span className="relative flex size-20 items-center justify-center rounded-3xl bg-accent text-accent-foreground shadow-glow">
           <Unplug className="size-9" />

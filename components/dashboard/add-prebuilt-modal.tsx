@@ -267,7 +267,7 @@ export function PrebuiltProductModal({ open, onClose, product, onSubmit }: Prebu
             role="dialog"
             aria-modal="true"
             aria-label={isEditing ? "Edit pre-built PC" : "Add pre-built PC"}
-            className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-border bg-card p-5 shadow-card"
+            className="no-scrollbar max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-border bg-card p-5 shadow-card"
           >
             <div className="flex items-start justify-between">
               <div>

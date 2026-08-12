@@ -21,19 +21,19 @@ const fieldClass =
 export function VisitShop() {
   return (
     <section className="relative overflow-hidden py-12 sm:py-16">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute left-0 top-1/2 hidden h-186 w-186 -translate-y-1/2 sm:block"
-      >
-        <Image
-          src="/large-white-pc-left.png"
-          alt=""
-          fill
-          className="object-contain object-left"
-        />
-      </div>
-
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute left-0 top-1/2 hidden h-186 w-186 -translate-y-1/2 sm:block"
+        >
+          <Image
+            src="/large-white-pc-left.png"
+            alt=""
+            fill
+            className="object-contain object-left"
+          />
+        </div>
+
         <Reveal className="mx-auto max-w-2xl text-center">
           <Badge variant="soft" className="mx-auto">
             <span className="size-1.5 rounded-full bg-primary" />

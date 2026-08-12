@@ -50,9 +50,9 @@ function escapeHtml(value: string) {
     .replace(/'/g, "&#39;");
 }
 
-// Brand red used across the site's UI (oklch(0.53 0.215 27.3)); email clients
+// Brand red used across the site's UI (oklch(0.628 0.25 23.7)); email clients
 // need a plain hex since inline styles can't reference CSS custom properties.
-const BRAND_RED = "#b91c1c";
+const BRAND_RED = "#FC0E34";
 const BRAND_RED_DARK = "#1f0a09";
 const BORDER = "#e7e2e0";
 const MUTED = "#6b6461";

@@ -25,9 +25,6 @@ interface DashboardStoreValue {
   removeRepairJob: (id: string) => void
 
   deviceTypes: DeviceType[]
-  addDeviceType: (deviceType: DeviceType) => Promise<void>
-  updateDeviceType: (id: DeviceTypeId, patch: Partial<DeviceType>) => Promise<void>
-  removeDeviceType: (id: DeviceTypeId) => Promise<void>
 
   brands: Record<DeviceTypeId, Brand[]>
   addBrand: (deviceId: DeviceTypeId, brand: Brand) => Promise<void>
@@ -100,7 +97,7 @@ export function DashboardStoreProvider({
   initialReviews,
 }: DashboardStoreProviderProps) {
   const [repairJobs, setRepairJobs] = React.useState<RepairJob[]>(REPAIR_JOBS)
-  const [deviceTypes, setDeviceTypes] = React.useState<DeviceType[]>(initialDeviceTypes)
+  const [deviceTypes] = React.useState<DeviceType[]>(initialDeviceTypes)
   const [brands, setBrands] = React.useState<Record<DeviceTypeId, Brand[]>>(initialBrands)
   const [faults, setFaults] = React.useState<Record<DeviceTypeId, Fault[]>>(initialFaults)
   const [prebuiltProducts, setPrebuiltProducts] = React.useState<PrebuiltProduct[]>(initialPrebuiltProducts)
@@ -108,44 +105,6 @@ export function DashboardStoreProvider({
   const [categories, setCategories] = React.useState<Category[]>(initialCategories)
   const [customBuildOrders, setCustomBuildOrders] = React.useState<CustomBuildOrder[]>(CUSTOM_BUILD_ORDERS)
   const [reviews, setReviews] = React.useState<Review[]>(initialReviews)
-
-  const addDeviceType = React.useCallback(async (deviceType: DeviceType) => {
-    const { deviceType: created } = await requestJson<{ deviceType: DeviceType }>(
-      "/api/device-types",
-      "POST",
-      deviceType
-    )
-    setDeviceTypes((prev) => [...prev, created])
-    setBrands((prev) => ({ ...prev, [created.id]: [] }))
-    setFaults((prev) => ({ ...prev, [created.id]: [] }))
-  }, [])
-
-  const updateDeviceType = React.useCallback(
-    async (id: DeviceTypeId, patch: Partial<DeviceType>) => {
-      const { deviceType: updated } = await requestJson<{ deviceType: DeviceType }>(
-        `/api/device-types/${id}`,
-        "PATCH",
-        patch
-      )
-      setDeviceTypes((prev) => prev.map((d) => (d.id === id ? updated : d)))
-    },
-    []
-  )
-
-  const removeDeviceType = React.useCallback(async (id: DeviceTypeId) => {
-    await requestJson(`/api/device-types/${id}`, "DELETE")
-    setDeviceTypes((prev) => prev.filter((d) => d.id !== id))
-    setBrands((prev) => {
-      const next = { ...prev }
-      delete next[id]
-      return next
-    })
-    setFaults((prev) => {
-      const next = { ...prev }
-      delete next[id]
-      return next
-    })
-  }, [])
 
   const addBrand = React.useCallback(async (deviceId: DeviceTypeId, brand: Brand) => {
     const { brand: created } = await requestJson<{ brand: Brand }>(
@@ -327,9 +286,6 @@ export function DashboardStoreProvider({
       updateRepairJob,
       removeRepairJob,
       deviceTypes,
-      addDeviceType,
-      updateDeviceType,
-      removeDeviceType,
       brands,
       addBrand,
       updateBrand,
@@ -361,9 +317,6 @@ export function DashboardStoreProvider({
       updateRepairJob,
       removeRepairJob,
       deviceTypes,
-      addDeviceType,
-      updateDeviceType,
-      removeDeviceType,
       brands,
       addBrand,
       updateBrand,
@@ -413,9 +366,8 @@ export function useRepairJobActions() {
 }
 
 export function useDeviceTypeCatalog() {
-  const { deviceTypes, addDeviceType, updateDeviceType, removeDeviceType, brands, addBrand, updateBrand, removeBrand } =
-    useDashboardStore()
-  return { deviceTypes, addDeviceType, updateDeviceType, removeDeviceType, brands, addBrand, updateBrand, removeBrand }
+  const { deviceTypes, brands, addBrand, updateBrand, removeBrand } = useDashboardStore()
+  return { deviceTypes, brands, addBrand, updateBrand, removeBrand }
 }
 
 export function useFaultsCatalog() {

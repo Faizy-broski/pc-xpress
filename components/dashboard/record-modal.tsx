@@ -117,7 +117,7 @@ export function RecordModal({
               </button>
             </div>
 
-            <div className="min-h-0 flex-1 overflow-y-auto p-5">
+            <div className="no-scrollbar min-h-0 flex-1 overflow-y-auto p-5">
               {mode === "view" ? (
                 <div className="grid grid-cols-2 gap-4">
                   {fields.map((field) => (

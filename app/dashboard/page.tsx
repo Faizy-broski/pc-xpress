@@ -158,14 +158,14 @@ export default function DashboardOverviewPage() {
         </RevealItem>
       </RevealGroup>
 
-      <div className="grid gap-6 lg:grid-cols-3 lg:items-start">
+      <div className="grid gap-6 lg:grid-cols-3">
         <Reveal viewTrigger={false} className="lg:col-span-2">
-          <div className="rounded-xl border border-border bg-gradient-card p-5 shadow-card sm:p-6">
+          <div className="flex h-full flex-col rounded-xl border border-border bg-gradient-card p-5 shadow-card sm:p-6">
             <div className="flex items-center justify-between">
               <h2 className="font-semibold text-foreground">Revenue over time</h2>
               <span className="text-xs text-muted-foreground">Last 12 months</span>
             </div>
-            <div className="mt-3">
+            <div className="mt-3 flex flex-1 items-center">
               <RevenueChart data={REVENUE_HISTORY} />
             </div>
           </div>

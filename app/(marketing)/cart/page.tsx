@@ -17,7 +17,7 @@ export default function CartPage() {
 
   if (items.length === 0) {
     return (
-      <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-4 pt-36 pb-26 text-center sm:px-6">
+      <div className="mx-auto flex h-screen max-w-6xl flex-col items-center justify-center gap-4 px-4 text-center sm:px-6">
         <span className="flex size-16 items-center justify-center rounded-2xl bg-accent text-accent-foreground">
           <ShoppingCart className="size-8" />
         </span>

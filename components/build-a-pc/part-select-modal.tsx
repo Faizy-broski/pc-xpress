@@ -72,7 +72,7 @@ export function PartSelectModal({
               </button>
             </div>
 
-            <div className="mt-4 max-h-80 space-y-2.5 overflow-y-auto pr-1">
+            <div className="no-scrollbar mt-4 max-h-80 space-y-2.5 overflow-y-auto pr-1">
               {category.options.map((option, i) => {
                 const isSelected = selected?.id === option.id;
 

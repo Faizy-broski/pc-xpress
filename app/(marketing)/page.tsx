@@ -57,7 +57,7 @@ export default async function Home() {
     <>
       <HeroCarousel
         slides={HERO_SLIDES}
-        className="h-[85dvh] min-h-140 sm:h-[80vh] md:min-h-screen"
+        className="h-[65dvh] sm:h-[80vh]"
       />
 
       <BrandMarquee />

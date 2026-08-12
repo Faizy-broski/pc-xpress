@@ -249,7 +249,7 @@ export default function AboutPage() {
 
       <WhyPcXpress />
 
-      <section className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8">
+      {/* <section className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8">
         <Reveal className="mx-auto max-w-2xl text-center">
           <Badge variant="soft" className="mx-auto">
             <Target className="size-3.5" />
@@ -285,7 +285,7 @@ export default function AboutPage() {
             </RevealItem>
           ))}
         </RevealGroup>
-      </section>
+      </section> */}
 
       <Testimonials />
 

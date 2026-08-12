@@ -7,6 +7,7 @@ import { ArrowLeft, Check, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { formatGBP } from "@/components/build-a-pc/data";
 import { CatalogIcon } from "@/components/icons/icon-registry";
+import { DeviceDiagram } from "@/components/repair/device-diagram";
 import { RepairSummary } from "@/components/repair/repair-summary";
 import type { Brand, DeviceType, DeviceTypeId, Fault } from "@/components/repair/data";
 
@@ -186,6 +187,15 @@ export function RepairWizard({ initialDevice, deviceTypes, brands, faults }: Rep
 
                   <h2 className="mt-3 text-lg font-bold text-foreground">What&apos;s the issue?</h2>
                   <p className="mt-1 text-sm text-muted-foreground">Select the problem that best matches your device.</p>
+
+                  <div className="mt-5">
+                    <DeviceDiagram
+                      device={device}
+                      faults={deviceFaults}
+                      selectedFaultId={faultId}
+                      onSelect={setFaultId}
+                    />
+                  </div>
 
                   <div className="mt-5 space-y-2.5">
                     {deviceFaults.map((f) => {

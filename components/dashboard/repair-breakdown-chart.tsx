@@ -21,6 +21,7 @@ const SLOT_COLORS = [
 
 export function RepairBreakdownChart({ data }: { data: RepairTypeShare[] }) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
+  const [tooltipPos, setTooltipPos] = useState<{ x: number; y: number } | null>(null)
 
   const slices = useMemo(() => {
     let cumulative = 0
@@ -32,37 +33,63 @@ export function RepairBreakdownChart({ data }: { data: RepairTypeShare[] }) {
     })
   }, [data])
 
-  return (
-    <div className="flex w-full min-w-0 flex-wrap items-center gap-5">
-      <svg
-        viewBox={`0 0 ${SIZE} ${SIZE}`}
-        width={150}
-        height={150}
-        className="shrink-0 -rotate-90"
-        role="img"
-        aria-label="Repair type breakdown"
-      >
-        <circle cx={SIZE / 2} cy={SIZE / 2} r={RADIUS} fill="none" stroke="var(--muted)" strokeWidth={STROKE} />
-        {slices.map((s, i) => (
-          <circle
-            key={s.label}
-            cx={SIZE / 2}
-            cy={SIZE / 2}
-            r={RADIUS}
-            fill="none"
-            stroke={s.color}
-            strokeWidth={STROKE}
-            strokeDasharray={`${s.length} ${CIRCUMFERENCE - s.length}`}
-            strokeDashoffset={s.offset}
-            opacity={activeIndex === null || activeIndex === i ? 1 : 0.35}
-            className="transition-opacity duration-150"
-            onPointerEnter={() => setActiveIndex(i)}
-            onPointerLeave={() => setActiveIndex(null)}
-          />
-        ))}
-      </svg>
+  const active = activeIndex !== null ? slices[activeIndex] : null
 
-      <ul className="flex min-w-0 flex-1 flex-col gap-2">
+  function handlePointerMove(event: React.PointerEvent<SVGCircleElement>, i: number) {
+    const container = event.currentTarget.closest("[data-chart-container]") as HTMLElement | null
+    if (!container) return
+    const rect = container.getBoundingClientRect()
+    setActiveIndex(i)
+    setTooltipPos({ x: event.clientX - rect.left, y: event.clientY - rect.top })
+  }
+
+  return (
+    <div className="flex w-full min-w-0 flex-col items-center gap-4">
+      <div data-chart-container className="relative shrink-0">
+        <svg
+          viewBox={`0 0 ${SIZE} ${SIZE}`}
+          width={150}
+          height={150}
+          className="-rotate-90"
+          role="img"
+          aria-label="Repair type breakdown"
+        >
+          <circle cx={SIZE / 2} cy={SIZE / 2} r={RADIUS} fill="none" stroke="var(--muted)" strokeWidth={STROKE} />
+          {slices.map((s, i) => (
+            <circle
+              key={s.label}
+              cx={SIZE / 2}
+              cy={SIZE / 2}
+              r={RADIUS}
+              fill="none"
+              stroke={s.color}
+              strokeWidth={STROKE}
+              strokeDasharray={`${s.length} ${CIRCUMFERENCE - s.length}`}
+              strokeDashoffset={s.offset}
+              opacity={activeIndex === null || activeIndex === i ? 1 : 0.35}
+              className="cursor-pointer transition-opacity duration-150"
+              onPointerMove={(event) => handlePointerMove(event, i)}
+              onPointerLeave={() => {
+                setActiveIndex(null)
+                setTooltipPos(null)
+              }}
+            />
+          ))}
+        </svg>
+
+        {active && tooltipPos && (
+          <div
+            className="pointer-events-none absolute z-10 flex -translate-x-1/2 -translate-y-[calc(100%+10px)] items-center gap-1.5 rounded-lg border border-border bg-popover px-2.5 py-1.5 text-xs font-medium whitespace-nowrap text-popover-foreground shadow-card"
+            style={{ left: tooltipPos.x, top: tooltipPos.y }}
+          >
+            <span className="size-2 shrink-0 rounded-sm" style={{ background: active.color }} aria-hidden />
+            {active.label}
+            <span className="text-muted-foreground">{active.percent}%</span>
+          </div>
+        )}
+      </div>
+
+      <ul className="flex w-full min-w-0 flex-col gap-2">
         {slices.map((s, i) => (
           <li
             key={s.label}
@@ -78,7 +105,7 @@ export function RepairBreakdownChart({ data }: { data: RepairTypeShare[] }) {
               style={{ background: s.color }}
               aria-hidden
             />
-            <span className="min-w-0 truncate">{s.label}</span>
+            <span className="min-w-0 flex-1">{s.label}</span>
             <span className="shrink-0 text-muted-foreground">{s.percent}%</span>
           </li>
         ))}

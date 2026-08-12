@@ -115,16 +115,6 @@ export async function listFaultsByDevice(): Promise<Record<DeviceTypeId, Fault[]
   }
 }
 
-export async function getDeviceType(id: DeviceTypeId): Promise<DeviceType | null> {
-  const supabase = await createSupabaseServerClient()
-  const { data, error } = await supabase.from("device_types").select("*").eq("id", id).maybeSingle()
-
-  if (error) throw new Error(`Failed to load device type: ${error.message}`)
-  if (!data) return null
-  const row = data as DeviceTypeRow
-  return { id: row.id, label: row.label, icon: row.icon as IconName, description: row.description }
-}
-
 export async function getBrand(deviceTypeId: DeviceTypeId, brandId: string): Promise<Brand | null> {
   const supabase = await createSupabaseServerClient()
   const { data, error } = await supabase
@@ -159,24 +149,6 @@ export async function getFault(deviceTypeId: DeviceTypeId, faultId: string): Pro
     priceFrom: row.price_from,
     etaLabel: row.eta_label,
   }
-}
-
-export async function createDeviceType(deviceType: DeviceType): Promise<DeviceType> {
-  const supabase = await createSupabaseServerClient()
-  const { data, error } = await supabase
-    .from("device_types")
-    .insert({
-      id: deviceType.id,
-      label: deviceType.label,
-      icon: deviceType.icon,
-      description: deviceType.description,
-    })
-    .select("*")
-    .single()
-
-  if (error) throw new Error(`Failed to create device type: ${error.message}`)
-  const row = data as DeviceTypeRow
-  return { id: row.id, label: row.label, icon: row.icon as IconName, description: row.description }
 }
 
 export async function createBrand(deviceTypeId: DeviceTypeId, brand: Brand): Promise<Brand> {
@@ -216,30 +188,6 @@ export async function createFault(deviceTypeId: DeviceTypeId, fault: Fault): Pro
     priceFrom: row.price_from,
     etaLabel: row.eta_label,
   }
-}
-
-export async function updateDeviceType(id: DeviceTypeId, deviceType: DeviceType): Promise<DeviceType> {
-  const supabase = await createSupabaseServerClient()
-  const { data, error } = await supabase
-    .from("device_types")
-    .update({
-      label: deviceType.label,
-      icon: deviceType.icon,
-      description: deviceType.description,
-    })
-    .eq("id", id)
-    .select("*")
-    .single()
-
-  if (error) throw new Error(`Failed to update device type: ${error.message}`)
-  const row = data as DeviceTypeRow
-  return { id: row.id, label: row.label, icon: row.icon as IconName, description: row.description }
-}
-
-export async function deleteDeviceType(id: DeviceTypeId): Promise<void> {
-  const supabase = await createSupabaseServerClient()
-  const { error } = await supabase.from("device_types").delete().eq("id", id)
-  if (error) throw new Error(`Failed to delete device type: ${error.message}`)
 }
 
 export async function updateBrand(deviceTypeId: DeviceTypeId, brandId: string, brand: Brand): Promise<Brand> {

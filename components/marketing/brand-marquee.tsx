@@ -8,7 +8,7 @@ interface Brand {
 }
 
 const BRANDS: Brand[] = [
-  { name: "Apple", icon: Apple },
+  { name: "Apple" },
   { name: "Samsung" },
   { name: "Google" },
   { name: "Dell" },

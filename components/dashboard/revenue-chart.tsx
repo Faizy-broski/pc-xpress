@@ -38,7 +38,7 @@ export function RevenueChart({ data }: { data: RevenuePoint[] }) {
   }
 
   return (
-    <div className="relative">
+    <div className="relative w-full">
       <svg
         viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
         width="100%"
