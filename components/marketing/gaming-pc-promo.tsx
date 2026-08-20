@@ -1,4 +1,4 @@
-import Image from "next/image";
+﻿import Image from "next/image";
 import Link from "next/link";
 
 import { RevealGroup, RevealItem } from "@/components/motion/reveal";
@@ -24,7 +24,7 @@ const PROMOS: Promo[] = [
 
 export function GamingPcPromo() {
   return (
-    <section className="relative isolate z-10 mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+    <section className="relative isolate z-10 mx-auto max-w-screen-2xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
       <RevealGroup className="grid gap-5 sm:grid-cols-2">
         {PROMOS.map((promo) => (
           <RevealItem key={promo.title}>

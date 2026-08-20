@@ -1,4 +1,4 @@
-import Image from "next/image";
+﻿import Image from "next/image";
 import { Zap, ShieldCheck, Wrench, Star } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -35,7 +35,7 @@ const STATS: Stat[] = [
 
 export function WhyPcXpress() {
   return (
-    <section className="relative mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+    <section className="relative mx-auto max-w-screen-2xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
                   <div className="absolute -left-14 top-40 hidden w-2/5 -translate-y-1/2 sm:block">
               <Image
                 src="/white-pc.png"

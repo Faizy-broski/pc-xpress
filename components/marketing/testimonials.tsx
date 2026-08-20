@@ -1,4 +1,4 @@
-import Image from "next/image";
+﻿import Image from "next/image";
 import { Star } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -25,7 +25,7 @@ const TESTIMONIALS: Testimonial[] = [
   },
   {
     quote:
-      "The build quality is on another level. Cable management, thermal paste application, benchmarking — all documented.",
+      "The build quality is on another level. Cable management, thermal paste application, benchmarking â€” all documented.",
     name: "David Okafor",
     detail: "Custom PC build",
   },
@@ -34,7 +34,7 @@ const TESTIMONIALS: Testimonial[] = [
 export function Testimonials() {
   return (
     <section className="relative overflow-hidden py-14 sm:py-16">
-      <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div className="relative mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8">
         <div
           aria-hidden
           className="pointer-events-none absolute -right-24 top-1/2 hidden h-184 w-155 -translate-y-1/2 sm:block lg:-right-10"

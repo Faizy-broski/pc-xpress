@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import useEmblaCarousel from "embla-carousel-react";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -23,8 +23,13 @@ export function FeaturedProducts({
   products,
   className,
 }: FeaturedProductsProps) {
+  // Embla needs roughly 2x as many slides as are visible at once to clone
+  // for a seamless loop (3 cards show per view at lg) — fewer than that and
+  // looping leaves visible gaps/missing cards, so only loop once there's
+  // enough content to do it cleanly.
+  const canLoop = products.length >= 6;
   const [emblaRef, emblaApi] = useEmblaCarousel({
-    loop: false,
+    loop: canLoop,
     align: "start",
     slidesToScroll: 1,
   });
@@ -77,12 +82,12 @@ export function FeaturedProducts({
   );
 
   return (
-    <section className={cn("py-12 sm:py-16 max-w-6xl mx-auto px-4", className)}>
+    <section className={cn("py-12 sm:py-16 max-w-screen-2xl mx-auto px-4", className)}>
       <div
         onMouseEnter={stopAutoplay}
         onMouseLeave={startAutoplay}
       >
-        {/* Colored promo panel — only tall enough for the heading + top half of the cards */}
+        {/* Colored promo panel â€” only tall enough for the heading + top half of the cards */}
         <div className="relative overflow-hidden rounded bg-gradient-brand px-6 pt-10 pb-32 sm:px-10 sm:pt-12 sm:pb-40 lg:pb-60">
           <div className="pointer-events-none absolute inset-0 bg-gradient-hero opacity-60" />
 
@@ -133,7 +138,7 @@ export function FeaturedProducts({
         </div>
       </div>
 
-      {/* Pagination dots — sit on the page background, below the panel */}
+      {/* Pagination dots â€” sit on the page background, below the panel */}
       {products.length > 1 && (
         <div className="mt-8 flex items-center justify-center gap-1.5">
           {products.map((product, index) => (

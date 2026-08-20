@@ -14,6 +14,7 @@ import {
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal"
 import { TextReveal } from "@/components/motion/text-reveal"
@@ -81,7 +82,7 @@ export default function DashboardOverviewPage() {
       <Reveal viewTrigger={false}>
         <div className="dark relative overflow-hidden rounded-2xl bg-gradient-brand text-foreground shadow-card">
           <div className="pointer-events-none absolute inset-0 bg-gradient-hero opacity-60" />
-          <div className="relative flex flex-col gap-4 px-6 py-8 sm:px-8 sm:py-10">
+          <div className="relative flex flex-col gap-4 px-6 py-8 sm:px-8 sm:py-10 lg:px-10 lg:py-12">
             <Badge
               variant="soft"
               className="w-fit border border-white/15 bg-white/10 text-white"
@@ -93,7 +94,7 @@ export default function DashboardOverviewPage() {
               as="h1"
               text="Hey Faizan, here's what's happening at your shop."
               delay={0.1}
-              className="max-w-xl text-2xl font-bold tracking-tight text-white sm:text-3xl"
+              className="max-w-xl text-2xl font-bold tracking-tight text-white sm:text-3xl xl:text-4xl"
             />
             <Reveal viewTrigger={false} delay={0.25}>
               <p className="max-w-lg text-sm text-white/70">
@@ -123,7 +124,10 @@ export default function DashboardOverviewPage() {
         </div>
       </Reveal>
 
-      <RevealGroup viewTrigger={false} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <RevealGroup
+        viewTrigger={false}
+        className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
+      >
         <RevealItem>
           <StatCard
             icon={<WalletIcon className="size-4 text-primary" />}
@@ -160,7 +164,7 @@ export default function DashboardOverviewPage() {
 
       <div className="grid gap-6 lg:grid-cols-3">
         <Reveal viewTrigger={false} className="lg:col-span-2">
-          <div className="flex h-full flex-col rounded-xl border border-border bg-gradient-card p-5 shadow-card sm:p-6">
+          <Card className="flex h-full flex-col">
             <div className="flex items-center justify-between">
               <h2 className="font-semibold text-foreground">Revenue over time</h2>
               <span className="text-xs text-muted-foreground">Last 12 months</span>
@@ -168,16 +172,16 @@ export default function DashboardOverviewPage() {
             <div className="mt-3 flex flex-1 items-center">
               <RevenueChart data={REVENUE_HISTORY} />
             </div>
-          </div>
+          </Card>
         </Reveal>
 
         <Reveal viewTrigger={false} delay={0.1}>
-          <div className="flex h-full flex-col rounded-xl border border-border bg-gradient-card p-5 shadow-card sm:p-6">
+          <Card className="flex h-full flex-col">
             <h2 className="font-semibold text-foreground">Repair type breakdown</h2>
             <div className="mt-4 flex flex-1 items-center">
               <RepairBreakdownChart data={REPAIR_TYPE_BREAKDOWN} />
             </div>
-          </div>
+          </Card>
         </Reveal>
       </div>
 
@@ -218,7 +222,7 @@ export default function DashboardOverviewPage() {
         </Reveal>
 
         <Reveal viewTrigger={false} delay={0.1}>
-          <div className="rounded-xl border border-border bg-gradient-card p-5 shadow-card sm:p-6">
+          <Card>
             <h2 className="font-semibold text-foreground">Top customers</h2>
             <div className="mt-4 flex flex-col gap-4">
               {topCustomers.map((customer) => (
@@ -242,7 +246,7 @@ export default function DashboardOverviewPage() {
                 </div>
               ))}
             </div>
-          </div>
+          </Card>
         </Reveal>
       </div>
     </div>

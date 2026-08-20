@@ -24,25 +24,31 @@ interface RepairWizardProps {
 export function RepairWizard({ initialDevice, deviceTypes, brands, faults }: RepairWizardProps) {
   const [deviceId, setDeviceId] = useState<DeviceTypeId | null>(initialDevice ?? null);
   const [brandId, setBrandId] = useState<string | null>(null);
-  const [faultId, setFaultId] = useState<string | null>(null);
+  const [faultIds, setFaultIds] = useState<string[]>([]);
   const [step, setStep] = useState<1 | 2 | 3>(initialDevice ? 2 : 1);
 
   const device = deviceTypes.find((d) => d.id === deviceId) ?? null;
   const deviceBrands = deviceId ? (brands[deviceId] ?? []) : [];
   const brand = deviceBrands.find((b) => b.id === brandId) ?? null;
   const deviceFaults = deviceId ? (faults[deviceId] ?? []) : [];
-  const fault = deviceFaults.find((f) => f.id === faultId) ?? null;
+  const selectedFaults = deviceFaults.filter((f) => faultIds.includes(f.id));
 
   function selectDevice(id: DeviceTypeId) {
     setDeviceId(id);
     setBrandId(null);
-    setFaultId(null);
+    setFaultIds([]);
     setStep(2);
   }
 
   function selectBrand(id: string) {
     setBrandId(id);
     setStep(3);
+  }
+
+  function toggleFault(id: string) {
+    setFaultIds((current) =>
+      current.includes(id) ? current.filter((f) => f !== id) : [...current, id]
+    );
   }
 
   function canReach(n: 1 | 2 | 3) {
@@ -186,25 +192,26 @@ export function RepairWizard({ initialDevice, deviceTypes, brands, faults }: Rep
                   </button>
 
                   <h2 className="mt-3 text-lg font-bold text-foreground">What&apos;s the issue?</h2>
-                  <p className="mt-1 text-sm text-muted-foreground">Select the problem that best matches your device.</p>
+                  <p className="mt-1 text-sm text-muted-foreground">Select all the issues that apply — you can pick more than one.</p>
 
                   <div className="mt-5">
                     <DeviceDiagram
                       device={device}
                       faults={deviceFaults}
-                      selectedFaultId={faultId}
-                      onSelect={setFaultId}
+                      selectedFaultIds={faultIds}
+                      onToggle={toggleFault}
                     />
                   </div>
 
                   <div className="mt-5 space-y-2.5">
                     {deviceFaults.map((f) => {
-                      const selected = faultId === f.id;
+                      const selected = faultIds.includes(f.id);
                       return (
                         <motion.button
                           key={f.id}
                           type="button"
-                          onClick={() => setFaultId(f.id)}
+                          aria-pressed={selected}
+                          onClick={() => toggleFault(f.id)}
                           whileHover={{ y: -1 }}
                           className={cn(
                             "flex w-full items-center justify-between gap-3 rounded-lg border p-3.5 text-left transition-colors",
@@ -244,7 +251,7 @@ export function RepairWizard({ initialDevice, deviceTypes, brands, faults }: Rep
       <RepairSummary
         device={device}
         brand={brand}
-        fault={fault}
+        faults={selectedFaults}
         onEditDevice={() => setStep(1)}
         onEditBrand={() => canReach(2) && setStep(2)}
         onEditFault={() => canReach(3) && setStep(3)}

@@ -1,15 +1,16 @@
-"use client";
+﻿"use client";
 
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { ArrowRight, Menu, Search, ShoppingCart, X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/components/cart/cart-provider";
+import { AdminNavMenu } from "@/components/layout/admin-nav-menu";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -60,26 +61,47 @@ function Logo({ className }: { className?: string }) {
   );
 }
 
+type AdminUser = { name: string; email: string };
+
 export function Navbar() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [admin, setAdmin] = useState<AdminUser | null>(null);
   const { scrollY } = useScroll();
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     setScrolled(latest > 8);
   });
 
+  // Checked client-side (rather than in the shared layout) so marketing
+  // pages keep rendering statically instead of opting into per-request
+  // dynamic rendering just to read the auth cookie.
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/admin/me")
+      .then((res) => (res.ok ? res.json() : { admin: null }))
+      .then((data) => {
+        if (!cancelled) setAdmin(data.admin ?? null);
+      })
+      .catch(() => {
+        if (!cancelled) setAdmin(null);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   return (
     <div
       className={cn(
         "fixed z-40 mx-auto overflow-hidden bg-gradient-brand transition-[top,left,right,max-width,border-radius,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-[top,left,right,max-width,border-radius,box-shadow]",
         scrolled
-          ? "inset-x-0 top-0 max-w-7xl rounded-none shadow-lg shadow-black/20"
-          : "inset-x-0 top-0 rounded-none md:inset-x-6 md:top-6 md:my-9 md:max-w-6xl md:rounded lg:inset-x-8"
+          ? "inset-x-0 top-0 max-w-screen-2xl rounded-none shadow-lg shadow-black/20"
+          : "inset-x-0 top-0 rounded-none md:inset-x-6 md:top-6 md:my-9 md:max-w-screen-2xl md:rounded lg:inset-x-8"
       )}
     >
-      <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+      <nav className="mx-auto flex h-20 max-w-screen-2xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <Logo className="md:hidden" />
 
         <div className="hidden flex-1 items-center gap-3 lg:gap-6 md:flex">
@@ -122,10 +144,13 @@ export function Navbar() {
             <span className="gradient-text-brand">Book Your Repair</span>
             <ArrowRight />
           </Button>
+
+          {admin && <AdminNavMenu user={admin} className="ml-1" />}
         </div>
 
         <div className="flex items-center gap-1 md:hidden">
           <CartButton />
+          {admin && <AdminNavMenu user={admin} />}
           <Button
             variant="ghost"
             size="icon"

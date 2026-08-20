@@ -1,4 +1,4 @@
-import { Apple } from "lucide-react";
+﻿import { Apple } from "lucide-react";
 
 import { Reveal } from "@/components/motion/reveal";
 
@@ -36,7 +36,7 @@ export function BrandMarquee() {
 
   return (
     <section className="relative isolate z-10 overflow-hidden border-y border-white/10 bg-secondary py-8 sm:py-10">
-      <Reveal className="mx-auto flex max-w-6xl flex-col items-center gap-5 px-4 sm:px-6 lg:flex-row lg:gap-10 lg:px-8">
+      <Reveal className="mx-auto flex max-w-screen-2xl flex-col items-center gap-5 px-4 sm:px-6 lg:flex-row lg:gap-10 lg:px-8">
         <p className="shrink-0 text-center text-xs font-semibold tracking-widest text-secondary-foreground/50 uppercase lg:text-left lg:text-sm">
           Certified to repair
           <br className="hidden lg:block" /> every major brand

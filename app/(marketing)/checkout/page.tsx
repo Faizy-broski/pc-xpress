@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, type FormEvent } from "react";
 import Image from "next/image";
@@ -40,7 +40,7 @@ export default function CheckoutPage() {
     const summary = [
       ...items.map((item) => ({
         label: item.name,
-        value: `Qty ${item.quantity} · ${formatGBP(item.price * item.quantity)}`,
+        value: `Qty ${item.quantity} Â· ${formatGBP(item.price * item.quantity)}`,
       })),
       { label: "Shipping address", value: address },
     ];
@@ -75,7 +75,7 @@ export default function CheckoutPage() {
 
   if (success) {
     return (
-      <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-4 pt-36 pb-26 text-center sm:px-6">
+      <div className="mx-auto flex max-w-screen-2xl flex-col items-center gap-4 px-4 pt-36 pb-26 text-center sm:px-6">
         <CheckCircle2 className="size-12 text-primary" />
         <h1 className="text-2xl font-bold tracking-tight text-foreground">Order received!</h1>
         <p className="max-w-md text-muted-foreground">
@@ -96,7 +96,7 @@ export default function CheckoutPage() {
 
   if (items.length === 0) {
     return (
-      <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-4 pt-36 pb-26 text-center sm:px-6">
+      <div className="mx-auto flex max-w-screen-2xl flex-col items-center gap-4 px-4 pt-36 pb-26 text-center sm:px-6">
         <h1 className="text-2xl font-bold tracking-tight text-foreground">Your cart is empty</h1>
         <p className="text-muted-foreground">Add a pre-built PC to your cart before checking out.</p>
         <Button
@@ -113,11 +113,11 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:pt-36 lg:pb-20">
+    <div className="mx-auto max-w-screen-2xl px-4 py-12 sm:px-6 lg:pt-36 lg:pb-20">
       <Reveal viewTrigger={false}>
         <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">Checkout</h1>
         <p className="mt-1 text-muted-foreground">
-          Guest checkout — no account needed. Submit your order and our team will email you to confirm and arrange payment.
+          Guest checkout â€” no account needed. Submit your order and our team will email you to confirm and arrange payment.
         </p>
       </Reveal>
 
@@ -199,7 +199,7 @@ export default function CheckoutPage() {
               className="rounded-lg bg-gradient-button shadow-glow"
             >
               {submitting && <Loader2Icon className="animate-spin" />}
-              {submitting ? "Sending order…" : "Place order"}
+              {submitting ? "Sending orderâ€¦" : "Place order"}
               {!submitting && <ArrowRight />}
             </Button>
             <p className="text-center text-xs text-muted-foreground">

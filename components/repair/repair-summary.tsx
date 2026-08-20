@@ -14,7 +14,7 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 interface RepairSummaryProps {
   device: DeviceType | null;
   brand: Brand | null;
-  fault: Fault | null;
+  faults: Fault[];
   onEditDevice: () => void;
   onEditBrand: () => void;
   onEditFault: () => void;
@@ -23,28 +23,38 @@ interface RepairSummaryProps {
 export function RepairSummary({
   device,
   brand,
-  fault,
+  faults,
   onEditDevice,
   onEditBrand,
   onEditFault,
 }: RepairSummaryProps) {
+  const issuesValue =
+    faults.length === 0
+      ? undefined
+      : faults.length === 1
+        ? faults[0].label
+        : `${faults.length} issues selected`;
+
   const steps = [
     { label: "Device", value: device?.label, onEdit: onEditDevice },
     { label: "Brand", value: brand?.label, onEdit: onEditBrand },
-    { label: "Issue", value: fault?.label, onEdit: onEditFault },
+    { label: "Issue", value: issuesValue, onEdit: onEditFault },
   ];
   const doneCount = steps.filter((s) => s.value).length;
-  const ready = Boolean(device && brand && fault);
+  const ready = Boolean(device && brand && faults.length > 0);
+  const totalFrom = faults.reduce((sum, f) => sum + f.priceFrom, 0);
 
   const [bookingOpen, setBookingOpen] = useState(false);
 
   const bookingSummary =
-    device && brand && fault
+    device && brand && faults.length > 0
       ? [
           { label: "Device", value: device.label },
           { label: "Brand", value: brand.label },
-          { label: "Issue", value: fault.label },
-          { label: "Turnaround", value: fault.etaLabel },
+          ...faults.map((f, i) => ({
+            label: faults.length > 1 ? `Issue ${i + 1}` : "Issue",
+            value: `${f.label} — from ${formatGBP(f.priceFrom)} (${f.etaLabel})`,
+          })),
         ]
       : [];
 
@@ -103,18 +113,22 @@ export function RepairSummary({
           {doneCount === 0 && <p className="text-sm text-muted-foreground">No selections yet.</p>}
         </div>
 
-        {fault && (
+        {faults.length > 0 && (
           <div className="mt-4 space-y-1.5 border-t border-border pt-3 text-sm">
-            <div className="flex justify-between text-muted-foreground">
-              <span>Estimated price</span>
-              <span className="font-semibold text-primary">From {formatGBP(fault.priceFrom)}</span>
-            </div>
-            <div className="flex items-center justify-between text-muted-foreground">
-              <span className="flex items-center gap-1.5">
-                <Clock className="size-3.5" />
-                Typical turnaround
-              </span>
-              <span>{fault.etaLabel}</span>
+            {faults.map((f) => (
+              <div key={f.id} className="flex items-center justify-between gap-3 text-muted-foreground">
+                <span className="flex items-center gap-1.5 truncate">
+                  <Clock className="size-3.5 shrink-0" />
+                  <span className="truncate">{f.label}</span>
+                </span>
+                <span className="shrink-0 font-medium text-foreground">
+                  {formatGBP(f.priceFrom)} · {f.etaLabel}
+                </span>
+              </div>
+            ))}
+            <div className="flex justify-between border-t border-border pt-1.5 text-muted-foreground">
+              <span>Estimated total</span>
+              <span className="font-semibold text-primary">From {formatGBP(totalFrom)}</span>
             </div>
           </div>
         )}
@@ -135,7 +149,7 @@ export function RepairSummary({
         title="Confirm Your Repair Booking"
         description="Add your contact details and we'll confirm your booking by email."
         summary={bookingSummary}
-        totalText={fault ? `From ${formatGBP(fault.priceFrom)}` : undefined}
+        totalText={faults.length > 0 ? `From ${formatGBP(totalFrom)}` : undefined}
       />
 
       <div className="mt-3 rounded-2xl border border-border bg-card p-4 shadow-card">

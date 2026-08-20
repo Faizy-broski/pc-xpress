@@ -1,4 +1,4 @@
-import Image from "next/image";
+﻿import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Clock, MapPin, MessageCircle, Phone } from "lucide-react";
 
@@ -9,7 +9,7 @@ import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
 
 const PHONE = "+44 7307 093007";
 const ADDRESS = "94 The Broadway, Wimbledon SW19 1RH";
-const HOURS = "Mon – Sat: 9am – 6:30pm · Sun: Closed";
+const HOURS = "Mon â€“ Sat: 9am â€“ 6:30pm Â· Sun: Closed";
 const WHATSAPP_HREF = `https://wa.me/${PHONE.replace(/\D/g, "")}`;
 const MAP_SRC = `https://www.google.com/maps?q=${encodeURIComponent(
   `PC Xpress, ${ADDRESS}`
@@ -21,7 +21,7 @@ const fieldClass =
 export function VisitShop() {
   return (
     <section className="relative overflow-hidden py-12 sm:py-16">
-      <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div className="relative mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8">
         <div
           aria-hidden
           className="pointer-events-none absolute left-0 top-1/2 hidden h-186 w-186 -translate-y-1/2 sm:block"
@@ -69,7 +69,7 @@ export function VisitShop() {
               <input
                 type="text"
                 name="issue"
-                placeholder="Device & issue (e.g. iPhone 14 — cracked screen)"
+                placeholder="Device & issue (e.g. iPhone 14 â€” cracked screen)"
                 className={fieldClass}
               />
               <textarea

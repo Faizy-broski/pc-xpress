@@ -1,4 +1,4 @@
-import { Mail, MapPin, Phone } from "lucide-react";
+﻿import { Mail, MapPin, Phone } from "lucide-react";
 
 const PHONE = "+44 7307 093007";
 const EMAIL = "info@pcxpress.co.uk";
@@ -7,7 +7,7 @@ const ADDRESS = "94 The Broadway, Wimbledon SW19 1RH";
 export function Topbar() {
   return (
     <div className="bg-gradient-brand text-primary-foreground">
-      <div className="mx-auto flex h-9 max-w-6xl items-center justify-between gap-4 px-4 text-xs sm:px-6 lg:px-8">
+      <div className="mx-auto flex h-9 max-w-screen-2xl items-center justify-between gap-4 px-4 text-xs sm:px-6 lg:px-8">
         <div className="flex items-center gap-4 sm:gap-6">
           <a
             href={`tel:${PHONE.replace(/\s+/g, "")}`}

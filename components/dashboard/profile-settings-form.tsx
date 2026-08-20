@@ -33,7 +33,7 @@ export function ProfileSettingsForm({ name, email }: { name: string; email: stri
 
   return (
     <form
-      className="rounded-xl border border-border bg-gradient-card p-5 shadow-card sm:p-6"
+      className="rounded-xl border border-border bg-gradient-card p-4 shadow-card sm:p-5 lg:p-6"
       onSubmit={(e) => {
         e.preventDefault()
         setSaved(true)

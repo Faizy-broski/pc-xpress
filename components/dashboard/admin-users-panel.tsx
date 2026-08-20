@@ -23,6 +23,7 @@ import {
   type AdminUsersActionState,
 } from "@/app/actions/admin-users"
 import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { ConfirmDeleteDialog } from "@/components/dashboard/confirm-delete-dialog"
 
@@ -273,7 +274,7 @@ export function AdminUsersPanel({
   }
 
   return (
-    <div className="rounded-xl border border-border bg-gradient-card p-5 shadow-card sm:p-6">
+    <Card>
       <div className="flex items-start justify-between gap-3">
         <div>
           <h2 className="flex items-center gap-1.5 font-semibold text-foreground">
@@ -361,6 +362,6 @@ export function AdminUsersPanel({
           await refresh()
         }}
       />
-    </div>
+    </Card>
   )
 }

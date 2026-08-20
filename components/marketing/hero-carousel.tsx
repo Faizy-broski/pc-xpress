@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Image from "next/image";
 import useEmblaCarousel from "embla-carousel-react";
@@ -24,6 +24,8 @@ export interface HeroSlide {
   description: string;
   primary: HeroCta;
   secondary?: HeroCta;
+  /** Which side of the image the copy should sit on. Defaults to "left". */
+  contentAlign?: "left" | "right";
 }
 
 const AUTOPLAY_DELAY = 5000;
@@ -83,49 +85,62 @@ export function HeroCarousel({
     >
       <div className="h-full overflow-hidden" ref={emblaRef}>
         <div className="flex h-full">
-          {slides.map((slide, index) => (
-            <div key={slide.heading} className="relative min-w-0 flex-[0_0_100%]">
-              <Image
-                src={slide.imageSrc}
-                alt={slide.imageAlt}
-                fill
-                loading={index === 0 ? "eager" : "lazy"}
-                sizes="100vw"
-                className="object-cover"
-              />
-
-              <div className="relative mx-auto flex h-full max-w-6xl flex-col justify-center px-4 pt-16 pb-4 sm:px-6 sm:pt-20 sm:pb-32 md:pt-40 md:pb-20 lg:px-8">
-                <Reveal>
-                  <Badge variant="soft" className="bg-white/10 text-white">
-                    <Sparkles />
-                    {slide.badge}
-                  </Badge>
-                </Reveal>
-
-                <TextReveal
-                  as="h1"
-                  text={slide.heading}
-                  delay={0.1}
-                  className="mt-4 max-w-xs text-2xl font-bold tracking-tight text-white sm:max-w-sm sm:text-4xl lg:max-w-xl lg:text-5xl"
+          {slides.map((slide, index) => {
+            const alignRight = slide.contentAlign === "right";
+            return (
+              <div key={slide.heading} className="relative min-w-0 flex-[0_0_100%]">
+                <Image
+                  src={slide.imageSrc}
+                  alt={slide.imageAlt}
+                  fill
+                  loading={index === 0 ? "eager" : "lazy"}
+                  sizes="100vw"
+                  className="object-cover"
                 />
 
-                <Reveal delay={0.25}>
-                  <p className="mt-4 max-w-lg text-sm text-white/70 sm:text-base">
-                    {slide.description}
-                  </p>
-                </Reveal>
+                <div
+                  className={cn(
+                    "relative mx-auto flex h-full max-w-screen-2xl flex-col justify-center px-4 pt-16 pb-4 sm:px-6 sm:pt-20 sm:pb-32 md:pt-40 md:pb-20 lg:px-8",
+                    alignRight && "items-end text-right"
+                  )}
+                >
+                  <Reveal>
+                    <Badge variant="soft" className="bg-white/10 text-white">
+                      <Sparkles />
+                      {slide.badge}
+                    </Badge>
+                  </Reveal>
 
-                <Reveal delay={0.35}>
-                  <CtaButtonGroup
-                    className="mt-6"
-                    onDark
-                    primary={slide.primary}
-                    secondary={slide.secondary}
+                  <TextReveal
+                    as="h1"
+                    text={slide.heading}
+                    delay={0.1}
+                    className="mt-4 max-w-xs text-2xl font-bold tracking-tight text-white sm:max-w-sm sm:text-4xl lg:max-w-xl lg:text-5xl"
                   />
-                </Reveal>
+
+                  <Reveal delay={0.25}>
+                    <p
+                      className={cn(
+                        "mt-4 max-w-lg text-sm text-white/70 sm:text-base",
+                        alignRight && "ml-auto"
+                      )}
+                    >
+                      {slide.description}
+                    </p>
+                  </Reveal>
+
+                  <Reveal delay={0.35}>
+                    <CtaButtonGroup
+                      className={cn("mt-6", alignRight && "justify-end")}
+                      onDark
+                      primary={slide.primary}
+                      secondary={slide.secondary}
+                    />
+                  </Reveal>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 

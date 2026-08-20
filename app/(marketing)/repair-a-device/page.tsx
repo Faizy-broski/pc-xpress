@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Image from "next/image";
 import { Sparkles } from "lucide-react";
 
@@ -49,7 +49,7 @@ export default async function RepairADevicePage({ searchParams }: PageParams) {
           sizes="100vw"
           className="object-cover"
         />
-        <div className="relative mx-auto max-w-6xl px-4 text-center sm:px-6 lg:px-8">
+        <div className="relative mx-auto max-w-screen-2xl px-4 text-center sm:px-6 lg:px-8">
           <Reveal>
             <Badge variant="soft" className="mx-auto bg-white/10 text-white">
               <Sparkles className="size-3.5" />
@@ -67,14 +67,14 @@ export default async function RepairADevicePage({ searchParams }: PageParams) {
           <Reveal delay={0.25}>
             <p className="mx-auto mt-3 max-w-lg text-sm text-white/75">
               Pick your device, brand, and issue for an instant price estimate
-              — free diagnostics, no obligation.
+              â€” free diagnostics, no obligation.
             </p>
           </Reveal>
         </div>
       </section>
 
       <section className="bg-background py-8 text-foreground sm:py-10">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8">
           <RepairWizard
             initialDevice={initialDevice}
             deviceTypes={deviceTypes}
@@ -85,7 +85,7 @@ export default async function RepairADevicePage({ searchParams }: PageParams) {
       </section>
 
       <section id="reviews" className="bg-background pb-16 text-foreground sm:pb-20">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8">
           <Reveal>
             <ReviewSection category="Repair" reviews={reviews} />
           </Reveal>

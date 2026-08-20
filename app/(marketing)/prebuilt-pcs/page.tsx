@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Image from "next/image";
 import { MonitorCheck, ShieldCheck, Truck, Wrench } from "lucide-react";
 
@@ -12,7 +12,7 @@ import { listPrebuiltProducts } from "@/lib/data/prebuilt";
 export const metadata: Metadata = {
   title: "Prebuilt PCs | PC Xpress",
   description:
-    "Hand-built, stress-tested prebuilt gaming, creator, and office PCs — dispatched next working day with a 12-month warranty.",
+    "Hand-built, stress-tested prebuilt gaming, creator, and office PCs â€” dispatched next working day with a 12-month warranty.",
 };
 
 const TRUST_STRIP = [
@@ -39,7 +39,7 @@ export default async function PrebuiltPcsPage() {
           className="object-cover"
         />
 
-        <div className="relative mx-auto max-w-6xl px-4 text-center sm:px-6 lg:px-8">
+        <div className="relative mx-auto max-w-screen-2xl px-4 text-center sm:px-6 lg:px-8">
           <Reveal>
             <Badge variant="soft" className="mx-auto bg-white/10 text-white">
               <span className="size-1.5 rounded-full bg-primary" />
@@ -57,7 +57,7 @@ export default async function PrebuiltPcsPage() {
           <Reveal delay={0.25}>
             <p className="mx-auto mt-3 max-w-lg text-sm text-white/75">
               Every system is assembled, cable-managed, and benchmarked by our
-              technicians before it leaves the studio — pick a build and it
+              technicians before it leaves the studio â€” pick a build and it
               ships next working day.
             </p>
           </Reveal>
@@ -65,7 +65,7 @@ export default async function PrebuiltPcsPage() {
       </section>
 
       <section className="border-b border-border py-6">
-        <RevealGroup className="mx-auto grid max-w-6xl grid-cols-2 gap-4 px-4 sm:grid-cols-4 sm:px-6 lg:px-8">
+        <RevealGroup className="mx-auto grid max-w-screen-2xl grid-cols-2 gap-4 px-4 sm:grid-cols-4 sm:px-6 lg:px-8">
           {TRUST_STRIP.map(({ icon: Icon, label }) => (
             <RevealItem key={label} className="flex items-start gap-2.5">
               <Icon className="size-4 shrink-0 text-primary" />
@@ -75,7 +75,7 @@ export default async function PrebuiltPcsPage() {
         </RevealGroup>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+      <section className="mx-auto max-w-screen-2xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
         <PrebuiltCatalog products={products} />
       </section>
 

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -24,7 +24,7 @@ import { CtaBanner } from "@/components/marketing/cta-banner";
 export const metadata: Metadata = {
   title: "About Us | PC Xpress",
   description:
-    "Meet PC Xpress — Wimbledon's studio for honest PC and device repairs, custom builds, and pre-built PCs. Learn our story, values, and the team behind the bench.",
+    "Meet PC Xpress â€” Wimbledon's studio for honest PC and device repairs, custom builds, and pre-built PCs. Learn our story, values, and the team behind the bench.",
 };
 
 const VALUES = [
@@ -32,7 +32,7 @@ const VALUES = [
     icon: Eye,
     title: "Transparency",
     description:
-      "Every quote is upfront and every diagnosis explained in plain English — no jargon, no surprise charges.",
+      "Every quote is upfront and every diagnosis explained in plain English â€” no jargon, no surprise charges.",
   },
   {
     icon: Gauge,
@@ -50,7 +50,7 @@ const VALUES = [
     icon: Heart,
     title: "Care",
     description:
-      "From first message to collection, you're a person to us — not a ticket number.",
+      "From first message to collection, you're a person to us â€” not a ticket number.",
   },
 ];
 
@@ -100,7 +100,7 @@ export default function AboutPage() {
           sizes="100vw"
           className="object-cover"
         />
-        <div className="relative mx-auto max-w-6xl px-4 text-center sm:px-6 lg:px-8">
+        <div className="relative mx-auto max-w-screen-2xl px-4 text-center sm:px-6 lg:px-8">
           <Reveal>
             <Badge variant="soft" className="mx-auto bg-white/10 text-white">
               <Sparkles className="size-3.5" />
@@ -119,7 +119,7 @@ export default function AboutPage() {
             <p className="mx-auto mt-3 max-w-lg text-sm text-white/75">
               We started PC Xpress in Wimbledon to prove that fast, honest
               device repairs and custom builds could feel like a boutique
-              experience — not a gamble.
+              experience â€” not a gamble.
             </p>
           </Reveal>
 
@@ -146,7 +146,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8">
+      <section className="mx-auto max-w-screen-2xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-12">
           <Reveal className="relative">
             <div className="relative aspect-5/4 w-full overflow-hidden rounded shadow-card">
@@ -184,7 +184,7 @@ export default function AboutPage() {
                 <p>
                   Today we repair phones, tablets, laptops, consoles and
                   desktops, recover data from drives written off elsewhere,
-                  and hand-build custom PCs to spec — all from the same
+                  and hand-build custom PCs to spec â€” all from the same
                   Wimbledon storefront, with the same free diagnostics and
                   transparent pricing we started with.
                 </p>
@@ -207,7 +207,7 @@ export default function AboutPage() {
       </section>
 
       <section className="bg-secondary py-14 text-secondary-foreground sm:py-16">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8">
           <Reveal className="mx-auto max-w-2xl text-center">
             <Badge variant="soft" className="mx-auto">
               <ShieldCheck className="size-3.5" />
@@ -221,7 +221,7 @@ export default function AboutPage() {
             <Reveal delay={0.2}>
               <p className="mt-3 text-secondary-foreground/65">
                 The same four principles guide every repair, build and
-                conversation — whether it's a £20 fix or a £2,000 build.
+                conversation â€” whether it's a Â£20 fix or a Â£2,000 build.
               </p>
             </Reveal>
           </Reveal>
@@ -249,7 +249,7 @@ export default function AboutPage() {
 
       <WhyPcXpress />
 
-      {/* <section className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8">
+      {/* <section className="mx-auto max-w-screen-2xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8">
         <Reveal className="mx-auto max-w-2xl text-center">
           <Badge variant="soft" className="mx-auto">
             <Target className="size-3.5" />

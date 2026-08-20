@@ -1,4 +1,4 @@
-import Image from "next/image";
+﻿import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, MessageCircle, SparklesIcon } from "lucide-react";
 
@@ -11,7 +11,7 @@ const WHATSAPP_HREF = `https://wa.me/${PHONE.replace(/\D/g, "")}`;
 
 export function CtaBanner() {
   return (
-    <section className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-10 lg:px-8">
+    <section className="mx-auto max-w-screen-2xl px-4 py-10 sm:px-6 sm:py-10 lg:px-8">
       <Reveal>
         <div className="relative isolate overflow-hidden rounded">
           <Image
@@ -29,7 +29,7 @@ export function CtaBanner() {
                 className="border border-white/15 bg-white/10 text-white"
               >
                 <SparklesIcon className="size-3.5" />
-                Free diagnostics · No obligation
+                Free diagnostics Â· No obligation
               </Badge>
 
               <h2 className="mt-3 text-2xl font-bold tracking-tight text-white sm:text-3xl">
@@ -38,7 +38,7 @@ export function CtaBanner() {
 
               <p className="mt-3 text-white/70">
                 Drop by the studio, book a same-day slot, or send us a
-                message. We&apos;ll take it from there — quickly,
+                message. We&apos;ll take it from there â€” quickly,
                 transparently, and with the care your device deserves.
               </p>
             </div>

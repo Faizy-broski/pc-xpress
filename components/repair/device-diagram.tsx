@@ -217,11 +217,11 @@ function silhouetteFor(id: DeviceTypeId) {
 interface DeviceDiagramProps {
   device: DeviceType;
   faults: Fault[];
-  selectedFaultId: string | null;
-  onSelect: (id: string) => void;
+  selectedFaultIds: string[];
+  onToggle: (id: string) => void;
 }
 
-export function DeviceDiagram({ device, faults, selectedFaultId, onSelect }: DeviceDiagramProps) {
+export function DeviceDiagram({ device, faults, selectedFaultIds, onToggle }: DeviceDiagramProps) {
   const positions = FAULT_POSITIONS[device.id] ?? {};
   const fallback = fallbackPositions(faults.filter((f) => !positions[f.id]));
 
@@ -231,17 +231,17 @@ export function DeviceDiagram({ device, faults, selectedFaultId, onSelect }: Dev
         <div>
           <h3 className="text-sm font-bold text-white sm:text-base">{device.label} Diagram</h3>
           <p className="font-mono text-[10px] tracking-[0.2em] text-white/60 uppercase sm:text-[11px]">
-            Tap a hotspot to select the issue
+            Tap hotspots to select one or more issues
           </p>
         </div>
         <span className="font-mono text-xs font-semibold text-white" aria-live="polite">
-          {selectedFaultId ? 1 : 0}/1
+          {selectedFaultIds.length}/{faults.length}
         </span>
       </div>
 
       <div
         role="group"
-        aria-label={`Interactive ${device.label.toLowerCase()} diagram — select where the issue is`}
+        aria-label={`Interactive ${device.label.toLowerCase()} diagram — select where the issues are`}
         className="relative aspect-4/5 sm:aspect-16/12 overflow-hidden bg-secondary"
         style={{
           backgroundImage:
@@ -263,13 +263,13 @@ export function DeviceDiagram({ device, faults, selectedFaultId, onSelect }: Dev
           const pos = positions[fault.id] ?? fallback[fault.id];
           if (!pos) return null;
           const Icon = faultIcon(fault.id);
-          const selected = selectedFaultId === fault.id;
+          const selected = selectedFaultIds.includes(fault.id);
 
           return (
             <motion.button
               key={fault.id}
               type="button"
-              onClick={() => onSelect(fault.id)}
+              onClick={() => onToggle(fault.id)}
               whileHover={{ scale: 1.08 }}
               whileTap={{ scale: 0.95 }}
               aria-pressed={selected}

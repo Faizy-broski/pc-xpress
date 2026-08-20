@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -21,19 +21,19 @@ import { ContactForm } from "@/components/marketing/contact-form";
 export const metadata: Metadata = {
   title: "Contact Us | PC Xpress",
   description:
-    "Get in touch with PC Xpress in Wimbledon — call, WhatsApp, email or visit the studio for repairs, upgrades and custom PC builds.",
+    "Get in touch with PC Xpress in Wimbledon â€” call, WhatsApp, email or visit the studio for repairs, upgrades and custom PC builds.",
 };
 
 const PHONE = "+44 7307 093007";
 const EMAIL = "repairs@pcxpress.co.uk";
 const ADDRESS = "94 The Broadway, Wimbledon SW19 1RH";
-const HOURS = "Mon – Sat: 9am – 6:30pm · Sun: Closed";
+const HOURS = "Mon â€“ Sat: 9am â€“ 6:30pm Â· Sun: Closed";
 const WHATSAPP_HREF = `https://wa.me/${PHONE.replace(/\D/g, "")}`;
 const MAP_QUERY = encodeURIComponent(`PC Xpress, ${ADDRESS}`);
 const MAP_SRC = `https://www.google.com/maps?q=${MAP_QUERY}&output=embed`;
 const MAP_LINK = `https://www.google.com/maps/search/?api=1&query=${MAP_QUERY}`;
 // Plain `mailto:` links silently do nothing on machines with no desktop mail
-// client configured (common in browsers on Windows) — opening Gmail's web
+// client configured (common in browsers on Windows) â€” opening Gmail's web
 // compose view instead is an action that always actually does something.
 const GMAIL_COMPOSE_HREF = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(EMAIL)}`;
 
@@ -73,12 +73,12 @@ const FAQS = [
   {
     question: "Is the initial diagnosis really free?",
     answer:
-      "Yes — every device gets a free, no-obligation diagnosis before we quote any work.",
+      "Yes â€” every device gets a free, no-obligation diagnosis before we quote any work.",
   },
   {
     question: "How long do most repairs take?",
     answer:
-      "Many common repairs (screens, batteries, ports) are same-day. Board-level and data recovery work can take longer — we'll always give you a clear ETA upfront.",
+      "Many common repairs (screens, batteries, ports) are same-day. Board-level and data recovery work can take longer â€” we'll always give you a clear ETA upfront.",
   },
   {
     question: "Do custom builds and repairs come with a warranty?",
@@ -99,7 +99,7 @@ export default function ContactPage() {
           sizes="100vw"
           className="object-cover"
         />
-        <div className="relative mx-auto max-w-6xl px-4 text-center sm:px-6 lg:px-8">
+        <div className="relative mx-auto max-w-screen-2xl px-4 text-center sm:px-6 lg:px-8">
           <Reveal>
             <Badge variant="soft" className="mx-auto bg-white/10 text-white">
               <Sparkles className="size-3.5" />
@@ -116,7 +116,7 @@ export default function ContactPage() {
 
           <Reveal delay={0.25}>
             <p className="mx-auto mt-3 max-w-lg text-sm text-white/75">
-              Call, message or drop by the studio — we usually reply within
+              Call, message or drop by the studio â€” we usually reply within
               the hour during opening times.
             </p>
           </Reveal>
@@ -124,7 +124,7 @@ export default function ContactPage() {
       </section>
 
       <section className="bg-background py-14 text-foreground sm:py-16">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8">
           <RevealGroup className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {CONTACT_METHODS.map((method) => (
               <RevealItem key={method.title}>
@@ -157,14 +157,14 @@ export default function ContactPage() {
       </section>
 
       <section className="bg-background pb-14 text-foreground sm:pb-16">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8">
           <RevealGroup className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
             <RevealItem className="rounded border border-border bg-card p-6 shadow-card sm:p-8">
               <h2 className="text-lg font-bold text-foreground">
                 Send us a message
               </h2>
               <p className="mt-1 text-sm text-muted-foreground">
-                Tell us about your device and the issue — we&apos;ll get back to
+                Tell us about your device and the issue â€” we&apos;ll get back to
                 you with next steps.
               </p>
 

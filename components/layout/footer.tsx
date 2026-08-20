@@ -1,4 +1,4 @@
-import Image from "next/image";
+﻿import Image from "next/image";
 import Link from "next/link";
 import { Mail, MapPin, Phone } from "lucide-react";
 
@@ -40,7 +40,7 @@ export function Footer() {
         <div className="absolute inset-0" />
       </div>
 
-      <div className="relative mx-auto max-w-6xl px-4 pt-16 pb-6 sm:px-6 lg:px-8">
+      <div className="relative mx-auto max-w-screen-2xl px-4 pt-16 pb-6 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1fr] lg:gap-8">
           <div>
             <Link href="/" className="flex items-center">

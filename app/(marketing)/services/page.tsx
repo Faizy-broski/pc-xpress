@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -28,7 +28,7 @@ import { CtaBanner } from "@/components/marketing/cta-banner";
 export const metadata: Metadata = {
   title: "Services | PC Xpress",
   description:
-    "Repairs, upgrades, custom builds and pre-built PCs — explore everything PC Xpress offers, from same-day device fixes to bespoke gaming rigs.",
+    "Repairs, upgrades, custom builds and pre-built PCs â€” explore everything PC Xpress offers, from same-day device fixes to bespoke gaming rigs.",
 };
 
 const PHONE = "+44 7307 093007";
@@ -48,7 +48,7 @@ const REPAIR_SERVICES: ServiceCard[] = [
     icon: Smartphone,
     title: "Phone Repair",
     description:
-      "Cracked screens, drained batteries, water damage & camera faults — fixed while you wait.",
+      "Cracked screens, drained batteries, water damage & camera faults â€” fixed while you wait.",
     points: ["Screen & battery swaps", "Charging port fixes", "Water damage recovery"],
     href: "/repair-a-device?device=phone",
     cta: "Book phone repair",
@@ -57,7 +57,7 @@ const REPAIR_SERVICES: ServiceCard[] = [
     icon: Tablet,
     title: "Tablet Repair",
     description:
-      "iPad, Galaxy Tab & Surface repairs — display, digitiser and battery work by certified techs.",
+      "iPad, Galaxy Tab & Surface repairs â€” display, digitiser and battery work by certified techs.",
     points: ["Digitiser & glass repair", "Battery replacement", "Charging & button faults"],
     href: "/repair-a-device?device=tablet",
     cta: "Book tablet repair",
@@ -66,7 +66,7 @@ const REPAIR_SERVICES: ServiceCard[] = [
     icon: Laptop,
     title: "Laptop Repair",
     description:
-      "MacBook & Windows laptops — screen replacements, keyboard fixes, battery swaps & full diagnostics.",
+      "MacBook & Windows laptops â€” screen replacements, keyboard fixes, battery swaps & full diagnostics.",
     points: ["Screen & keyboard replacement", "Battery & hinge repair", "Boot & performance issues"],
     href: "/repair-a-device?device=laptop",
     cta: "Book laptop repair",
@@ -75,7 +75,7 @@ const REPAIR_SERVICES: ServiceCard[] = [
     icon: Cpu,
     title: "Desktop PC Repair",
     description:
-      "Custom builds & prebuilt towers — component swaps, cooling fixes, boot issues & tuning.",
+      "Custom builds & prebuilt towers â€” component swaps, cooling fixes, boot issues & tuning.",
     points: ["Component diagnostics & swaps", "Cooling & thermal fixes", "Boot & POST failures"],
     href: "/repair-a-device?device=desktop",
     cta: "Book PC repair",
@@ -84,7 +84,7 @@ const REPAIR_SERVICES: ServiceCard[] = [
     icon: Gamepad2,
     title: "Console Repair",
     description:
-      "PlayStation, Xbox & Switch — HDMI ports, overheating, disc drives & controller drift fixes.",
+      "PlayStation, Xbox & Switch â€” HDMI ports, overheating, disc drives & controller drift fixes.",
     points: ["HDMI & port repair", "Overheating & fan noise", "Disc drive & drift fixes"],
     href: "/repair-a-device?device=console",
     cta: "Book console repair",
@@ -123,7 +123,7 @@ const BUILD_SERVICES: ServiceCard[] = [
     icon: Cpu,
     title: "Custom PC Builds",
     description:
-      "Tell us your budget and workload — we spec, build, cable-manage and stress-test a PC to match.",
+      "Tell us your budget and workload â€” we spec, build, cable-manage and stress-test a PC to match.",
     points: ["Free consultation & spec", "Cable management included", "Full stress-test & benchmarking"],
     href: "/build-a-pc",
     cta: "Start a custom build",
@@ -132,7 +132,7 @@ const BUILD_SERVICES: ServiceCard[] = [
     icon: ShoppingBag,
     title: "Pre-Built PCs",
     description:
-      "Hand-picked configs for gaming, creative work and everyday power — tested and ready to ship.",
+      "Hand-picked configs for gaming, creative work and everyday power â€” tested and ready to ship.",
     points: ["Gaming & workstation configs", "Tested before dispatch", "Warranty included"],
     href: "/prebuilt-pcs",
     cta: "Shop pre-built PCs",
@@ -143,7 +143,7 @@ const PROCESS_STEPS = [
   {
     icon: Search,
     title: "Free diagnostics",
-    description: "Bring it in or book online — we assess the issue and confirm the fix, at no cost.",
+    description: "Bring it in or book online â€” we assess the issue and confirm the fix, at no cost.",
   },
   {
     icon: Sparkles,
@@ -158,7 +158,7 @@ const PROCESS_STEPS = [
   {
     icon: Shield,
     title: "Warranty & collection",
-    description: "Every job ships with a warranty — collect in-studio or arrange delivery.",
+    description: "Every job ships with a warranty â€” collect in-studio or arrange delivery.",
   },
 ];
 
@@ -211,7 +211,7 @@ export default function ServicesPage() {
           sizes="100vw"
           className="object-cover"
         />
-        <div className="relative mx-auto max-w-6xl px-4 text-center sm:px-6 lg:px-8">
+        <div className="relative mx-auto max-w-screen-2xl px-4 text-center sm:px-6 lg:px-8">
           <Reveal>
             <Badge variant="soft" className="mx-auto bg-white/10 text-white">
               <Sparkles className="size-3.5" />
@@ -228,7 +228,7 @@ export default function ServicesPage() {
 
           <Reveal delay={0.25}>
             <p className="mx-auto mt-3 max-w-lg text-sm text-white/75">
-              From same-day repairs to bespoke gaming rigs — one studio for
+              From same-day repairs to bespoke gaming rigs â€” one studio for
               diagnostics, fixes, upgrades and builds.
             </p>
           </Reveal>
@@ -269,7 +269,7 @@ export default function ServicesPage() {
           />
         </div>
 
-        <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="relative mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8">
           <Reveal className="mx-auto max-w-2xl text-center">
             <Badge variant="soft" className="mx-auto">
               <span className="size-1.5 rounded-full bg-primary" />
@@ -297,7 +297,7 @@ export default function ServicesPage() {
       </section>
 
       <section className="bg-background pb-14 text-foreground sm:pb-16">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8">
           <Reveal className="mx-auto max-w-2xl text-center">
             <Badge variant="soft" className="mx-auto">
               <span className="size-1.5 rounded-full bg-primary" />
@@ -337,7 +337,7 @@ export default function ServicesPage() {
           />
         </div>
 
-        <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="relative mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8">
           <Reveal className="mx-auto max-w-2xl text-center">
             <Badge variant="soft" className="mx-auto">
               <span className="size-1.5 rounded-full bg-primary" />

@@ -1,4 +1,4 @@
-import Image from "next/image";
+﻿import Image from "next/image";
 
 import { Badge } from "@/components/ui/badge";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
@@ -56,7 +56,7 @@ const TRUST_POINTS = [
 export function WhatWeFix() {
   return (
     <section className="relative overflow-hidden py-14 sm:py-16">
-      <div className="relative mx-auto max-w-6xl px-4">
+      <div className="relative mx-auto max-w-screen-2xl px-4">
         <div
           aria-hidden
           className="pointer-events-none absolute bottom-0 left-0 h-72 w-72 sm:-bottom-16 sm:-left-14 sm:h-96 sm:w-96 lg:h-112 lg:w-md"
@@ -98,7 +98,7 @@ export function WhatWeFix() {
 
           <Reveal delay={0.2}>
             <p className="mt-3 text-muted-foreground">
-              From cracked screens to dead motherboards — six specialist repair
+              From cracked screens to dead motherboards â€” six specialist repair
               lines, one meticulous studio.
             </p>
           </Reveal>

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -17,7 +17,7 @@ export default function CartPage() {
 
   if (items.length === 0) {
     return (
-      <div className="mx-auto flex h-screen max-w-6xl flex-col items-center justify-center gap-4 px-4 text-center sm:px-6">
+      <div className="mx-auto flex h-screen max-w-screen-2xl flex-col items-center justify-center gap-4 px-4 text-center sm:px-6">
         <span className="flex size-16 items-center justify-center rounded-2xl bg-accent text-accent-foreground">
           <ShoppingCart className="size-8" />
         </span>
@@ -39,7 +39,7 @@ export default function CartPage() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-32 sm:px-6 lg:pt-36 pb-26">
+    <div className="mx-auto max-w-screen-2xl px-4 py-32 sm:px-6 lg:pt-36 pb-26">
       <Reveal viewTrigger={false}>
         <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
           Your Cart

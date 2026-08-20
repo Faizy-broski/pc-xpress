@@ -206,7 +206,7 @@ function BrandsTierForm() {
         <Reveal viewTrigger={false} delay={0.15}>
           <form
             onSubmit={handleSubmit}
-            className="flex flex-col gap-3.5 rounded-xl border border-border bg-gradient-card p-5 shadow-card"
+            className="flex flex-col gap-3.5 rounded-xl border border-border bg-gradient-card p-4 shadow-card sm:p-5 lg:p-6"
           >
             <div>
               <label className={labelClass}>Brand name</label>
@@ -401,7 +401,7 @@ function ServicesTierForm() {
         <Reveal viewTrigger={false} delay={0.15}>
           <form
             onSubmit={handleSubmit}
-            className="flex flex-col gap-3.5 rounded-xl border border-border bg-gradient-card p-5 shadow-card"
+            className="flex flex-col gap-3.5 rounded-xl border border-border bg-gradient-card p-4 shadow-card sm:p-5 lg:p-6"
           >
             <div>
               <label className={labelClass}>Service name</label>

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import {
   Breadcrumb,
@@ -20,7 +20,7 @@ interface PageParams {
 }
 
 // Admin-added products (via the dashboard) must be reachable immediately,
-// without a rebuild — so this page is fully dynamic rather than statically
+// without a rebuild â€” so this page is fully dynamic rather than statically
 // generated from a fixed list of known slugs.
 export const dynamic = "force-dynamic";
 export const dynamicParams = true;
@@ -52,7 +52,7 @@ export default async function PrebuiltPcDetailPage({ params }: PageParams) {
 
   return (
     <div className="pt-28 pb-4 md:pt-40">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8">
         <Reveal>
           <Breadcrumb>
             <BreadcrumbList>

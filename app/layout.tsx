@@ -3,6 +3,7 @@ import { IBM_Plex_Sans, Geist } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { CustomCursor } from "@/components/motion/custom-cursor";
+import { ScrollToTop } from "@/components/layout/scroll-to-top";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -37,6 +38,7 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col">
         {/* <ThemeProvider></ThemeProvider> */}
+        <ScrollToTop />
         {children}
         <CustomCursor />
       </body>

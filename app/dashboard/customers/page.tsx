@@ -19,11 +19,14 @@ export default function DashboardCustomersPage() {
         </div>
       </Reveal>
 
-      <RevealGroup viewTrigger={false} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <RevealGroup
+        viewTrigger={false}
+        className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+      >
         {CUSTOMERS.map((customer) => (
           <RevealItem
             key={customer.id}
-            className="rounded-xl border border-border bg-gradient-card p-5 shadow-card"
+            className="rounded-xl border border-border bg-gradient-card p-4 shadow-card sm:p-5 lg:p-6"
           >
             <div className="flex items-center gap-3">
               <Avatar size="lg">

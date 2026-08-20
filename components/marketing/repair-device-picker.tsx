@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { ArrowRight, Sparkles } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -9,7 +9,7 @@ import type { DeviceType } from "@/components/repair/data";
 
 export function RepairDevicePicker({ deviceTypes }: { deviceTypes: DeviceType[] }) {
   return (
-    <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+    <section className="mx-auto max-w-screen-2xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
       <Reveal className="mx-auto max-w-2xl text-center">
         <Badge variant="soft" className="mx-auto">
           <Sparkles className="size-3.5" />
