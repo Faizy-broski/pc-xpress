@@ -1,0 +1,221 @@
+"use client";
+
+import { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowRight, Check, Cpu, ShoppingCart } from "lucide-react";
+
+import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { useCart } from "@/components/cart/cart-provider";
+import { StarRating } from "@/components/marketing/star-rating";
+
+const EASE = [0.22, 1, 0.36, 1] as const;
+
+export interface ProductCardData {
+  slug: string;
+  href: string;
+  imageSrc?: string;
+  imageAlt: string;
+  os: string;
+  title: string;
+  specs: string[];
+  rating: number;
+  reviewCount: number;
+  price: string;
+  priceExVat: string;
+  wasPrice?: string;
+  dispatchDate: string;
+  rawPrice: number;
+  inStock: boolean;
+}
+
+export function ProductCard({
+  slug,
+  href,
+  imageSrc,
+  imageAlt,
+  os,
+  title,
+  specs,
+  rating,
+  reviewCount,
+  price,
+  priceExVat,
+  wasPrice,
+  dispatchDate,
+  rawPrice,
+  inStock,
+  className,
+}: ProductCardData & { className?: string }) {
+  const { addItem } = useCart();
+  const [added, setAdded] = useState(false);
+
+  function handleAddToCart() {
+    addItem({ slug, name: title, image: imageSrc, price: rawPrice });
+    setAdded(true);
+    window.setTimeout(() => setAdded(false), 1800);
+  }
+  return (
+    <motion.div
+      whileHover="hover"
+      initial="rest"
+      animate="rest"
+      className={cn(
+        "group relative flex h-full flex-col overflow-hidden border border-border bg-card shadow-card transition-shadow rounded-sm",
+        className
+      )}
+    >
+      {wasPrice && (
+        <Badge className="absolute left-4 top-4 z-10 bg-primary text-primary-foreground shadow-glow">
+          Save {computeSaving(wasPrice, price)}
+        </Badge>
+      )}
+
+      <motion.div
+        variants={{ rest: { y: 0 }, hover: { y: -6 } }}
+        transition={{ duration: 0.45, ease: EASE }}
+        className="relative aspect-video w-full overflow-hidden bg-muted"
+      >
+        {imageSrc ? (
+          <motion.div
+            variants={{ rest: { scale: 1 }, hover: { scale: 1.08 } }}
+            transition={{ duration: 0.6, ease: EASE }}
+            className="relative h-full w-full"
+          >
+            <Image
+              src={imageSrc}
+              alt={imageAlt}
+              fill
+              sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+              className="object-contain"
+            />
+          </motion.div>
+        ) : (
+          <motion.div
+            variants={{ rest: { scale: 1 }, hover: { scale: 1.08 } }}
+            transition={{ duration: 0.6, ease: EASE }}
+            className="flex h-full w-full items-center justify-center"
+          >
+            <span className="flex size-20 items-center justify-center rounded-2xl bg-accent text-accent-foreground">
+              <Cpu className="size-10" />
+            </span>
+          </motion.div>
+        )}
+
+        <motion.div
+          variants={{ rest: { opacity: 0 }, hover: { opacity: 1 } }}
+          transition={{ duration: 0.3 }}
+          className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/10 via-transparent to-transparent"
+        />
+      </motion.div>
+
+      <div className="flex flex-1 flex-col gap-2 p-4 min-w-0">
+        <span className="text-xs font-medium text-muted-foreground">{os}</span>
+
+        <h3 className="text-base font-semibold leading-snug text-foreground break-words">
+          {title}
+        </h3>
+
+        <ul className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground">
+          {specs.map((spec) => (
+            <li key={spec} className="flex items-start gap-1.5 min-w-0">
+              <span
+                className="mt-1.5 size-1 shrink-0 rounded-full bg-primary/60"
+                aria-hidden
+              />
+              <span className="break-words">{spec}</span>
+            </li>
+          ))}
+        </ul>
+
+        <div className="flex flex-wrap items-center gap-1.5">
+          <StarRating value={rating} />
+          <Link
+            href={`${href}#reviews`}
+            className="text-xs text-muted-foreground underline-offset-2 hover:text-primary hover:underline"
+          >
+            {reviewCount} Reviews
+          </Link>
+        </div>
+
+        <div className="mt-auto flex flex-wrap items-center gap-x-3 gap-y-2 pt-2">
+          <motion.div
+            variants={{ rest: { scale: 1 }, hover: { scale: 1.04 } }}
+            transition={{ duration: 0.25, ease: EASE }}
+            className="shrink-0"
+          >
+            <Link
+              href={href}
+              className="group/shop inline-flex items-center gap-1.5 rounded bg-gradient-button px-4 py-2 text-sm font-medium text-primary-foreground shadow-glow transition-[filter] hover:brightness-110"
+            >
+              Shop
+              <ArrowRight className="size-3.5 transition-transform duration-300 group-hover/shop:translate-x-1" />
+            </Link>
+          </motion.div>
+
+          <Button
+            variant="outline"
+            size="icon"
+            aria-label="Add to cart"
+            disabled={!inStock}
+            onClick={handleAddToCart}
+            className="rounded shrink-0"
+          >
+            <AnimatePresence mode="wait" initial={false}>
+              {added ? (
+                <motion.span
+                  key="added"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.15 }}
+                >
+                  <Check className="size-4" />
+                </motion.span>
+              ) : (
+                <motion.span
+                  key="add"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.15 }}
+                >
+                  <ShoppingCart className="size-4" />
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </Button>
+
+          <div className="flex min-w-0 flex-1 flex-col leading-tight">
+            <span className="flex flex-wrap items-baseline gap-x-1.5 gap-y-0.5">
+              <span className="text-lg font-bold text-primary whitespace-nowrap">
+                {price}
+              </span>
+              {wasPrice && (
+                <span className="text-xs text-muted-foreground line-through whitespace-nowrap">
+                  {wasPrice}
+                </span>
+              )}
+            </span>
+            <span className="text-[0.7rem] text-muted-foreground">
+              ({priceExVat} ex. VAT)
+            </span>
+          </div>
+        </div>
+
+        <p className="text-[0.7rem] text-muted-foreground break-words">
+          Estimated dispatch date: {dispatchDate}
+        </p>
+      </div>
+    </motion.div>
+  );
+}
+
+function computeSaving(was: string, now: string) {
+  const toNum = (v: string) => Number(v.replace(/[^0-9.]/g, ""));
+  const diff = toNum(was) - toNum(now);
+  return diff > 0 ? `£${diff.toFixed(0)}` : "";
+}

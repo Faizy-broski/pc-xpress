@@ -1,0 +1,338 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --container-screen-2xl: var(--breakpoint-2xl);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+  --font-heading: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.16 0.005 30);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.16 0.005 30);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.16 0.005 30);
+  --primary: oklch(0.628 0.25 23.7);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.16 0.01 30);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.96 0.005 30);
+  --muted-foreground: oklch(0.5 0.015 30);
+  --accent: oklch(0.955 0.03 23.7);
+  --accent-foreground: oklch(0.628 0.25 23.7);
+  --destructive: oklch(0.577 0.245 23.7);
+  --border: oklch(0.91 0.006 30);
+  --input: oklch(0.91 0.006 30);
+  --ring: oklch(0.628 0.25 23.7);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --radius: 0.75rem;
+  /* Sidebar tracks --secondary (dark surface), so its own foreground/accent/border
+     are re-paired for a dark surface rather than inherited from the light defaults. */
+  --sidebar: oklch(0.16 0.01 30);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.628 0.25 23.7);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.28 0.05 23.7);
+  --sidebar-accent-foreground: oklch(0.93 0.02 23.7);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.628 0.25 23.7);
+  --font-sans: var(--font-ibm-plex-sans);
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* Wide brand bar gradient: dark at the edges, glowing red at the center.
+     Used for the navbar/header surfaces. */
+  --gradient-brand: linear-gradient(90deg,
+      /* oklch(0.12 0.02 23.7) 5%, */
+      oklch(0.628 0.25 23.7) 5%,
+      oklch(0.55 0.24 23.7) 100%,
+      oklch(0.12 0.02 23.7) 100%);
+  /* Glossy top-to-bottom gradient for primary buttons. */
+  --gradient-button: linear-gradient(130deg,
+      /* oklch(0.12 0.02 23.7) 0%, */
+      oklch(0.628 0.25 23.7) 0%,
+      oklch(0.53 0.24 23.7) 100%);
+  /* Text-fill gradient, e.g. for CTA labels on light surfaces. */
+  --gradient-text: linear-gradient(130deg,
+      /* oklch(0.12 0.02 23.7) 0%, */
+      oklch(0.628 0.25 23.7) 0%,
+      oklch(0.53 0.24 23.7) 100%);
+  /* Soft radial glow used behind hero content. */
+  --gradient-hero: radial-gradient(60% 50% at var(--gradient-hero-pos, 80% 20%),
+      color-mix(in oklch, var(--primary), transparent 55%),
+      transparent);
+  /* Left-to-right dark scrim for legible text over photos. */
+  --gradient-overlay: linear-gradient(90deg,
+      oklch(0.1 0.02 30 / 92%) 0%,
+      oklch(0.1 0.02 30 / 55%) 55%,
+      oklch(0.1 0.02 30 / 15%) 100%);
+  /* Subtle top-highlight sheen for card surfaces. */
+  --gradient-card: linear-gradient(180deg,
+      color-mix(in oklch, var(--card), white 4%) 0%,
+      var(--card) 100%);
+
+  /* Soft red halo, e.g. behind primary CTAs. */
+  --shadow-glow: 0 0 0 1px color-mix(in oklch, var(--primary), transparent 85%),
+    0 8px 24px -4px color-mix(in oklch, var(--primary), transparent 55%);
+  /* Neutral elevation shadow for cards/panels. */
+  --shadow-card: 0 1px 2px color-mix(in oklch, var(--foreground), transparent 95%),
+    0 8px 24px -8px color-mix(in oklch, var(--foreground), transparent 90%);
+
+  /* Categorical chart palette (validated CVD-safe order) — dashboard-only. */
+  --viz-cat-1: #2a78d6;
+  --viz-cat-2: #008300;
+  --viz-cat-3: #e87ba4;
+  --viz-cat-4: #eda100;
+  --viz-cat-5: #1baf7a;
+  --viz-cat-6: #eb6834;
+}
+
+.dark {
+  --background: oklch(0.14 0.004 30);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.19 0.006 30);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.19 0.006 30);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.65 0.25 23.7);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.24 0.006 30);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.24 0.006 30);
+  --muted-foreground: oklch(0.68 0.01 30);
+  --accent: oklch(0.28 0.05 23.7);
+  --accent-foreground: oklch(0.93 0.02 23.7);
+  --destructive: oklch(0.65 0.24 23.7);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.65 0.25 23.7);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.19 0.006 30);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.65 0.25 23.7);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.28 0.05 23.7);
+  --sidebar-accent-foreground: oklch(0.93 0.02 23.7);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(63.998% 0.24568 23.466);
+
+  --viz-cat-1: #3987e5;
+  --viz-cat-2: #008300;
+  --viz-cat-3: #d55181;
+  --viz-cat-4: #c98500;
+  --viz-cat-5: #199e70;
+  --viz-cat-6: #d95926;
+}
+
+@utility bg-gradient-brand {
+  background-image: var(--gradient-brand);
+}
+
+@utility bg-gradient-button {
+  background-image: var(--gradient-button);
+}
+
+@utility gradient-text-brand {
+  background-image: var(--gradient-text);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+@utility bg-gradient-hero {
+  background-image: var(--gradient-hero);
+}
+
+@utility bg-gradient-overlay {
+  background-image: var(--gradient-overlay);
+}
+
+@utility bg-gradient-card {
+  background-image: var(--gradient-card);
+}
+
+@utility shadow-glow {
+  box-shadow: var(--shadow-glow);
+}
+
+@utility shadow-card {
+  box-shadow: var(--shadow-card);
+}
+
+@keyframes loading-bar {
+  0% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(150%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@utility animate-loading-bar {
+  animation: loading-bar 1.4s ease-in-out infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@utility animate-marquee {
+  animation: marquee 32s linear infinite;
+}
+
+/* Custom themed cursor — see components/motion/custom-cursor.tsx. The
+   component only sets [data-custom-cursor] on fine-pointer devices, so
+   touch/coarse-pointer devices never get `cursor: none` and are unaffected.
+   !important is required here: many components set their own explicit
+   cursor-pointer/cursor-default/cursor-resize utility classes (buttons,
+   dropdown menu items, the sidebar's resize handle), which as direct rules
+   on the element would otherwise beat a plain inherited `cursor: none`. */
+:root[data-custom-cursor="true"] * {
+  cursor: none !important;
+}
+
+.cursor-dot,
+.cursor-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 9999px;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  transition:
+    width 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    height 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    opacity 0.15s ease;
+}
+
+.cursor-dot {
+  width: 7px;
+  height: 7px;
+  background: var(--primary);
+}
+
+.cursor-dot[data-visible="true"] {
+  opacity: 0.95;
+}
+
+.cursor-dot[data-variant="interactive"],
+.cursor-dot[data-variant="text"] {
+  opacity: 0;
+}
+
+.cursor-ring {
+  width: 32px;
+  height: 32px;
+  border: 1.5px solid color-mix(in oklch, var(--primary), transparent 40%);
+  background: color-mix(in oklch, var(--primary), transparent 94%);
+}
+
+.cursor-ring[data-visible="true"] {
+  opacity: 1;
+}
+
+.cursor-ring[data-pressed="true"] {
+  transform: translate(-50%, -50%) scale(0.85);
+}
+
+.cursor-ring[data-variant="interactive"] {
+  width: 54px;
+  height: 54px;
+  border-color: color-mix(in oklch, var(--primary), transparent 10%);
+  background: color-mix(in oklch, var(--primary), transparent 80%);
+}
+
+.cursor-ring[data-variant="interactive"][data-pressed="true"] {
+  transform: translate(-50%, -50%) scale(0.92);
+}
+
+.cursor-ring[data-variant="text"] {
+  width: 2px;
+  height: 22px;
+  border-radius: 2px;
+  border-color: transparent;
+  background: var(--primary);
+}
+
+.cursor-ring[data-variant="disabled"] {
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border-color: color-mix(in oklch, var(--foreground), transparent 65%);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  html {
+    @apply font-sans scroll-smooth;
+  }
+}
