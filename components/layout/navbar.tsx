@@ -16,12 +16,13 @@ const NAV_LINKS: { label: string; href: string; highlight?: boolean }[] = [
   { label: "Home", href: "/" },
   // { label: "Prebuilt PCs", href: "/prebuilt-pcs" },
   // { label: "Build a PC", href: "/build-a-pc" },
-  { label: "About", href: "/about" },
   { label: "PC Repair", href: "/repair-a-device?device=desktop", highlight: true },
   { label: "Laptop Repair", href: "/repair-a-device?device=laptop", highlight: true },
+  { label: "Mobile Repair", href: "/repair-a-device?device=phone", highlight: true },
   { label: "MacBook Repair", href: "/repair-a-device?device=laptop", highlight: true },
-  { label: "Console", href: "/repair-a-device?device=console", highlight: true },
+  { label: "Console Repair", href: "/repair-a-device?device=console", highlight: true },
   { label: "Custom Build", href: "/build-a-pc", highlight: true },
+  { label: "About", href: "/about" },
   { label: "Contact Us", href: "/contact" },
   // { label: "Blog", href: "/blog" },
 ];
@@ -98,20 +99,22 @@ export function Navbar() {
           : "inset-x-0 top-0 rounded-none md:inset-x-6 md:top-6 md:my-9 md:max-w-screen-2xl md:rounded lg:inset-x-8"
       )}
     >
-      <nav className="mx-auto flex h-20 max-w-screen-2xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-        <Logo className="md:hidden" />
+      <nav className="mx-auto flex h-20 max-w-screen-2xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8 lg:grid lg:grid-cols-[1fr_auto_1fr]">
+        <Logo className="lg:hidden" />
 
-        <div className="hidden flex-1 items-center justify-end gap-3 lg:gap-6 md:flex">
-          {NAV_LINKS.slice(0, Math.ceil(NAV_LINKS.length / 2)).map((link) => {
+        <Logo className="hidden lg:flex lg:justify-self-start" />
+
+        <div className="hidden items-center justify-center gap-4 xl:gap-6 lg:flex">
+          {NAV_LINKS.map((link) => {
             const active = pathname === link.href;
             return (
               <Link
                 key={link.label}
                 href={link.href}
                 className={cn(
-                  "text-sm font-medium text-white/75 transition-colors hover:text-white",
+                  "whitespace-nowrap text-sm font-medium text-white/75 transition-colors hover:text-white",
                   active && "font-semibold text-white",
-                  link.highlight && "text-base font-bold text-white"
+                  link.highlight && "font-semibold text-white"
                 )}
               >
                 {link.label}
@@ -120,45 +123,22 @@ export function Navbar() {
           })}
         </div>
 
-        <Logo className="hidden md:flex" />
+        <div className="hidden items-center justify-end gap-2 lg:flex lg:justify-self-end">
+          <CartButton />
 
-        <div className="hidden flex-1 items-center justify-between gap-3 lg:gap-6 md:flex">
-          <div className="flex items-center gap-3 lg:gap-6">
-            {NAV_LINKS.slice(Math.ceil(NAV_LINKS.length / 2)).map((link) => {
-              const active = pathname === link.href;
-              return (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  className={cn(
-                    "text-sm font-medium text-white/75 transition-colors hover:text-white",
-                    active && "font-semibold text-white",
-                    link.highlight && "text-base font-bold text-white"
-                  )}
-                >
-                  {link.label}
-                </Link>
-              );
-            })}
-          </div>
+          <Button
+            className="shrink-0 rounded bg-none bg-white px-5 py-5 text-primary shadow-none hover:bg-white/90"
+            nativeButton={false}
+            render={<Link href="/repair-a-device" />}
+          >
+            <span className="gradient-text-brand text-xs whitespace-nowrap">Book Your Repair</span>
+            <ArrowRight />
+          </Button>
 
-          <div className="flex items-center gap-2">
-            <CartButton />
-
-            <Button
-              className="rounded bg-none bg-white p-6 text-primary shadow-none hover:bg-white/90"
-              nativeButton={false}
-              render={<Link href="/repair-a-device" />}
-            >
-              <span className="gradient-text-brand text-xs">Book Your Repair</span>
-              <ArrowRight />
-            </Button>
-
-            {admin && <AdminNavMenu user={admin} className="ml-1" />}
-          </div>
+          {admin && <AdminNavMenu user={admin} className="ml-1" />}
         </div>
 
-        <div className="flex items-center gap-1 md:hidden">
+        <div className="flex items-center gap-1 lg:hidden">
           <CartButton />
           {admin && <AdminNavMenu user={admin} />}
           <Button
@@ -181,7 +161,7 @@ export function Navbar() {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.25, ease: EASE }}
-            className="overflow-hidden border-t border-white/10 md:hidden"
+            className="overflow-hidden border-t border-white/10 lg:hidden"
           >
             <div className="flex flex-col gap-1 px-4 py-4 sm:px-6">
               {NAV_LINKS.map((link) => {

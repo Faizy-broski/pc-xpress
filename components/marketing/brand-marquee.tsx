@@ -1,6 +1,8 @@
-﻿import { Apple } from "lucide-react";
+﻿import Link from "next/link";
+import { Apple } from "lucide-react";
 
 import { Reveal } from "@/components/motion/reveal";
+import { BRAND_SLUGS } from "@/lib/data/brand-copy";
 
 interface Brand {
   name: string;
@@ -21,13 +23,18 @@ const BRANDS: Brand[] = [
 
 function BrandLogo({ brand }: { brand: Brand }) {
   const Icon = brand.icon;
+  const slug = BRAND_SLUGS[brand.name];
+
   return (
-    <span className="flex shrink-0 items-center gap-2 text-secondary-foreground/40 grayscale transition-all duration-300 hover:text-secondary-foreground hover:grayscale-0">
+    <Link
+      href={slug ? `/brands/${slug}` : "/repair-a-device"}
+      className="flex shrink-0 items-center gap-2 text-secondary-foreground/40 grayscale transition-all duration-300 hover:text-secondary-foreground hover:grayscale-0"
+    >
       {Icon && <Icon className="size-5" strokeWidth={1.75} />}
       <span className="text-xl font-bold tracking-tight whitespace-nowrap sm:text-2xl">
         {brand.name}
       </span>
-    </span>
+    </Link>
   );
 }
 

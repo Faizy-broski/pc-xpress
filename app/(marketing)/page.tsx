@@ -42,7 +42,6 @@ const HERO_SLIDES: HeroSlide[] = [
       "From MacBook fan swaps to PlayStation and Xbox repairs — we get your gear back up and running.",
     primary: { label: "Book Your Repair", href: "/repair-a-device?device=console" },
     secondary: { label: "Build a PC", href: "/build-a-pc" },
-    contentAlign: "right",
   },
 ];
 
