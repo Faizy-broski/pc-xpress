@@ -18,6 +18,7 @@ import { listCategories } from "@/lib/data/build-a-pc"
 import { listPrebuiltProducts } from "@/lib/data/prebuilt"
 import { listOrders } from "@/lib/data/orders"
 import { listReviews } from "@/lib/data/reviews"
+import { listLeads } from "@/lib/data/leads"
 
 // Admin-editable catalogs are Supabase-backed (see supabase/schema.sql);
 // fetched here, server-side, so the dashboard never renders with an empty
@@ -41,7 +42,7 @@ export default async function DashboardLayout({
     redirect("/login")
   }
 
-  const [deviceTypes, brands, faults, categories, prebuiltProducts, prebuiltOrders, reviews] =
+  const [deviceTypes, brands, faults, categories, prebuiltProducts, prebuiltOrders, reviews, leads] =
     await Promise.all([
       listDeviceTypes(),
       listBrandsByDevice(),
@@ -50,6 +51,7 @@ export default async function DashboardLayout({
       listPrebuiltProducts(),
       listOrders(),
       listReviews(),
+      listLeads(),
     ])
 
   const sidebarUser = {
@@ -87,6 +89,7 @@ export default async function DashboardLayout({
                 initialPrebuiltProducts={prebuiltProducts}
                 initialPrebuiltOrders={prebuiltOrders}
                 initialReviews={reviews}
+                initialLeads={leads}
               >
                 {children}
               </DashboardStoreProvider>

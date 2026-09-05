@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Reveal } from "@/components/motion/reveal";
 import { TextReveal } from "@/components/motion/text-reveal";
 import { CtaButtonGroup } from "@/components/marketing/cta-button-group";
+import { LeadGenForm } from "@/components/marketing/lead-gen-form";
 
 interface HeroCta {
   label: string;
@@ -100,42 +101,54 @@ export function HeroCarousel({
 
                 <div
                   className={cn(
-                    "relative mx-auto flex h-full max-w-screen-2xl flex-col justify-center px-4 pt-16 pb-4 sm:px-6 sm:pt-20 sm:pb-32 md:pt-40 md:pb-20 lg:px-8",
-                    alignRight && "items-end text-right"
+                    "relative mx-auto grid h-full max-w-screen-2xl items-center gap-6 px-4 pt-16 pb-20 sm:px-6 sm:pt-20 sm:pb-24 lg:grid-cols-[1.4fr_1fr] lg:gap-10 lg:px-8 lg:py-0",
+                    alignRight && "lg:grid-cols-[1fr_1.4fr]"
                   )}
                 >
-                  <Reveal>
-                    <Badge variant="soft" className="bg-white/10 text-white">
-                      <Sparkles />
-                      {slide.badge}
-                    </Badge>
-                  </Reveal>
+                  <div className={cn("flex flex-col", alignRight && "items-end text-right lg:order-2")}>
+                    <Reveal>
+                      <Badge variant="soft" className="bg-white/10 text-white">
+                        <Sparkles />
+                        {slide.badge}
+                      </Badge>
+                    </Reveal>
 
-                  <TextReveal
-                    as="h1"
-                    text={slide.heading}
-                    delay={0.1}
-                    className="mt-4 max-w-xs text-2xl font-bold tracking-tight text-white sm:max-w-sm sm:text-4xl lg:max-w-xl lg:text-5xl"
-                  />
-
-                  <Reveal delay={0.25}>
-                    <p
-                      className={cn(
-                        "mt-4 max-w-lg text-sm text-white/70 sm:text-base",
-                        alignRight && "ml-auto"
-                      )}
-                    >
-                      {slide.description}
-                    </p>
-                  </Reveal>
-
-                  <Reveal delay={0.35}>
-                    <CtaButtonGroup
-                      className={cn("mt-6", alignRight && "justify-end")}
-                      onDark
-                      primary={slide.primary}
-                      secondary={slide.secondary}
+                    <TextReveal
+                      as="h1"
+                      text={slide.heading}
+                      delay={0.1}
+                      className="mt-4 max-w-xs text-2xl font-bold tracking-tight text-white sm:max-w-sm sm:text-4xl lg:max-w-xl lg:text-5xl"
                     />
+
+                    <Reveal delay={0.25}>
+                      <p
+                        className={cn(
+                          "mt-4 max-w-lg text-sm text-white/70 sm:text-base",
+                          alignRight && "ml-auto"
+                        )}
+                      >
+                        {slide.description}
+                      </p>
+                    </Reveal>
+
+                    <Reveal delay={0.35}>
+                      <CtaButtonGroup
+                        className={cn("mt-6", alignRight && "justify-end")}
+                        onDark
+                        primary={slide.primary}
+                        secondary={slide.secondary}
+                      />
+                    </Reveal>
+                  </div>
+
+                  <Reveal
+                    delay={0.3}
+                    className={cn(
+                      "w-full lg:max-w-sm lg:justify-self-end",
+                      alignRight && "lg:order-1 lg:justify-self-start"
+                    )}
+                  >
+                    <LeadGenForm />
                   </Reveal>
                 </div>
               </div>

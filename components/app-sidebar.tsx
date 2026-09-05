@@ -10,6 +10,7 @@ import {
   MonitorIcon,
   CpuIcon,
   StarIcon,
+  UsersIcon,
 } from "lucide-react"
 
 import { NavMain, type NavItem } from "@/components/nav-main"
@@ -31,6 +32,7 @@ const NAV_ITEMS: NavItem[] = [
   { title: "Overview", url: "/dashboard", icon: LayoutDashboardIcon },
   { title: "All Bookings", url: "/dashboard/bookings", icon: ClipboardListIcon },
   { title: "Reviews", url: "/dashboard/reviews", icon: StarIcon },
+  { title: "Leads", url: "/dashboard/leads", icon: UsersIcon },
   {
     title: "Repairs",
     icon: WrenchIcon,
@@ -72,7 +74,7 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
           <SidebarMenuItem>
             <SidebarMenuButton
               size="lg"
-              className="hover:bg-transparent active:bg-transparent"
+              className="h-16 hover:bg-transparent active:bg-transparent"
               render={<Link href="/dashboard" />}
             >
               <span className="hidden aspect-square size-8 shrink-0 items-center justify-center overflow-hidden rounded transition-transform duration-200 group-data-[collapsible=icon]:flex hover:scale-105">
@@ -86,7 +88,7 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
                 />
               </span>
               <div className="flex flex-1 items-center transition-transform duration-200 group-data-[collapsible=icon]:hidden hover:scale-[1.02]">
-                <LogoMark className="h-9" />
+                <LogoMark className="h-12! w-auto!" />
               </div>
             </SidebarMenuButton>
           </SidebarMenuItem>

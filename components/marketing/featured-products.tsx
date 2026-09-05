@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import useEmblaCarousel from "embla-carousel-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -9,7 +9,6 @@ import { cn } from "@/lib/utils";
 import { TextReveal } from "@/components/motion/text-reveal";
 import { ProductCard, type ProductCardData } from "@/components/marketing/product-card";
 
-const AUTOPLAY_DELAY = 5000;
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 export interface FeaturedProductsProps {
@@ -23,20 +22,20 @@ export function FeaturedProducts({
   products,
   className,
 }: FeaturedProductsProps) {
-  // Embla needs roughly 2x as many slides as are visible at once to clone
-  // for a seamless loop (3 cards show per view at lg) — fewer than that and
-  // looping leaves visible gaps/missing cards, so only loop once there's
-  // enough content to do it cleanly.
-  const canLoop = products.length >= 6;
+  // No looping — the carousel only moves left/right when the arrows are
+  // pressed. trimSnaps drops the trailing empty-space snap that appears
+  // when the cards don't evenly fill the last view (e.g. 4 products at
+  // 3-per-view), so canScrollNext/canScrollPrev correctly disable at the
+  // true start/end of the content.
   const [emblaRef, emblaApi] = useEmblaCarousel({
-    loop: canLoop,
+    loop: false,
     align: "start",
     slidesToScroll: 1,
+    containScroll: "trimSnaps",
   });
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [canPrev, setCanPrev] = useState(false);
   const [canNext, setCanNext] = useState(false);
-  const autoplayRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
@@ -56,26 +55,6 @@ export function FeaturedProducts({
     };
   }, [emblaApi, onSelect]);
 
-  const stopAutoplay = useCallback(() => {
-    if (autoplayRef.current) {
-      clearInterval(autoplayRef.current);
-      autoplayRef.current = null;
-    }
-  }, []);
-
-  const startAutoplay = useCallback(() => {
-    if (!emblaApi || products.length < 2) return;
-    stopAutoplay();
-    autoplayRef.current = setInterval(() => {
-      emblaApi.scrollNext();
-    }, AUTOPLAY_DELAY);
-  }, [emblaApi, products.length, stopAutoplay]);
-
-  useEffect(() => {
-    startAutoplay();
-    return stopAutoplay;
-  }, [startAutoplay, stopAutoplay]);
-
   const scrollTo = useCallback(
     (index: number) => emblaApi?.scrollTo(index),
     [emblaApi]
@@ -83,10 +62,7 @@ export function FeaturedProducts({
 
   return (
     <section className={cn("py-12 sm:py-16 max-w-screen-2xl mx-auto px-4", className)}>
-      <div
-        onMouseEnter={stopAutoplay}
-        onMouseLeave={startAutoplay}
-      >
+      <div>
         {/* Colored promo panel â€” only tall enough for the heading + top half of the cards */}
         <div className="relative overflow-hidden rounded bg-gradient-brand px-6 pt-10 pb-32 sm:px-10 sm:pt-12 sm:pb-40 lg:pb-60">
           <div className="pointer-events-none absolute inset-0 bg-gradient-hero opacity-60" />
@@ -139,7 +115,7 @@ export function FeaturedProducts({
       </div>
 
       {/* Pagination dots â€” sit on the page background, below the panel */}
-      {products.length > 1 && (
+      {/* {products.length > 1 && (
         <div className="mt-8 flex items-center justify-center gap-1.5">
           {products.map((product, index) => (
             <button
@@ -154,7 +130,7 @@ export function FeaturedProducts({
             />
           ))}
         </div>
-      )}
+      )} */}
     </section>
   );
 }

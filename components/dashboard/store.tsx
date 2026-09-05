@@ -18,6 +18,7 @@ import {
 import { type Category, type CategoryId, type PartOption } from "@/components/build-a-pc/data"
 import { type PrebuiltProduct } from "@/components/prebuilt/data"
 import { type Review, type ReviewStatus } from "@/lib/data/reviews"
+import { type Lead, type LeadStatus } from "@/lib/data/leads"
 
 interface DashboardStoreValue {
   repairJobs: RepairJob[]
@@ -57,6 +58,10 @@ interface DashboardStoreValue {
   reviews: Review[]
   updateReviewStatus: (id: string, status: ReviewStatus) => Promise<void>
   removeReview: (id: string) => Promise<void>
+
+  leads: Lead[]
+  updateLeadStatus: (id: string, status: LeadStatus) => Promise<void>
+  removeLead: (id: string) => Promise<void>
 }
 
 const DashboardStoreContext = React.createContext<DashboardStoreValue | null>(null)
@@ -71,6 +76,7 @@ interface DashboardStoreProviderProps {
   initialPrebuiltProducts: PrebuiltProduct[]
   initialPrebuiltOrders: PrebuiltOrder[]
   initialReviews: Review[]
+  initialLeads: Lead[]
 }
 
 async function requestJson<T>(url: string, method: "POST" | "PATCH" | "DELETE", body?: unknown): Promise<T> {
@@ -95,6 +101,7 @@ export function DashboardStoreProvider({
   initialPrebuiltProducts,
   initialPrebuiltOrders,
   initialReviews,
+  initialLeads,
 }: DashboardStoreProviderProps) {
   const [repairJobs, setRepairJobs] = React.useState<RepairJob[]>(REPAIR_JOBS)
   const [deviceTypes] = React.useState<DeviceType[]>(initialDeviceTypes)
@@ -105,6 +112,7 @@ export function DashboardStoreProvider({
   const [categories, setCategories] = React.useState<Category[]>(initialCategories)
   const [customBuildOrders, setCustomBuildOrders] = React.useState<CustomBuildOrder[]>(CUSTOM_BUILD_ORDERS)
   const [reviews, setReviews] = React.useState<Review[]>(initialReviews)
+  const [leads, setLeads] = React.useState<Lead[]>(initialLeads)
 
   const addBrand = React.useCallback(async (deviceId: DeviceTypeId, brand: Brand) => {
     const { brand: created } = await requestJson<{ brand: Brand }>(
@@ -280,6 +288,16 @@ export function DashboardStoreProvider({
     setReviews((prev) => prev.filter((review) => review.id !== id))
   }, [])
 
+  const updateLeadStatus = React.useCallback(async (id: string, status: LeadStatus) => {
+    const { lead: updated } = await requestJson<{ lead: Lead }>(`/api/leads/${id}`, "PATCH", { status })
+    setLeads((prev) => prev.map((lead) => (lead.id === id ? updated : lead)))
+  }, [])
+
+  const removeLead = React.useCallback(async (id: string) => {
+    await requestJson(`/api/leads/${id}`, "DELETE")
+    setLeads((prev) => prev.filter((lead) => lead.id !== id))
+  }, [])
+
   const value = React.useMemo<DashboardStoreValue>(
     () => ({
       repairJobs,
@@ -311,6 +329,9 @@ export function DashboardStoreProvider({
       reviews,
       updateReviewStatus,
       removeReview,
+      leads,
+      updateLeadStatus,
+      removeLead,
     }),
     [
       repairJobs,
@@ -342,6 +363,9 @@ export function DashboardStoreProvider({
       reviews,
       updateReviewStatus,
       removeReview,
+      leads,
+      updateLeadStatus,
+      removeLead,
     ]
   )
 
@@ -410,4 +434,13 @@ export function useReviews() {
 export function useReviewActions() {
   const { updateReviewStatus, removeReview } = useDashboardStore()
   return { updateReviewStatus, removeReview }
+}
+
+export function useLeads() {
+  return useDashboardStore().leads
+}
+
+export function useLeadActions() {
+  const { updateLeadStatus, removeLead } = useDashboardStore()
+  return { updateLeadStatus, removeLead }
 }
