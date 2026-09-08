@@ -19,6 +19,7 @@ const NAV_LINKS: { label: string; href: string; highlight?: boolean }[] = [
   { label: "PC Repair", href: "/repair-a-device?device=desktop", highlight: true },
   { label: "Laptop Repair", href: "/repair-a-device?device=laptop", highlight: true },
   { label: "Mobile Repair", href: "/repair-a-device?device=phone", highlight: true },
+  { label: "Tablet Repair", href: "/repair-a-device?device=tablet", highlight: true },
   { label: "MacBook Repair", href: "/repair-a-device?device=laptop", highlight: true },
   { label: "Console Repair", href: "/repair-a-device?device=console", highlight: true },
   { label: "Custom Build", href: "/build-a-pc", highlight: true },
@@ -99,12 +100,12 @@ export function Navbar() {
           : "inset-x-0 top-0 rounded-none md:inset-x-6 md:top-6 md:my-9 md:max-w-screen-2xl md:rounded lg:inset-x-8"
       )}
     >
-      <nav className="mx-auto flex h-20 max-w-screen-2xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8 lg:grid lg:grid-cols-[1fr_auto_1fr]">
-        <Logo className="lg:hidden" />
+      <nav className="mx-auto flex h-20 max-w-screen-2xl items-center gap-4 px-4 sm:px-6 lg:px-8 xl:grid xl:grid-cols-[auto_minmax(0,1fr)_auto]">
+        <Logo className="xl:hidden" />
 
-        <Logo className="hidden lg:flex lg:justify-self-start" />
+        <Logo className="hidden xl:flex" />
 
-        <div className="hidden items-center justify-center gap-4 xl:gap-6 lg:flex">
+        <div className="scrollbar-none hidden min-w-0 items-center justify-center gap-3 overflow-x-auto xl:flex 2xl:gap-6">
           {NAV_LINKS.map((link) => {
             const active = pathname === link.href;
             return (
@@ -112,7 +113,7 @@ export function Navbar() {
                 key={link.label}
                 href={link.href}
                 className={cn(
-                  "whitespace-nowrap text-sm font-medium text-white/75 transition-colors hover:text-white",
+                  "shrink-0 whitespace-nowrap text-[13px] font-medium text-white/75 transition-colors hover:text-white 2xl:text-sm",
                   active && "font-semibold text-white",
                   link.highlight && "font-semibold text-white"
                 )}
@@ -123,7 +124,7 @@ export function Navbar() {
           })}
         </div>
 
-        <div className="hidden items-center justify-end gap-2 lg:flex lg:justify-self-end">
+        <div className="ml-auto hidden items-center gap-2 xl:flex">
           <CartButton />
 
           <Button
@@ -138,7 +139,7 @@ export function Navbar() {
           {admin && <AdminNavMenu user={admin} className="ml-1" />}
         </div>
 
-        <div className="flex items-center gap-1 lg:hidden">
+        <div className="ml-auto flex items-center gap-1 xl:hidden">
           <CartButton />
           {admin && <AdminNavMenu user={admin} />}
           <Button
@@ -161,7 +162,7 @@ export function Navbar() {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.25, ease: EASE }}
-            className="overflow-hidden border-t border-white/10 lg:hidden"
+            className="overflow-hidden border-t border-white/10 xl:hidden"
           >
             <div className="flex flex-col gap-1 px-4 py-4 sm:px-6">
               {NAV_LINKS.map((link) => {
