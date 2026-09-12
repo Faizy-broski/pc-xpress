@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 
 import { createLead, listLeads } from "@/lib/data/leads"
+import { sendLeadEmail } from "@/lib/mail"
 
 // Admin dashboard read only — there is no public feed for leads.
 export async function GET() {
@@ -39,6 +40,19 @@ export async function POST(request: Request) {
       phone: body.phone?.trim() || undefined,
       message: body.message?.trim() || undefined,
     })
+
+    try {
+      await sendLeadEmail({
+        name: lead.name,
+        email: lead.email,
+        phone: lead.phone,
+        message: lead.message,
+        source: "Homepage Form",
+      })
+    } catch (error) {
+      console.error("Failed to send lead notification email", error)
+    }
+
     return NextResponse.json({ lead }, { status: 201 })
   } catch (error) {
     console.error("Failed to submit lead", error)

@@ -2,10 +2,10 @@
 import Link from "next/link";
 import { ArrowRight, Clock, MapPin, MessageCircle, Phone } from "lucide-react";
 
-import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
+import { ContactForm } from "@/components/marketing/contact-form";
 
 const PHONE = "+44 7307 093007";
 const ADDRESS = "94 The Broadway, Wimbledon SW19 1RH";
@@ -14,9 +14,6 @@ const WHATSAPP_HREF = `https://wa.me/${PHONE.replace(/\D/g, "")}`;
 const MAP_SRC = `https://www.google.com/maps?q=${encodeURIComponent(
   `PC Xpress, ${ADDRESS}`
 )}&output=embed`;
-
-const fieldClass =
-  "w-full rounded border border-border bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50";
 
 export function VisitShop() {
   return (
@@ -53,40 +50,7 @@ export function VisitShop() {
               Send us a message
             </h3>
 
-            <form className="mt-4 flex flex-col gap-3">
-              <input
-                type="text"
-                name="name"
-                placeholder="Full name"
-                className={fieldClass}
-              />
-              <input
-                type="email"
-                name="email"
-                placeholder="Email address"
-                className={fieldClass}
-              />
-              <input
-                type="text"
-                name="issue"
-                placeholder="Device & issue (e.g. iPhone 14 â€” cracked screen)"
-                className={fieldClass}
-              />
-              <textarea
-                name="message"
-                rows={4}
-                placeholder="Tell us more..."
-                className={cn(fieldClass, "resize-none")}
-              />
-
-              <Button
-                type="submit"
-                size="lg"
-                className="mt-2 w-full rounded"
-              >
-                Send Message
-              </Button>
-            </form>
+            <ContactForm />
           </RevealItem>
 
           <RevealItem className="flex flex-col gap-5">

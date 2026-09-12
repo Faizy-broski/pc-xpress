@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { sendContactEmail } from "@/lib/mail";
+import { createLead } from "@/lib/data/leads";
 
 interface ContactRequestBody {
   name: string;
@@ -41,6 +42,17 @@ export async function POST(request: Request) {
       { error: "Could not send your message right now. Please try again or call us." },
       { status: 502 }
     );
+  }
+
+  try {
+    await createLead({
+      name,
+      email,
+      phone,
+      message: subject ? `${subject}\n\n${message}` : message,
+    });
+  } catch (error) {
+    console.error("Failed to save contact submission as a lead", error);
   }
 
   return NextResponse.json({ ok: true });

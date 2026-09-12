@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { sendBookingEmail, type BookingSummaryLine } from "@/lib/mail";
+import { createLead } from "@/lib/data/leads";
 
 interface BookingRequestBody {
   kind: "repair" | "build" | "prebuilt";
@@ -51,6 +52,20 @@ export async function POST(request: Request) {
       { error: "Could not send your booking right now. Please try again or call us." },
       { status: 502 }
     );
+  }
+
+  try {
+    const summaryText = summary.map((line) => `${line.label}: ${line.value}`).join("\n");
+    await createLead({
+      name,
+      email,
+      phone,
+      message: [summaryText, totalText ? `Total: ${totalText}` : "", notes ?? ""]
+        .filter(Boolean)
+        .join("\n\n"),
+    });
+  } catch (error) {
+    console.error("Failed to save booking submission as a lead", error);
   }
 
   return NextResponse.json({ ok: true });

@@ -244,6 +244,24 @@ export async function sendBookingEmail(input: BookingEmailInput) {
   });
 }
 
+export interface LeadEmailInput {
+  name: string;
+  email: string;
+  phone?: string;
+  message?: string;
+  source: string;
+}
+
+export async function sendLeadEmail(input: LeadEmailInput) {
+  await sendContactEmail({
+    name: input.name,
+    email: input.email,
+    phone: input.phone,
+    subject: `New Lead — ${input.source}`,
+    message: input.message?.trim() || "(No message provided.)",
+  });
+}
+
 export async function sendContactEmail(input: ContactEmailInput) {
   const adminEmail = process.env.BOOKING_ADMIN_EMAIL ?? process.env.SMTP_USER;
   if (!adminEmail) {
